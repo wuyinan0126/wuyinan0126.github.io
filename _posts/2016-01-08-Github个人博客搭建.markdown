@@ -96,21 +96,11 @@ tags: [geek]
 ## 添加Google Analytics
 ---
 
-1. 登录Google Analytics创建新网站，生成跟踪ID和跟踪代码
+1. 登录Google Analytics创建新网站，生成跟踪ID
 
-2. 在本地的个人博客项目的根目录下的_includes中新建analytics.html文件，并将跟踪代码复制进去
-
-3. 修改本地的个人博客项目的根目录下的_config.yml，取消注释
+2. 修改本地的个人博客项目的根目录下的_config.yml，取消注释
 
 		google_analytics: '跟踪ID'
-
-4. 修改本地的个人博客项目的根目录下的_includes/head.html文件，在&lt;/head>标签之上加入
-
-		{% raw %}
-		{% if jekyll.environment == 'production' %}
-		{% include analytics.html %}
-		{% endif %}
-		{% endraw %}
 
 ## 其它实用工具
 ---
