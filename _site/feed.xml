@@ -3,10 +3,10 @@
   <channel>
     <title>Yinan&#39;s Blog</title>
     <description>Welcome to my blog!</description>
-    <link>https://wuyinan0126.github.io//</link>
-    <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 16 Sep 2016 20:43:34 +0800</pubDate>
-    <lastBuildDate>Fri, 16 Sep 2016 20:43:34 +0800</lastBuildDate>
+    <link>http://wuyinan0126.github.io//</link>
+    <atom:link href="http://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Fri, 16 Sep 2016 20:48:34 +0800</pubDate>
+    <lastBuildDate>Fri, 16 Sep 2016 20:48:34 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -92,8 +92,8 @@
 
 </description>
         <pubDate>Thu, 15 Sep 2016 08:00:00 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</guid>
+        <link>http://wuyinan0126.github.io//2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</link>
+        <guid isPermaLink="true">http://wuyinan0126.github.io//2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</guid>
         
         <category>nlp</category>
         
@@ -315,8 +315,8 @@
 
 </description>
         <pubDate>Fri, 08 Jan 2016 23:04:23 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2016/Github%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/Github%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
+        <link>http://wuyinan0126.github.io//2016/Github%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
+        <guid isPermaLink="true">http://wuyinan0126.github.io//2016/Github%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
         
         <category>geek</category>
         
