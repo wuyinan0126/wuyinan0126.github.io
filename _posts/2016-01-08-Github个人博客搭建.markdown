@@ -5,7 +5,7 @@ categories: [geek]
 tags: [geek]
 ---
 
-*简介*
+*使用Jekyll-Uno模版在GitHub上搭建个人博客，并添加评论和Google Analytics的功能。包括GitHub相关准备工作、本地开发环境的搭建和其它实用工具*
 
 ## GitHub相关准备工作
 ---

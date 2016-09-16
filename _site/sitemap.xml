@@ -3,7 +3,7 @@
   
     
     <url>
-      <loc>http://wuyinan0126.github.io/2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</loc>
+      <loc>https://wuyinan0126.github.io/2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</loc>
       
         <lastmod>2016-09-15T08:00:00+08:00</lastmod>
       
@@ -18,7 +18,7 @@
   
     
     <url>
-      <loc>http://wuyinan0126.github.io/2016/Github%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
+      <loc>https://wuyinan0126.github.io/2016/Github%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
       
         <lastmod>2016-01-08T23:04:23+08:00</lastmod>
       
@@ -34,24 +34,9 @@
   
     
     <url>
-      <loc>http://wuyinan0126.github.io/categories/</loc>
+      <loc>https://wuyinan0126.github.io/categories/</loc>
       
-        <lastmod>2016-09-16T20:53:55+08:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://wuyinan0126.github.io/feed.xml</loc>
-      
-        <lastmod>2016-09-16T20:53:55+08:00</lastmod>
+        <lastmod>2016-09-16T21:06:24+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -64,9 +49,9 @@
   
     
     <url>
-      <loc>http://wuyinan0126.github.io/</loc>
+      <loc>https://wuyinan0126.github.io/feed.xml</loc>
       
-        <lastmod>2016-09-16T20:53:55+08:00</lastmod>
+        <lastmod>2016-09-16T21:06:24+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -79,9 +64,24 @@
   
     
     <url>
-      <loc>http://wuyinan0126.github.io/js/main.js</loc>
+      <loc>https://wuyinan0126.github.io/</loc>
       
-        <lastmod>2016-09-16T20:53:55+08:00</lastmod>
+        <lastmod>2016-09-16T21:06:24+08:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://wuyinan0126.github.io/js/main.js</loc>
+      
+        <lastmod>2016-09-16T21:06:24+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -96,9 +96,9 @@
   
     
     <url>
-      <loc>http://wuyinan0126.github.io/tags/</loc>
+      <loc>https://wuyinan0126.github.io/tags/</loc>
       
-        <lastmod>2016-09-16T20:53:55+08:00</lastmod>
+        <lastmod>2016-09-16T21:06:24+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
