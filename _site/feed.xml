@@ -5,37 +5,90 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 15 Sep 2016 17:32:37 +0800</pubDate>
-    <lastBuildDate>Thu, 15 Sep 2016 17:32:37 +0800</lastBuildDate>
+    <pubDate>Fri, 16 Sep 2016 11:24:53 +0800</pubDate>
+    <lastBuildDate>Fri, 16 Sep 2016 11:24:53 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
-        <title>This is a test!</title>
-        <description>&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve --watch&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+        <title>短文本分类</title>
+        <description>&lt;p&gt;##文章&lt;/p&gt;
 
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://www.researchgate.net/profile/Hakan_Ferhatosmanoglu/publication/221300153_Short_text_classification_in_twitter_to_improve_information_filtering/links/55b2111608ae9289a084fccd.pdf&quot;&gt;Short text classification in twitter to improve information filtering&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+&lt;p&gt;##论文摘要&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;p&gt;由于短文本不能提供足够多的文字，因此“Bag-Of-Words”方法具有局限性。文章提出一种使用小规模的、从作者profile和发布的文本内容中提取的domain-specific特征集合进行短文本分类（文章针对Twitter），预先分为新闻（News）、事件（Events）、观点（Opinions）、交易或产品（Deals）和私人信息（Private Message）。&lt;/p&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://github.com/jekyll/jekyll-help&quot;&gt;Jekyll’s dedicated Help repository&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;由于短文本字数的限制，目前对于短文本分类的方法主要是根据文本的源信息在Wikipedia和WordNet上搜索额外的相关信息，以扩充短文本内容。然而这需要在线的查询，其时间花费使其不适合用于实时的应用。同时，这也提高了特征的数量，因此需要复杂的算法来减少冗余的特征，以避免出现维度诅咒（curse of dimensionality）。&lt;/p&gt;
+
+&lt;p&gt;因此，最有效的可以提高分类准确率的方法就是用最小的特征集合来表示短文本。文章提出根据用户意图，将Tweet分为五类，并能涵盖大部分的Tweet话题。&lt;/p&gt;
+
+&lt;p&gt;接下来，文章介绍如何让用户根据自己的兴趣添加新的分类。因为算法的准确度随着分类数量的增加而降低，因此用户需要添加新类别对应的特征。具体是，系统根据用户提供的sampled tweets生成新的特征。&lt;/p&gt;
+
+&lt;p&gt;##文本的表示&lt;/p&gt;
+
+&lt;p&gt;最通用的表示文本的技术是Bag-Of-Words(BOW)模型。文本被分成一个一个的单词，每个单词代表一个特征，这个过程也被叫做”Tokenization”。在BOW模型中，单词出现的顺序是无关的。但由于特征向量过大，需要使用去除停用词（stop word removal）或词干提取（stemming）技术来降低维度。去除停用词指去除没有明显意义的词，例如a，an，the，if，for等；词干提取指提取单词的基本形态，例如ran、running、runs的基本形态都是run。一个通用的英文词干提取算法是“Porter’s Algorithm”。&lt;/p&gt;
+
+&lt;p&gt;另外一种用于加权特征的方法是TF-IDF模型。TF是指一个单词的出现频率（Term Frequency），TF值越高，该词的特征权重越高。但是TF的不足在于，例如文章都是关于“Google Search Algorithm”，那么术语“Google”很大可能出现频繁，然而文章大重点不是关于Google公司而是它的搜索算法。因此，为了减少“Google”单词的影响，使用IDF（Inverse Document Frequency）。DF（Document Frequency）是指包含特定单词的文章数，DF值越高，该单词的特征越不重要。一个特征的IDF的公式如下：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;IDF=log(\frac{N}{DF})&lt;/script&gt;
+
+&lt;p&gt;其中，N是语料库中的文章数。最终，一个特征的TF-IDF表示如下：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;TFIDF=TF*IDF&lt;/script&gt;
+
+&lt;p&gt;在表示了文本后，可以使用多种分类算法进行分类。例如Naïve Bayes Classifier、Support Vector Models、Decision Trees、Voted Perception。&lt;/p&gt;
+
+&lt;p&gt;##短文本分类的研究现状&lt;/p&gt;
+
+&lt;p&gt;传统使用BOW模型适用于大量的数据集，因为单词出现频率高且顺序无关，词频足以表示文章的语义。对于短文本，大量的工作是扩充文本使其成为一个长文本，例如使用搜索引擎，但是这需要单词不具有二义性。如”jaguar”和”car”是高度相关的，但搜索引擎可能会将它联系到动物”jaguar”。同时，在线搜索的时间花费不适合于实时应用。而使用Wikipedia数据库的snap shot虽然解决了耗时问题，但是容易过期。并且BOW模型中的单个单词可能不具有上下文语义，而需要多个单词才能表达。&lt;/p&gt;
+
+&lt;p&gt;总而言之，现有的短文本分类技术框架如图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/2016-09-15-短文本分类/1.png&quot; alt=&quot;现有的短文本分类技术框架&quot; title=&quot;现有的短文本分类技术框架&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;现有的研究通过结合使用WordNet和Wikpedia来提高有效特征，通过解析短文本将其分类成segments, phrases and words，并从中寻找短语作为查询Wikipedia和WordNet的关键词。这需要NLP技术。&lt;/p&gt;
+
+&lt;p&gt;同时，现有的研究中最大的挑战之一是维度诅咒。&lt;/p&gt;
+
+&lt;p&gt;##使用8F（8个特征）进行信息过滤&lt;/p&gt;
+
+&lt;p&gt;###特征选择&lt;/p&gt;
+
+&lt;p&gt;由于使用词频作为特征不能很好的表示短文本，因此根据Tweet的特性，使用以下八个authorship information特征来表示Tweet文本：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Shortening of words and slangs (Binary)&lt;/li&gt;
+  &lt;li&gt;ime-event information (Binary)&lt;/li&gt;
+  &lt;li&gt;Opinions (Binary)&lt;/li&gt;
+  &lt;li&gt;Emphasis on words (Binary)&lt;/li&gt;
+  &lt;li&gt;Currency, statistical information (Binary)&lt;/li&gt;
+  &lt;li&gt;Reference to another user at beginning of tweet (Binary)&lt;/li&gt;
+  &lt;li&gt;Reference to another user within tweet (Binary)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;###特征提取
+*	新闻（News）：公共的Tweet通常与私人Tweet具有不同的动机。前者通常具有干净的格式，而后者的表达经常带有口头语、缩写和表情。
+*	事件（Events）：如果我们定义事件为“在特定地点和时间发生的事情”，那么参与者、地点、时间信息可能意味着Tweet中含有事件。
+*	观点（Opinions）：通过查找包含3000个与观点相关的单词的词典，也通过查找Tweet中大写字母、一个单词中的重复字母，例如veery，来进行筛选。
+*	交易或产品（Deals）：通过查找货币、百分比符号等来进行筛选。
+*	私人信息（Private Messages）：通过查找“@”+人名符号来进行筛选。&lt;/p&gt;
+
+&lt;p&gt;当然，一个Tweet可能属于多个类别，因此可以设定一个阈值$\Theta$，当一个Tweet被标记为某一类别的概率低于$\Theta$时，将其同时标记为多个类别。&lt;/p&gt;
+
+&lt;p&gt;##用户自定义类别和特征&lt;/p&gt;
 
 </description>
-        <pubDate>Mon, 11 Apr 2016 08:00:00 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2016/test/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/test/</guid>
+        <pubDate>Thu, 15 Sep 2016 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</guid>
         
-        <category>jekyll</category>
+        <category>nlp</category>
         
         
-        <category>jekyll</category>
+        <category>nlp</category>
         
       </item>
     
