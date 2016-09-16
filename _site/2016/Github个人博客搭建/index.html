@@ -47,7 +47,7 @@
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-  
+  <!--  -->
 </head>
 
 
@@ -312,10 +312,18 @@
   <li>
     <p>修改本地的个人博客项目的根目录下的_config.yml，取消注释</p>
 
-    <p>google_analytics: ‘跟踪ID’</p>
+    <div class="highlighter-rouge"><pre class="highlight"><code> google_analytics: '跟踪ID'
+</code></pre>
+    </div>
   </li>
   <li>
     <p>修改本地的个人博客项目的根目录下的_includes/head.html文件，在&lt;/head&gt;标签之上加入</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="w"> </span><span class="p">{</span><span class="err">%</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="err">jekyll.environment</span><span class="w"> </span><span class="err">==</span><span class="w"> </span><span class="err">'production'</span><span class="w"> </span><span class="err">%</span><span class="p">}</span><span class="w">
+ </span><span class="p">{</span><span class="err">%</span><span class="w"> </span><span class="err">include</span><span class="w"> </span><span class="err">analytics.html</span><span class="w"> </span><span class="err">%</span><span class="p">}</span><span class="w">
+ </span><span class="p">{</span><span class="err">%</span><span class="w"> </span><span class="err">endif</span><span class="w"> </span><span class="err">%</span><span class="p">}</span><span class="w">
+</span></code></pre>
+    </div>
   </li>
 </ol>
 
@@ -414,6 +422,16 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84272870-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
     </div>
   </body>

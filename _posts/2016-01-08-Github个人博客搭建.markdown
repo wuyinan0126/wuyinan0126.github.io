@@ -81,8 +81,9 @@ tags: [geek]
 
 2. 选择平台。选择“install manually with Universal Code”，将获得的代码复制到本地的个人博客项目的根目录下的_includes/disqus.html中，Universal Code中需要修改的地方如下
 
+		{% raw %}
 		var disqus_config = function () {
-		{% raw %}  this.page.url = '{{ site.url }}{{ page.url }}'; 
+		  this.page.url = '{{ site.url }}{{ page.url }}'; 
 	      this.page.identifier = '{{ page.id }}'; 
 	      this.page.title = '{{ page.title }}';
 	    };
@@ -101,13 +102,15 @@ tags: [geek]
 
 3. 修改本地的个人博客项目的根目录下的_config.yml，取消注释
 
-	google_analytics: '跟踪ID'
+		google_analytics: '跟踪ID'
 
 4. 修改本地的个人博客项目的根目录下的_includes/head.html文件，在&lt;/head>标签之上加入
 
-	{% if jekyll.environment == 'production' %}
-	{% include analytics.html %}
-	{% endif %}
+		{% raw %}
+		{% if jekyll.environment == 'production' %}
+		{% include analytics.html %}
+		{% endif %}
+		{% endraw %}
 
 ## 其它实用工具
 ---
