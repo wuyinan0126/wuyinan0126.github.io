@@ -163,7 +163,7 @@
   </header>
 
   <section class="post">
-    <p><em>简介</em></p>
+    <p><em>由于短文本不能提供足够多的文字，因此“Bag-Of-Words”方法具有局限性。文章提出一种使用小规模的、从作者profile和发布的文本内容中提取的domain-specific特征集合进行短文本分类，并允许用户根据自己的兴趣添加新的分类</em></p>
 
 <h2 id="section">文章</h2>
 
@@ -240,6 +240,32 @@
 <p>当然，一个Tweet可能属于多个类别，因此可以设定一个阈值<script type="math/tex">\Theta</script>，当一个Tweet被标记为某一类别的概率低于<script type="math/tex">\Theta</script>时，将其同时标记为多个类别。</p>
 
 <h2 id="section-6">用户自定义类别和特征</h2>
+<hr />
+
+<p>用户不用指出新特征确切是什么，只需要通过提供sample tweets给系统学习新的特征来增加新特征。系统通过查找用户提供的sampled tweets中的共同词语、出现的URL、共同的特定字符或共同的作者来分析，当然也可能存在在sampled tweets中没有共同的特征的情况，因此采用如下的方法。</p>
+
+<h6 id="key-term-identification">Key Term Identification</h6>
+
+<p>为了明确中心主题，我们需要搜寻可以表示这个主题的词条（term）。将两条tweets作为输入。首先先对tweet进行预处理，包括去除停用词和opinionated words（？），同时去除特殊的字符。然后，考虑两条tweets中的每一对词语，并在搜索引擎中获得这两个词组成的短语的条数。这个方法可以发现两条tweets间相似的词语，条数越多，它们越有可能同时出现在一个文档中并且越有可能表示同一个主题。我们考虑条数top n（n通常为1～5）的词语对。并且通过使用WebJaccard co-efficient来减少false positives（被模型预测为正的负样本），则两个单词的相似度计算公式如下：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+WebJaccard(P,Q)=\begin {cases}
+0, & H(P\ AND\ Q)\leq\theta \\\
+H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], & H(P\ AND\ Q)\gt\theta
+\end {cases} %]]></script>
+
+<p>其中，‘P’和‘Q’是独立查找的关键词，“P AND Q”是同时查找的关键词，H(P)是关键词‘P’的条数，<script type="math/tex">\theta</script>是用户设置的阈值。</p>
+
+<p>然而，false positive不能被系统所确定，因此需要用户判断系统分析的主题是否正确。用户可以明确地去除无关的主题词，之后系统再重新运算。</p>
+
+<p>在确定tweets的主题词后，我们进一步计算其它相似的可以表示该主题的词语。这是为了确保没有出现在sampled tweets中的主题词但能够表达该主题的词语也能被作为特征。通过查询Microsoft Word Thesaurus或WordNet。</p>
+
+<p>除了计算出相似的单词，也需要计算很有可能出现在主题中的相似词语，例如Coffee主题中可能出现chocolate, bar, espresso, kaffee, food, eating, wifi, coffeehouse starbucks等。通过使用Google Sets API。</p>
+
+<p>一旦新的特征被认为是正确的，我们更新训练数据以包括新的特征并重新训练分类器。流程如下图：</p>
+
+<p><img src="/assets/2016-09-15-短文本分类-2.png" alt="特征添加流程" title="特征添加流程" /></p>
+
 <hr />
 
 
