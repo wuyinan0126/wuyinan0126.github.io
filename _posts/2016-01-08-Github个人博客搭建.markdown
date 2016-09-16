@@ -115,7 +115,7 @@ tags: [geek]
 
 	2. 修改本地的个人博客项目的根目录下的_includes/head.html文件，在&lt;head>标签中添加
 
-			<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+			<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
 		以在页面渲染时加载MathJax.js
 

@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 16 Sep 2016 20:35:47 +0800</pubDate>
-    <lastBuildDate>Fri, 16 Sep 2016 20:35:47 +0800</lastBuildDate>
+    <pubDate>Fri, 16 Sep 2016 20:43:34 +0800</pubDate>
+    <lastBuildDate>Fri, 16 Sep 2016 20:43:34 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -85,7 +85,7 @@
   &lt;li&gt;私人信息（Private Messages）：通过查找“@”+人名符号来进行筛选。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;当然，一个Tweet可能属于多个类别，因此可以设定一个阈值$\Theta$，当一个Tweet被标记为某一类别的概率低于$\Theta$时，将其同时标记为多个类别。&lt;/p&gt;
+&lt;p&gt;当然，一个Tweet可能属于多个类别，因此可以设定一个阈值&lt;script type=&quot;math/tex&quot;&gt;\Theta&lt;/script&gt;，当一个Tweet被标记为某一类别的概率低于&lt;script type=&quot;math/tex&quot;&gt;\Theta&lt;/script&gt;时，将其同时标记为多个类别。&lt;/p&gt;
 
 &lt;h2 id=&quot;section-6&quot;&gt;用户自定义类别和特征&lt;/h2&gt;
 &lt;hr /&gt;
@@ -275,7 +275,7 @@
       &lt;li&gt;
         &lt;p&gt;修改本地的个人博客项目的根目录下的_includes/head.html文件，在&amp;lt;head&amp;gt;标签中添加&lt;/p&gt;
 
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&amp;gt;&amp;lt;/script&amp;gt;
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&amp;gt;&amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
         &lt;/div&gt;
 
