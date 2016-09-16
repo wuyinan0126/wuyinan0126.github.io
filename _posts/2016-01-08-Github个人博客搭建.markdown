@@ -21,7 +21,7 @@ tags: [geek]
 		wget https://github.com/joshgerdes/jekyll-uno/archive/master.zip
 		unzip jekyll-uno-master.zip
 
-4. 将解压后的jekyll-uno-master目录中的所有文件复制进你本地的个人博客项目的根目录
+4. 将解压后的jekyll-uno-master目录中的所有文件复制进本地的个人博客项目的根目录
 
 		cp -r ./jekyll-uno-master/* ./username.github.io/
 
@@ -79,19 +79,7 @@ tags: [geek]
 
 1. 注册[Disqus][disqus]账户，点击“I want to install Disqus on my site”，并填写基本信息
 
-2. 选择平台。选择“install manually with Universal Code”，将获得的代码复制到本地的个人博客项目的根目录下的_layouts	/post.html中，如下
-
-		  ---
-		  layout: default
-		+ comments: true
-		  ---
-		  ...{% raw %}
-		  {% if page.comments != false %}
-		+ Universal Code
-		  {% endif %}
-		{% endraw %}
-
-	Universal Code中需要修改的地方如下
+2. 选择平台。选择“install manually with Universal Code”，将获得的代码复制到本地的个人博客项目的根目录下的_includes/disqus.html中，Universal Code中需要修改的地方如下
 
 		var disqus_config = function () {
 		{% raw %}  this.page.url = '{{ site.url }}{{ page.url }}'; 
@@ -100,12 +88,26 @@ tags: [geek]
 	    };
 		{% endraw %}
 
+3. 修改本地的个人博客项目的根目录下的_config.yml，取消注释
+
+		disqus_shortname: 'Disqus用户名'
+
 ## 添加Google Analytics
 ---
 
 1. 登录Google Analytics创建新网站，生成跟踪ID和跟踪代码
 
-2. 将代码复制到本地的个人博客项目的根目录下的_layouts/default.html的&lt;/body>标签之上
+2. 在本地的个人博客项目的根目录下的_includes中新建analytics.html文件，并将跟踪代码复制进去
+
+3. 修改本地的个人博客项目的根目录下的_config.yml，取消注释
+
+	google_analytics: '跟踪ID'
+
+4. 修改本地的个人博客项目的根目录下的_includes/head.html文件，在&lt;/head>标签之上加入
+
+	{% if jekyll.environment == 'production' %}
+	{% include analytics.html %}
+	{% endif %}
 
 ## 其它实用工具
 ---

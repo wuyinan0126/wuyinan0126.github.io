@@ -3,8 +3,8 @@ title: Yinan's Blog
 description: 'Welcome to my blog!'
 url: 'https://wuyinan0126.github.io'
 baseurl: '/'
-# google_analytics: 'UA-XXXXXX-X'
-# disqus_shortname: 'your-disqus-name'
+google_analytics: 'UA-84272870-1'
+disqus_shortname: 'wuyinan0126'
 
 author:
   name: 'Yinan Wu'
