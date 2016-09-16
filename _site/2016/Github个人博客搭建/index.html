@@ -286,26 +286,26 @@
  + comments: true
    ---
    ...
-	  
-	  
-
+   {% if page.comments != false %}
  + Universal Code
+   {% endif %}
 </code></pre>
     </div>
 
     <p>Universal Code中需要修改的地方如下</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> var disqus_config = function () {
-   this.page.url = 'https://wuyinan0126.github.io/2016/Github%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/'; 
-   this.page.identifier = '/2016/Github个人博客搭建'; 
-   this.page.title = 'GitHub个人博客搭建';
-   	};
+   this.page.url = '{{ site.url }}{{ page.url }}'; 
+   this.page.identifier = '{{ page.id }}'; 
+   this.page.title = '{{ page.title }}';
+ };
 </code></pre>
     </div>
   </li>
 </ol>
 
 <h2 id="google-analytics">添加Google Analytics</h2>
+<hr />
 
 <ol>
   <li>
