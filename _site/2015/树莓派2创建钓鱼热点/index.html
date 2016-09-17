@@ -440,8 +440,7 @@
 
     <p>编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> ``` shell
- #!/usr/bin/python
+    <div class="highlighter-rouge"><pre class="highlight"><code> #!/usr/bin/python
  #-*- encoding: utf-8 -*-
  import cgi, cgitb
  form = cgi.FieldStorage()
@@ -456,7 +455,6 @@
  print '<span class="nt">&lt;/head&gt;&lt;body&gt;</span>'
  print '<span class="nt">&lt;h1&gt;</span>Error establishing a database connection<span class="nt">&lt;/h1&gt;</span>'
  print '<span class="nt">&lt;/body&gt;&lt;/html&gt;</span>'
- ```
 </code></pre>
     </div>
 

@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Sep 2016 17:28:58 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Sep 2016 17:28:58 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 17:29:59 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 17:29:59 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -710,8 +710,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
 
     &lt;p&gt;编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ``` shell
- #!/usr/bin/python
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; #!/usr/bin/python
  #-*- encoding: utf-8 -*-
  import cgi, cgitb
  form = cgi.FieldStorage()
@@ -726,7 +725,6 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
  print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&lt;/span&gt;&#39;
  print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Error establishing a database connection&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&#39;
  print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/span&gt;&#39;
- ```
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
 

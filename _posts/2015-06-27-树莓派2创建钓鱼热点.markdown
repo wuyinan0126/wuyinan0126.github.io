@@ -222,7 +222,7 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 
 	编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：
 
-		``` shell
+
 		#!/usr/bin/python
 		#-*- encoding: utf-8 -*-
 		import cgi, cgitb
@@ -238,7 +238,7 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 		print '</head><body>'
 		print '<h1>Error establishing a database connection</h1>'
 		print '</body></html>'
-		```
+
 
 	将login.py的权限设置为755，即有运行权限
 
