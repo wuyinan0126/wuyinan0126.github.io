@@ -1,6 +1,6 @@
 ---
 title:  "GitHub个人博客搭建"
-date:   2015-01-08 15:04:23
+date:   2016-01-08 15:04:23
 categories: [geek]
 tags: [geek]
 ---
