@@ -77,6 +77,12 @@
             </ul>
           </nav>
 
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/tags" title="link to Yinan's Blog tags" class="blog-button">Tags</a></li>
+            </ul>
+          </nav>
+
           <nav class="cover-navigation navigation--social">
             <ul class="navigation">
           
@@ -131,12 +137,12 @@
             
 
             <!-- RSS -->
-            <li class="navigation__item">
+            <!-- <li class="navigation__item">
               <a href="/feed.xml" title="Subscribe" target="_blank">
                 <i class="icon icon-rss"></i>
                 <span class="label">RSS</span>
               </a>
-            </li>
+            </li> -->
           
             </ul>
           </nav>
@@ -171,7 +177,7 @@
 <ol>
   <li>在自己的GitHub仓库中创建名为username.github.io的项目，例如wuyinan0126.github.io</li>
   <li>
-    <p>将你的username.github.io项目（以下称个人博客项目）git clone到本地</p>
+    <p>将你的username.github.io项目（以下称根目录）git clone到本地</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> cd $MY_WORKSPACE
  git clone https://github.com/username/username.github.io.git
@@ -187,14 +193,14 @@
     </div>
   </li>
   <li>
-    <p>将解压后的jekyll-uno-master目录中的所有文件复制进本地的个人博客项目的根目录</p>
+    <p>将解压后的jekyll-uno-master目录中的所有文件复制进根目录</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> cp -r ./jekyll-uno-master/* ./username.github.io/
 </code></pre>
     </div>
   </li>
   <li>
-    <p>进入本地的个人博客项目的根目录，修改配置文件_config.yml，将url和baseurl修改为</p>
+    <p>进入根目录，修改配置文件_config.yml，将url和baseurl修改为</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> cd username.github.io
  vi ./_config.yml
@@ -204,7 +210,7 @@
     </div>
   </li>
   <li>
-    <p>在本地的个人博客项目的根目录，提交并上传更新</p>
+    <p>在根目录，提交并上传更新</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> git add .
  git commit -a -m "Initial Blog"
@@ -229,7 +235,7 @@
     </div>
   </li>
   <li>
-    <p>在本地的个人博客项目的根目录，安装Jekyll Server</p>
+    <p>在根目录，安装Jekyll Server</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> gem install bundler
  bundle install
@@ -237,7 +243,7 @@
     </div>
   </li>
   <li>
-    <p>在本地的个人博客项目的根目录，启动Jekyll Server</p>
+    <p>在根目录，启动Jekyll Server</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> bundle exec jekyll serve --watch
 </code></pre>
@@ -256,13 +262,13 @@
     <p>安装Sublime 2，并在Package Control中输入Install Package，搜索并安装OmniMarkupPreviewer。重启Sublime 2</p>
   </li>
   <li>
-    <p>进入本地的个人博客项目的根目录下的_posts目录，这是用于存放博文的地方，新建一个相同命名格式的文件，例如2016-09-15-GitHub个人博客搭建.markdown，并使用<a href="http://www.appinn.com/markdown/#autoescape">markdown语法</a>进行博文撰写</p>
+    <p>进入根目录下的_posts目录，这是用于存放博文的地方，新建一个相同命名格式的文件，例如2016-09-15-GitHub个人博客搭建.markdown，并使用<a href="http://www.appinn.com/markdown/#autoescape">markdown语法</a>进行博文撰写</p>
   </li>
   <li>
     <p>在Sublime 2的Markdown标签页点击鼠标右键，选择Preview Current Markup in Browser。或者使用快捷键（OSX ⌘+⌥+O; Windows, Linux Ctrl+Alt+O）来实时预览</p>
   </li>
   <li>
-    <p>对本地的个人博客项目的根目录内容进行修改后，提交并上传更新</p>
+    <p>对根目录内容进行修改后，提交并上传更新</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> git add .
  git commit -a -m "COMMENT"
@@ -279,7 +285,7 @@
     <p>注册<a href="https://disqus.com/">Disqus</a>账户，点击“I want to install Disqus on my site”，并填写基本信息</p>
   </li>
   <li>
-    <p>选择平台。选择“install manually with Universal Code”，将获得的代码复制到本地的个人博客项目的根目录下的_includes/disqus.html中，Universal Code中需要修改的地方如下</p>
+    <p>选择平台。选择“install manually with Universal Code”，将获得的代码复制到根目录下的_includes/disqus.html中，Universal Code中需要修改的地方如下</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> var disqus_config = function () {
    this.page.url = '{{ site.url }}{{ page.url }}'; 
@@ -290,7 +296,7 @@
     </div>
   </li>
   <li>
-    <p>修改本地的个人博客项目的根目录下的_config.yml，取消注释</p>
+    <p>修改根目录下的_config.yml，取消注释</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> disqus_shortname: 'Disqus用户名'
 </code></pre>
@@ -306,7 +312,7 @@
     <p>登录Google Analytics创建新网站，生成跟踪ID</p>
   </li>
   <li>
-    <p>修改本地的个人博客项目的根目录下的_config.yml，取消注释</p>
+    <p>修改根目录下的_config.yml，取消注释</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> google_analytics: '跟踪ID'
 </code></pre>
@@ -314,7 +320,93 @@
   </li>
 </ol>
 
-<h2 id="section-1">其它实用工具</h2>
+<h2 id="section-1">页面布局修改</h2>
+<hr />
+
+<ol>
+  <li>
+    <p>首页添加tag选项</p>
+
+    <ol>
+      <li>
+        <p>修改根目录下_includes/header.html:</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code>  &lt;nav class="cover-navigation cover-navigation--primary"&gt;
+  &lt;ul class="navigation"&gt;
+    &lt;li class="navigation__item"&gt;&lt;a href="{{ site.baseurl }}#blog" title="link to {{ site.title }} blog" class="blog-button"&gt;Blog&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;/nav&gt;
+
+ +++
+ &lt;nav class="cover-navigation cover-navigation--primary"&gt;
+ &lt;ul class="navigation"&gt;
+  &lt;li class="navigation__item"&gt;&lt;a href="{{ site.baseurl }}tags" title="link to {{ site.title }} tags" class="blog-button"&gt;Tags&lt;/a&gt;&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;/nav&gt;
+ +++
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>修改根目录下_layouts/tags.html:</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> &lt;a href="{{ post.url }}"&gt;{{ post.title }}&lt;/a&gt;
+</code></pre>
+        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>博文页添加“上一篇”“下一篇”按钮</p>
+
+    <ol>
+      <li>
+        <p>修改根目录下css/main.css，在最后添加:</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> .page_navigation {
+   font-size: 14px;
+   display: block;
+   width: auto;
+   overflow: hidden;
+ }
+
+ .page_navigation a {
+   display: block;
+   width: 50%;
+   float: left;
+   margin: 1em 0;
+ }
+
+ .page_navigation .next {
+   text-align: right;
+ }
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>修改根目录下_layouts/post.html，添加：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> &lt;section class="post"&gt;
+ {{ content }}
+ +++
+     &lt;div class="page_navigation"&gt;
+     {% if page.previous %}
+       &lt;a class="prev" href="{{page.previous.url}}"&gt;&amp;laquo; {{page.previous.title}}&lt;/a&gt;
+     {% endif %}
+     {% if page.next %}
+       &lt;a class="next" href="{{page.next.url}}"&gt;{{page.next.title}} &amp;raquo;&lt;/a&gt;
+     {% endif %}
+     &lt;/div&gt;
+ +++
+ &lt;/section&gt;
+</code></pre>
+        </div>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<h2 id="section-2">其它实用工具</h2>
 <hr />
 
 <ol>
@@ -332,7 +424,7 @@
         <p>以启用MathJax引擎</p>
       </li>
       <li>
-        <p>修改本地的个人博客项目的根目录下的_includes/head.html文件，在&lt;head&gt;标签中添加</p>
+        <p>修改根目录下的_includes/head.html文件，在&lt;head&gt;标签中添加</p>
 
         <div class="highlighter-rouge"><pre class="highlight"><code> &lt;script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"&gt;&lt;/script&gt;
 </code></pre>
@@ -356,7 +448,7 @@
     <p>在markdown中链接本地图片</p>
 
     <ol>
-      <li>在本地的个人博客项目的根目录中新建一个用于存放你的图片的文件夹，例如assets，放入图片，例如test.jpg</li>
+      <li>在根目录中新建一个用于存放你的图片的文件夹，例如assets，放入图片，例如test.jpg</li>
       <li>
         <p>在markdown文件中链接</p>
 
@@ -372,6 +464,14 @@
 
 <hr />
 
+
+
+    <div class="page_navigation">
+    
+    
+      <a class="next" href="/2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/">短文本分类 &raquo;</a>
+    
+    </div>
 
   </section>
   <section id="disqus_thread"></section><!-- /#disqus_thread -->

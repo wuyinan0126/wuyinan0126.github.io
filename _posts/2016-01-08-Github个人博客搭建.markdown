@@ -11,7 +11,7 @@ tags: [geek]
 ---
 
 1. 在自己的GitHub仓库中创建名为username.github.io的项目，例如wuyinan0126.github.io
-2. 将你的username.github.io项目（以下称个人博客项目）git clone到本地
+2. 将你的username.github.io项目（以下称根目录）git clone到本地
 
 		cd $MY_WORKSPACE
 		git clone https://github.com/username/username.github.io.git
@@ -21,18 +21,18 @@ tags: [geek]
 		wget https://github.com/joshgerdes/jekyll-uno/archive/master.zip
 		unzip jekyll-uno-master.zip
 
-4. 将解压后的jekyll-uno-master目录中的所有文件复制进本地的个人博客项目的根目录
+4. 将解压后的jekyll-uno-master目录中的所有文件复制进根目录
 
 		cp -r ./jekyll-uno-master/* ./username.github.io/
 
-5. 进入本地的个人博客项目的根目录，修改配置文件_config.yml，将url和baseurl修改为
+5. 进入根目录，修改配置文件_config.yml，将url和baseurl修改为
 		
 		cd username.github.io
 		vi ./_config.yml
 		-	url: 'https://username.github.io'
 		-	baseurl: '/'
 
-6. 在本地的个人博客项目的根目录，提交并上传更新
+6. 在根目录，提交并上传更新
 
 		git add .
 		git commit -a -m "Initial Blog"
@@ -49,12 +49,12 @@ tags: [geek]
 		gem sources -a https://ruby.taobao.org/ 
 		gem sources -l  
 
-2. 在本地的个人博客项目的根目录，安装Jekyll Server
+2. 在根目录，安装Jekyll Server
 
 		gem install bundler
 		bundle install
 
-3. 在本地的个人博客项目的根目录，启动Jekyll Server
+3. 在根目录，启动Jekyll Server
 		
 		bundle exec jekyll serve --watch
 
@@ -65,11 +65,11 @@ tags: [geek]
 
 1. 安装Sublime 2，并在Package Control中输入Install Package，搜索并安装OmniMarkupPreviewer。重启Sublime 2
 
-2. 进入本地的个人博客项目的根目录下的_posts目录，这是用于存放博文的地方，新建一个相同命名格式的文件，例如2016-09-15-GitHub个人博客搭建.markdown，并使用[markdown语法][markdown－syntax]进行博文撰写
+2. 进入根目录下的_posts目录，这是用于存放博文的地方，新建一个相同命名格式的文件，例如2016-09-15-GitHub个人博客搭建.markdown，并使用[markdown语法][markdown－syntax]进行博文撰写
 
 3. 在Sublime 2的Markdown标签页点击鼠标右键，选择Preview Current Markup in Browser。或者使用快捷键（OSX ⌘+⌥+O; Windows, Linux Ctrl+Alt+O）来实时预览
 
-4. 对本地的个人博客项目的根目录内容进行修改后，提交并上传更新
+4. 对根目录内容进行修改后，提交并上传更新
 
 		git add .
 		git commit -a -m "COMMENT"
@@ -79,7 +79,7 @@ tags: [geek]
 
 1. 注册[Disqus][disqus]账户，点击“I want to install Disqus on my site”，并填写基本信息
 
-2. 选择平台。选择“install manually with Universal Code”，将获得的代码复制到本地的个人博客项目的根目录下的_includes/disqus.html中，Universal Code中需要修改的地方如下
+2. 选择平台。选择“install manually with Universal Code”，将获得的代码复制到根目录下的_includes/disqus.html中，Universal Code中需要修改的地方如下
 
 		{% raw %}
 		var disqus_config = function () {
@@ -89,7 +89,7 @@ tags: [geek]
 	    };
 		{% endraw %}
 
-3. 修改本地的个人博客项目的根目录下的_config.yml，取消注释
+3. 修改根目录下的_config.yml，取消注释
 
 		disqus_shortname: 'Disqus用户名'
 
@@ -98,9 +98,78 @@ tags: [geek]
 
 1. 登录Google Analytics创建新网站，生成跟踪ID
 
-2. 修改本地的个人博客项目的根目录下的_config.yml，取消注释
+2. 修改根目录下的_config.yml，取消注释
 
 		google_analytics: '跟踪ID'
+
+## 页面布局修改
+---
+
+1. 首页添加tag选项
+
+	1. 修改根目录下_includes/header.html:
+
+			{% raw %}
+			 <nav class="cover-navigation cover-navigation--primary">
+			 <ul class="navigation">
+			   <li class="navigation__item"><a href="{{ site.baseurl }}#blog" title="link to {{ site.title }} blog" class="blog-button">Blog</a></li>
+			 </ul>
+			 </nav>
+
+			+++
+			<nav class="cover-navigation cover-navigation--primary">
+			<ul class="navigation">
+			 <li class="navigation__item"><a href="{{ site.baseurl }}tags" title="link to {{ site.title }} tags" class="blog-button">Tags</a></li>
+			</ul>
+			</nav>
+			+++
+			{% endraw %}
+
+	2. 修改根目录下_layouts/tags.html:
+
+			{% raw %}
+			<a href="{{ post.url }}">{{ post.title }}</a>
+			{% endraw %}
+
+2. 博文页添加“上一篇”“下一篇”按钮
+
+	1. 修改根目录下css/main.css，在最后添加:
+
+			.page_navigation {
+			  font-size: 14px;
+			  display: block;
+			  width: auto;
+			  overflow: hidden;
+			}
+
+			.page_navigation a {
+			  display: block;
+			  width: 50%;
+			  float: left;
+			  margin: 1em 0;
+			}
+
+			.page_navigation .next {
+			  text-align: right;
+			}
+
+	2. 修改根目录下_layouts/post.html，添加：
+
+			{% raw %}
+			<section class="post">
+		    {{ content }}
+		    +++
+				<div class="page_navigation">
+				{% if page.previous %}
+				  <a class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
+				{% endif %}
+				{% if page.next %}
+				  <a class="next" href="{{page.next.url}}">{{page.next.title}} &raquo;</a>
+				{% endif %}
+				</div>
+			+++
+			</section>
+	  		{% endraw %}
 
 ## 其它实用工具
 ---
@@ -113,7 +182,7 @@ tags: [geek]
 		
 		以启用MathJax引擎
 
-	2. 修改本地的个人博客项目的根目录下的_includes/head.html文件，在&lt;head>标签中添加
+	2. 修改根目录下的_includes/head.html文件，在&lt;head>标签中添加
 
 			<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
@@ -128,7 +197,7 @@ tags: [geek]
 
 2. 在markdown中链接本地图片
 
-	1. 在本地的个人博客项目的根目录中新建一个用于存放你的图片的文件夹，例如assets，放入图片，例如test.jpg
+	1. 在根目录中新建一个用于存放你的图片的文件夹，例如assets，放入图片，例如test.jpg
 	2. 在markdown文件中链接
 
 			![TITLE](/assets/test.jpg "TITLE")

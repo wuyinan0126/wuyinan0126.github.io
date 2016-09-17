@@ -54,3 +54,21 @@ pre.highlight code,
   border: 3px solid #fff;
   border-radius:100%;
 }
+
+.page_navigation {
+  font-size: 14px;
+  display: block;
+  width: auto;
+  overflow: hidden;
+}
+
+.page_navigation a {
+  display: block;
+  width: 50%;
+  float: left;
+  margin: 1em 0;
+}
+
+.page_navigation .next {
+  text-align: right;
+}

@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 16 Sep 2016 23:36:49 +0800</pubDate>
-    <lastBuildDate>Fri, 16 Sep 2016 23:36:49 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 12:02:15 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 12:02:15 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -138,7 +138,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
 &lt;ol&gt;
   &lt;li&gt;在自己的GitHub仓库中创建名为username.github.io的项目，例如wuyinan0126.github.io&lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;将你的username.github.io项目（以下称个人博客项目）git clone到本地&lt;/p&gt;
+    &lt;p&gt;将你的username.github.io项目（以下称根目录）git clone到本地&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cd $MY_WORKSPACE
  git clone https://github.com/username/username.github.io.git
@@ -154,14 +154,14 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;将解压后的jekyll-uno-master目录中的所有文件复制进本地的个人博客项目的根目录&lt;/p&gt;
+    &lt;p&gt;将解压后的jekyll-uno-master目录中的所有文件复制进根目录&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cp -r ./jekyll-uno-master/* ./username.github.io/
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;进入本地的个人博客项目的根目录，修改配置文件_config.yml，将url和baseurl修改为&lt;/p&gt;
+    &lt;p&gt;进入根目录，修改配置文件_config.yml，将url和baseurl修改为&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cd username.github.io
  vi ./_config.yml
@@ -171,7 +171,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;在本地的个人博客项目的根目录，提交并上传更新&lt;/p&gt;
+    &lt;p&gt;在根目录，提交并上传更新&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; git add .
  git commit -a -m &quot;Initial Blog&quot;
@@ -196,7 +196,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;在本地的个人博客项目的根目录，安装Jekyll Server&lt;/p&gt;
+    &lt;p&gt;在根目录，安装Jekyll Server&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; gem install bundler
  bundle install
@@ -204,7 +204,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;在本地的个人博客项目的根目录，启动Jekyll Server&lt;/p&gt;
+    &lt;p&gt;在根目录，启动Jekyll Server&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; bundle exec jekyll serve --watch
 &lt;/code&gt;&lt;/pre&gt;
@@ -223,13 +223,13 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;p&gt;安装Sublime 2，并在Package Control中输入Install Package，搜索并安装OmniMarkupPreviewer。重启Sublime 2&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;进入本地的个人博客项目的根目录下的_posts目录，这是用于存放博文的地方，新建一个相同命名格式的文件，例如2016-09-15-GitHub个人博客搭建.markdown，并使用&lt;a href=&quot;http://www.appinn.com/markdown/#autoescape&quot;&gt;markdown语法&lt;/a&gt;进行博文撰写&lt;/p&gt;
+    &lt;p&gt;进入根目录下的_posts目录，这是用于存放博文的地方，新建一个相同命名格式的文件，例如2016-09-15-GitHub个人博客搭建.markdown，并使用&lt;a href=&quot;http://www.appinn.com/markdown/#autoescape&quot;&gt;markdown语法&lt;/a&gt;进行博文撰写&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;在Sublime 2的Markdown标签页点击鼠标右键，选择Preview Current Markup in Browser。或者使用快捷键（OSX ⌘+⌥+O; Windows, Linux Ctrl+Alt+O）来实时预览&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;对本地的个人博客项目的根目录内容进行修改后，提交并上传更新&lt;/p&gt;
+    &lt;p&gt;对根目录内容进行修改后，提交并上传更新&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; git add .
  git commit -a -m &quot;COMMENT&quot;
@@ -246,7 +246,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;p&gt;注册&lt;a href=&quot;https://disqus.com/&quot;&gt;Disqus&lt;/a&gt;账户，点击“I want to install Disqus on my site”，并填写基本信息&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;选择平台。选择“install manually with Universal Code”，将获得的代码复制到本地的个人博客项目的根目录下的_includes/disqus.html中，Universal Code中需要修改的地方如下&lt;/p&gt;
+    &lt;p&gt;选择平台。选择“install manually with Universal Code”，将获得的代码复制到根目录下的_includes/disqus.html中，Universal Code中需要修改的地方如下&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; var disqus_config = function () {
    this.page.url = &#39;{{ site.url }}{{ page.url }}&#39;; 
@@ -257,7 +257,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;修改本地的个人博客项目的根目录下的_config.yml，取消注释&lt;/p&gt;
+    &lt;p&gt;修改根目录下的_config.yml，取消注释&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; disqus_shortname: &#39;Disqus用户名&#39;
 &lt;/code&gt;&lt;/pre&gt;
@@ -273,7 +273,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;p&gt;登录Google Analytics创建新网站，生成跟踪ID&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;修改本地的个人博客项目的根目录下的_config.yml，取消注释&lt;/p&gt;
+    &lt;p&gt;修改根目录下的_config.yml，取消注释&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; google_analytics: &#39;跟踪ID&#39;
 &lt;/code&gt;&lt;/pre&gt;
@@ -281,7 +281,93 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;其它实用工具&lt;/h2&gt;
+&lt;h2 id=&quot;section-1&quot;&gt;页面布局修改&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;首页添加tag选项&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;修改根目录下_includes/header.html:&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;nav class=&quot;cover-navigation cover-navigation--primary&quot;&amp;gt;
+  &amp;lt;ul class=&quot;navigation&quot;&amp;gt;
+    &amp;lt;li class=&quot;navigation__item&quot;&amp;gt;&amp;lt;a href=&quot;{{ site.baseurl }}#blog&quot; title=&quot;link to {{ site.title }} blog&quot; class=&quot;blog-button&quot;&amp;gt;Blog&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+  &amp;lt;/ul&amp;gt;
+  &amp;lt;/nav&amp;gt;
+
+ +++
+ &amp;lt;nav class=&quot;cover-navigation cover-navigation--primary&quot;&amp;gt;
+ &amp;lt;ul class=&quot;navigation&quot;&amp;gt;
+  &amp;lt;li class=&quot;navigation__item&quot;&amp;gt;&amp;lt;a href=&quot;{{ site.baseurl }}tags&quot; title=&quot;link to {{ site.title }} tags&quot; class=&quot;blog-button&quot;&amp;gt;Tags&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;/ul&amp;gt;
+ &amp;lt;/nav&amp;gt;
+ +++
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;修改根目录下_layouts/tags.html:&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;a href=&quot;{{ post.url }}&quot;&amp;gt;{{ post.title }}&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;博文页添加“上一篇”“下一篇”按钮&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;修改根目录下css/main.css，在最后添加:&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; .page_navigation {
+   font-size: 14px;
+   display: block;
+   width: auto;
+   overflow: hidden;
+ }
+
+ .page_navigation a {
+   display: block;
+   width: 50%;
+   float: left;
+   margin: 1em 0;
+ }
+
+ .page_navigation .next {
+   text-align: right;
+ }
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;修改根目录下_layouts/post.html，添加：&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;section class=&quot;post&quot;&amp;gt;
+ {{ content }}
+ +++
+     &amp;lt;div class=&quot;page_navigation&quot;&amp;gt;
+     {% if page.previous %}
+       &amp;lt;a class=&quot;prev&quot; href=&quot;{{page.previous.url}}&quot;&amp;gt;&amp;amp;laquo; {{page.previous.title}}&amp;lt;/a&amp;gt;
+     {% endif %}
+     {% if page.next %}
+       &amp;lt;a class=&quot;next&quot; href=&quot;{{page.next.url}}&quot;&amp;gt;{{page.next.title}} &amp;amp;raquo;&amp;lt;/a&amp;gt;
+     {% endif %}
+     &amp;lt;/div&amp;gt;
+ +++
+ &amp;lt;/section&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;其它实用工具&lt;/h2&gt;
 &lt;hr /&gt;
 
 &lt;ol&gt;
@@ -299,7 +385,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
         &lt;p&gt;以启用MathJax引擎&lt;/p&gt;
       &lt;/li&gt;
       &lt;li&gt;
-        &lt;p&gt;修改本地的个人博客项目的根目录下的_includes/head.html文件，在&amp;lt;head&amp;gt;标签中添加&lt;/p&gt;
+        &lt;p&gt;修改根目录下的_includes/head.html文件，在&amp;lt;head&amp;gt;标签中添加&lt;/p&gt;
 
         &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&amp;gt;&amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
@@ -323,7 +409,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;p&gt;在markdown中链接本地图片&lt;/p&gt;
 
     &lt;ol&gt;
-      &lt;li&gt;在本地的个人博客项目的根目录中新建一个用于存放你的图片的文件夹，例如assets，放入图片，例如test.jpg&lt;/li&gt;
+      &lt;li&gt;在根目录中新建一个用于存放你的图片的文件夹，例如assets，放入图片，例如test.jpg&lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;在markdown文件中链接&lt;/p&gt;
 

@@ -1380,18 +1380,21 @@ nav {
 	.navigation__item a {
 		display: block;
 		position: relative;
-		border-color: #FFF;
+		border-color: #FF8300;
 		color: #FFF;
 		opacity: .8; }
 		.navigation__item a:hover {
 			color: #FFF;
-			border-color: #FFF;
+			border-color: #FFE600;
 			opacity: 1; }
 
 .navigation--social {
-	margin-left: 1.5em; }
+	margin-left: 1.5em;}
 	.navigation--social a {
-		padding: 6px 8px 6px 9px; }
+		padding: 6px 8px 6px 9px;
+		border-color: #FFF; }
+		.navigation--social a:hover {
+			border-color: #FFF; }
 		.navigation--social a .label {
 			display: none; }
 		.navigation--social a .icon {
