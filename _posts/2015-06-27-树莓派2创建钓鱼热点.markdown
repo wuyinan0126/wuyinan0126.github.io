@@ -61,6 +61,57 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 	然后进行更新：
 
 		# apt-get update && apt-get upgrade
+
+2. 根分区扩充
+
+	下面链接中的文件可能有更新，请根据需要进入对应目录选择版本
+
+		# wget http://archive.raspberrypi.org/debian/pool/main/r/raspi-config/raspi-config_20150131-1_all.deb
+		# wget http://http.us.debian.org/debian/pool/main/t/triggerhappy/triggerhappy_0.3.4-2_armhf.deb
+		# wget http://http.us.debian.org/debian/pool/main/l/lua5.1/lua5.1_5.1.5-7.1_armhf.deb
+		# dpkg -i triggerhappy_0.3.4-2_armhf.deb
+		# dpkg -i lua5.1_5.1.5-7.1_armhf.deb
+		# dpkg -i raspi-config_20150131-1_all.deb
+
+	然后使用raspi-config命令进入系统设置，选择第一项Expand Filesystem扩充，当然系统设置中还有其他设置，根据需要进行设置即可。用df -lh检查文件系统大小，根分区是否为SD卡大小
+
+3. 安装和配置hostapd
+
+	hostapd的作用是提供无线共享，即配置并成功运行hostapd后，能够搜索到热点
+
+		# apt-get install hostapd
+
+	由于无线网卡支持的问题，系统安装的hostapd不支持rtl8188cus芯片，需要将hostapd替换为兼容版本：
+
+		# wget http://www.daveconroy.com/wp3/wp-content/uploads/2013/07/hostapd.zip
+		# unzip hostapd.zip 
+		# sudo mv /usr/sbin/hostapd /usr/sbin/hostapd.bak
+		# sudo mv hostapd /usr/sbin/hostapd.cat
+		# sudo ln -sf /usr/sbin/hostapd.cat /usr/sbin/hostapd  
+		# sudo chmod 755 /usr/sbin/hostapd
+
+	修改（没有的话新建）/etc/hostapd/hostapd.conf：
+
+		interface=wlan0            
+		ctrl_interface=wlan0
+		ctrl_interface_group=0
+		ssid=BUAA-WiFi                # 伪热点名，例如我的是校园网的WiFi热点名            
+		channel=2                  
+		macaddr_acl=0              
+		ignore_broadcast_ssid=0    
+		driver=rtl871xdrv         
+		hw_mode=g                        
+		wmm_enabled=1
+
+	因为是用来钓鱼的伪热点，所以不设置热点密码
+
+	修改/etc/default/hostapd，去掉DAEMON_CONF前的注释符号并修改为我们的配置文件路径：
+
+		DAEMON_CONF="/etc/hostapd/hostapd.conf"
+
+	启动hostapd：
+
+		# service hostapd start
 		
 ## 测试运行
 ---
