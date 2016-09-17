@@ -440,7 +440,8 @@
 
     <p>编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> #!/usr/bin/python
+    <div class="highlighter-rouge"><pre class="highlight"><code> ```
+ #!/usr/bin/python
  #-*- encoding: utf-8 -*-
  import cgi, cgitb
  form = cgi.FieldStorage()
@@ -455,10 +456,56 @@
  print '<span class="nt">&lt;/head&gt;&lt;body&gt;</span>'
  print '<span class="nt">&lt;h1&gt;</span>Error establishing a database connection<span class="nt">&lt;/h1&gt;</span>'
  print '<span class="nt">&lt;/body&gt;&lt;/html&gt;</span>'
+ ```
 </code></pre>
     </div>
 
     <p>将login.py的权限设置为755，即有运行权限</p>
+  </li>
+  <li>
+    <p>将上述配置开机自启动</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # update-rc.d hostapd enable
+ # update-rc.d isc-dhcp-server enable
+ # update-rc.d apache2 enable	
+</code></pre>
+    </div>
+
+    <p>对于dnsmasq，需要手动编写开机启动脚本，在/etc/init.d/下新建文件dnsmasq：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> ```
+ #!/bin/bash
+ set -e
+ case "$1" in
+         start)
+                 dnsmasq&amp;
+                 ;;
+         stop)
+                 killall -9 dnsmasq
+                 ;;
+         restart)
+                 killall -9 dnsmasq
+                 dnsmasq&amp;
+                 ;;
+ esac
+ exit 0
+ ```
+</code></pre>
+    </div>
+
+    <p>然后进入/etc/rc3.d/下，执行：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # ln -sf /etc/init.d/dnsmasq S06dnsmasq
+</code></pre>
+    </div>
+
+    <p>S06表示启动优先级，数字越大，优先级越低，比如服务A的运行要依赖服务B，那A的数字就应该大于B的</p>
+
+    <p>最后，编辑/etc/rc.local，添加：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> service dnsmasq start
+</code></pre>
+    </div>
   </li>
 </ol>
 

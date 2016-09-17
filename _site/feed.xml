@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Sep 2016 17:29:59 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Sep 2016 17:29:59 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 17:30:55 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 17:30:55 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -710,7 +710,8 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
 
     &lt;p&gt;编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; #!/usr/bin/python
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ```
+ #!/usr/bin/python
  #-*- encoding: utf-8 -*-
  import cgi, cgitb
  form = cgi.FieldStorage()
@@ -725,10 +726,56 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
  print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&lt;/span&gt;&#39;
  print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Error establishing a database connection&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;&#39;
  print &#39;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/span&gt;&#39;
+ ```
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
 
     &lt;p&gt;将login.py的权限设置为755，即有运行权限&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将上述配置开机自启动&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # update-rc.d hostapd enable
+ # update-rc.d isc-dhcp-server enable
+ # update-rc.d apache2 enable	
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;对于dnsmasq，需要手动编写开机启动脚本，在/etc/init.d/下新建文件dnsmasq：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ```
+ #!/bin/bash
+ set -e
+ case &quot;$1&quot; in
+         start)
+                 dnsmasq&amp;amp;
+                 ;;
+         stop)
+                 killall -9 dnsmasq
+                 ;;
+         restart)
+                 killall -9 dnsmasq
+                 dnsmasq&amp;amp;
+                 ;;
+ esac
+ exit 0
+ ```
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;然后进入/etc/rc3.d/下，执行：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # ln -sf /etc/init.d/dnsmasq S06dnsmasq
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;S06表示启动优先级，数字越大，优先级越低，比如服务A的运行要依赖服务B，那A的数字就应该大于B的&lt;/p&gt;
+
+    &lt;p&gt;最后，编辑/etc/rc.local，添加：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; service dnsmasq start
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 

@@ -222,7 +222,7 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 
 	编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：
 
-
+		```
 		#!/usr/bin/python
 		#-*- encoding: utf-8 -*-
 		import cgi, cgitb
@@ -238,9 +238,45 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 		print '</head><body>'
 		print '<h1>Error establishing a database connection</h1>'
 		print '</body></html>'
-
+		```
 
 	将login.py的权限设置为755，即有运行权限
+
+9. 将上述配置开机自启动
+
+		# update-rc.d hostapd enable
+		# update-rc.d isc-dhcp-server enable
+		# update-rc.d apache2 enable	
+
+	对于dnsmasq，需要手动编写开机启动脚本，在/etc/init.d/下新建文件dnsmasq：
+
+		```
+		#!/bin/bash
+		set -e
+		case "$1" in
+		        start)
+		                dnsmasq&
+		                ;;
+		        stop)
+		                killall -9 dnsmasq
+		                ;;
+		        restart)
+		                killall -9 dnsmasq
+		                dnsmasq&
+		                ;;
+		esac
+		exit 0
+		```
+
+	然后进入/etc/rc3.d/下，执行：
+
+		# ln -sf /etc/init.d/dnsmasq S06dnsmasq
+
+	S06表示启动优先级，数字越大，优先级越低，比如服务A的运行要依赖服务B，那A的数字就应该大于B的
+
+	最后，编辑/etc/rc.local，添加：
+
+		service dnsmasq start
 
 ## 测试运行
 ---
