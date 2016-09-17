@@ -401,7 +401,7 @@
     <p>我要钓鱼的是学校的校园网登录网站，所以copy校园网登录的界面，修改里面的表单提交action，提交到本机服务的后台，例如我的钓鱼网站/var/www/gw.buaa.edu.cn.html：</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> ...
- &lt;script type="text/javascript"&gt;
+ &amp;lt;script type="text/javascript"&gt;
      function login() {
          var errorMsg = [];
          var username = $("input[name='username']").val();
@@ -428,13 +428,13 @@
              document.aspnetForm.submit();
          }
      }
- &lt;/script&gt;
+ &amp;lt;/script&gt;
  ...
- &lt;!--表单提交--&gt;
- &lt;form name="aspnetForm" method="post" action="/cgi-bin/login.py"...&gt;
- &lt;!--用户提交按钮--&gt;
+ &amp;lt;!--表单提交--&gt;
+ &amp;lt;form name="aspnetForm" method="post" action="/cgi-bin/login.py"...&gt;
+ &amp;lt;!--用户提交按钮--&gt;
      &lt;a href="javascript:login()".../&gt;
- &lt;/form&gt;
+ &amp;lt;/form&gt;
 </code></pre>
     </div>
 

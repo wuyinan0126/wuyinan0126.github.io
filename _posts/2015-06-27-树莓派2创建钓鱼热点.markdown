@@ -185,7 +185,7 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 	我要钓鱼的是学校的校园网登录网站，所以copy校园网登录的界面，修改里面的表单提交action，提交到本机服务的后台，例如我的钓鱼网站/var/www/gw.buaa.edu.cn.html：
 
 		...
-		<script type="text/javascript">
+		&lt;script type="text/javascript">
 		    function login() {
 		        var errorMsg = [];
 		        var username = $("input[name='username']").val();
@@ -212,13 +212,13 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 		            document.aspnetForm.submit();
 		        }
 		    }
-		</script>
+		&lt;/script>
 		...
-		<!--表单提交-->
-		<form name="aspnetForm" method="post" action="/cgi-bin/login.py"...>
-		<!--用户提交按钮-->
+		&lt;!--表单提交-->
+		&lt;form name="aspnetForm" method="post" action="/cgi-bin/login.py"...>
+		&lt;!--用户提交按钮-->
 		    <a href="javascript:login()".../>
-		</form>
+		&lt;/form>
 
 	编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：
 

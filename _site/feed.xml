@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Sep 2016 14:06:30 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Sep 2016 14:06:30 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 15:12:33 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 15:12:33 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -671,7 +671,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
     &lt;p&gt;我要钓鱼的是学校的校园网登录网站，所以copy校园网登录的界面，修改里面的表单提交action，提交到本机服务的后台，例如我的钓鱼网站/var/www/gw.buaa.edu.cn.html：&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ...
- &amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+ &amp;amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
      function login() {
          var errorMsg = [];
          var username = $(&quot;input[name=&#39;username&#39;]&quot;).val();
@@ -698,13 +698,13 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
              document.aspnetForm.submit();
          }
      }
- &amp;lt;/script&amp;gt;
+ &amp;amp;lt;/script&amp;gt;
  ...
- &amp;lt;!--表单提交--&amp;gt;
- &amp;lt;form name=&quot;aspnetForm&quot; method=&quot;post&quot; action=&quot;/cgi-bin/login.py&quot;...&amp;gt;
- &amp;lt;!--用户提交按钮--&amp;gt;
+ &amp;amp;lt;!--表单提交--&amp;gt;
+ &amp;amp;lt;form name=&quot;aspnetForm&quot; method=&quot;post&quot; action=&quot;/cgi-bin/login.py&quot;...&amp;gt;
+ &amp;amp;lt;!--用户提交按钮--&amp;gt;
      &amp;lt;a href=&quot;javascript:login()&quot;.../&amp;gt;
- &amp;lt;/form&amp;gt;
+ &amp;amp;lt;/form&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
 
