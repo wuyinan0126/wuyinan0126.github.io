@@ -73,6 +73,12 @@
 
           <nav class="cover-navigation cover-navigation--primary">
             <ul class="navigation">
+              <li class="navigation__item"><a href="/me" title="link to Yinan's Blog about me" class="blog-button">Me</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
               <li class="navigation__item"><a href="/#blog" title="link to Yinan's Blog blog" class="blog-button">Blog</a></li>
             </ul>
           </nav>
@@ -399,6 +405,55 @@
      &lt;/div&gt;
  +++
  &lt;/section&gt;
+</code></pre>
+        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>添加页面，例如About Me页面</p>
+
+    <ol>
+      <li>
+        <p>在根目录下新建me.md，内容如下：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> ---
+ layout: me
+ title: About Me
+ permalink: /me/
+ ---
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>在根目录的_layouts中新建me.html，内容如下：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> ---
+ layout: default
+ ---
+
+ &lt;article id="about-me" class="post-container post-container--single"&gt;
+   &lt;h1 class="post-title"&gt;About Me&lt;/h1&gt;
+   &lt;/header&gt;
+   &lt;section class="post"&gt;
+     {% capture about %}{% include me.md %}{% endcapture %}
+     {{ about | markdownify }}
+   &lt;/section&gt;
+ &lt;/article&gt;
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>在根目录的_includes中新建me.md，内容为你想展示在页面的内容</p>
+      </li>
+      <li>
+        <p>修改根目录的_includes/header.html，添加按钮：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> &lt;nav class="cover-navigation cover-navigation--primary"&gt;
+   &lt;ul class="navigation"&gt;
+     &lt;li class="navigation__item"&gt;&lt;a href="{{ site.baseurl }}me" title="link to {{ site.title }} about me" class="blog-button"&gt;Me&lt;/a&gt;&lt;/li&gt;
+   &lt;/ul&gt;
+ &lt;/nav&gt;
 </code></pre>
         </div>
       </li>

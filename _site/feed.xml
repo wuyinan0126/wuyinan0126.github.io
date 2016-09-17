@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Sep 2016 17:30:55 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Sep 2016 17:30:55 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 23:21:08 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 23:21:08 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -360,6 +360,55 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
      &amp;lt;/div&amp;gt;
  +++
  &amp;lt;/section&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;添加页面，例如About Me页面&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;在根目录下新建me.md，内容如下：&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ---
+ layout: me
+ title: About Me
+ permalink: /me/
+ ---
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;在根目录的_layouts中新建me.html，内容如下：&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ---
+ layout: default
+ ---
+
+ &amp;lt;article id=&quot;about-me&quot; class=&quot;post-container post-container--single&quot;&amp;gt;
+   &amp;lt;h1 class=&quot;post-title&quot;&amp;gt;About Me&amp;lt;/h1&amp;gt;
+   &amp;lt;/header&amp;gt;
+   &amp;lt;section class=&quot;post&quot;&amp;gt;
+     {% capture about %}{% include me.md %}{% endcapture %}
+     {{ about | markdownify }}
+   &amp;lt;/section&amp;gt;
+ &amp;lt;/article&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;在根目录的_includes中新建me.md，内容为你想展示在页面的内容&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;修改根目录的_includes/header.html，添加按钮：&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;nav class=&quot;cover-navigation cover-navigation--primary&quot;&amp;gt;
+   &amp;lt;ul class=&quot;navigation&quot;&amp;gt;
+     &amp;lt;li class=&quot;navigation__item&quot;&amp;gt;&amp;lt;a href=&quot;{{ site.baseurl }}me&quot; title=&quot;link to {{ site.title }} about me&quot; class=&quot;blog-button&quot;&amp;gt;Me&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+   &amp;lt;/ul&amp;gt;
+ &amp;lt;/nav&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
         &lt;/div&gt;
       &lt;/li&gt;
