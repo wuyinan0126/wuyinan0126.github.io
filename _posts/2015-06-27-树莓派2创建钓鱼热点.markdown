@@ -49,7 +49,19 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 
 代码前有#的表示在bash下以root身份运行的代码，没有的表示修改的文件内容。
 
+1. 修改更新源，在/etc/apt/sources.list中添加：
 
+		deb http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+		deb-src http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+		deb http://mirrors.ustc.edu.cn/kali-security kali/updates main contrib non-free
+		deb http://mirrors.aliyun.com/kali kali main non-free contrib
+		deb-src http://mirrors.aliyun.com/kali kali main non-free contrib
+		deb http://mirrors.aliyun.com/kali-security kali/updates main contrib non-free
+
+	然后进行更新：
+
+		# apt-get update && apt-get upgrade
+		
 ## 测试运行
 ---
 
