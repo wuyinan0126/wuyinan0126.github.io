@@ -224,6 +224,27 @@
 
 <p>代码前有#的表示在bash下以root身份运行的代码，没有的表示修改的文件内容。</p>
 
+<ol>
+  <li>
+    <p>修改更新源，在/etc/apt/sources.list中添加：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> deb http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+ deb-src http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+ deb http://mirrors.ustc.edu.cn/kali-security kali/updates main contrib non-free
+ deb http://mirrors.aliyun.com/kali kali main non-free contrib
+ deb-src http://mirrors.aliyun.com/kali kali main non-free contrib
+ deb http://mirrors.aliyun.com/kali-security kali/updates main contrib non-free
+</code></pre>
+    </div>
+
+    <p>然后进行更新：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # apt-get update &amp;&amp; apt-get upgrade
+</code></pre>
+    </div>
+  </li>
+</ol>
+
 <h2 id="section-3">测试运行</h2>
 <hr />
 

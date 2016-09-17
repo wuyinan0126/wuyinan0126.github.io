@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Sep 2016 17:15:56 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Sep 2016 17:15:56 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 17:17:53 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 17:17:53 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -493,6 +493,27 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
 &lt;p&gt;连接树莓派的方式有通过显示器（需要HDMI转接头）、SSH登录、VNC连接等，因为Kali开机自动启动SSH Server，所以只要知道树莓派的IP地址，用SSH连过去就行了，Kali的默认用户名是root，登录密码是toor。&lt;/p&gt;
 
 &lt;p&gt;代码前有#的表示在bash下以root身份运行的代码，没有的表示修改的文件内容。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改更新源，在/etc/apt/sources.list中添加：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; deb http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+ deb-src http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+ deb http://mirrors.ustc.edu.cn/kali-security kali/updates main contrib non-free
+ deb http://mirrors.aliyun.com/kali kali main non-free contrib
+ deb-src http://mirrors.aliyun.com/kali kali main non-free contrib
+ deb http://mirrors.aliyun.com/kali-security kali/updates main contrib non-free
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;然后进行更新：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # apt-get update &amp;amp;&amp;amp; apt-get upgrade
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;h2 id=&quot;section-3&quot;&gt;测试运行&lt;/h2&gt;
 &lt;hr /&gt;
