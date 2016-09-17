@@ -371,6 +371,30 @@
 </code></pre>
     </div>
   </li>
+  <li>
+    <p>安装和配置apache2</p>
+
+    <p>apache2提供的是为将重定向的流量引导到本机服务器运行的网页中，Kali中已经安装好apache2了</p>
+
+    <p>修改/etc/apache2/sites-available/default，在合适的标签下添加：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;VirtualHost *:80&gt;
+ ...
+ ServerName gw.buaa.edu.cn             # 伪造服务器名
+ DirectoryIndex gw.buaa.edu.cn.html    # 将默认界面改为钓鱼网站页面
+ ...
+ &lt;Directory "/usr/lib/cgi-bin"&gt;
+     AddHandler cgi-script .py         # 添加对.py的支持
+ ...
+</code></pre>
+    </div>
+
+    <p>启动apache2：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # service apache2 start
+</code></pre>
+    </div>
+  </li>
 </ol>
 
 <h2 id="section-3">测试运行</h2>

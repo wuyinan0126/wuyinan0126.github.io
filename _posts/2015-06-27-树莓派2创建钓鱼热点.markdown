@@ -160,6 +160,25 @@ Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Ra
 		        address 192.168.126.126    # 与之前dhcpd.conf填写的网关地址相同
 		        netmask 255.255.255.240    # 与之前dhcpd.conf填写的子网掩码相同
 		up iptables-restore < /etc/iptables.ipv4.nat
+
+7. 安装和配置apache2
+	
+	apache2提供的是为将重定向的流量引导到本机服务器运行的网页中，Kali中已经安装好apache2了
+
+	修改/etc/apache2/sites-available/default，在合适的标签下添加：
+
+		<VirtualHost *:80>
+	    ...
+	    ServerName gw.buaa.edu.cn             # 伪造服务器名
+	    DirectoryIndex gw.buaa.edu.cn.html    # 将默认界面改为钓鱼网站页面
+	    ...
+	    <Directory "/usr/lib/cgi-bin">
+	        AddHandler cgi-script .py         # 添加对.py的支持
+		...
+
+	启动apache2：
+	
+		# service apache2 start
 		
 ## 测试运行
 ---

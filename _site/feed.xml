@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Sep 2016 17:19:34 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Sep 2016 17:19:34 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 17:20:19 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 17:20:19 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -638,6 +638,30 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
          address 192.168.126.126    # 与之前dhcpd.conf填写的网关地址相同
          netmask 255.255.255.240    # 与之前dhcpd.conf填写的子网掩码相同
  up iptables-restore &amp;lt; /etc/iptables.ipv4.nat
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装和配置apache2&lt;/p&gt;
+
+    &lt;p&gt;apache2提供的是为将重定向的流量引导到本机服务器运行的网页中，Kali中已经安装好apache2了&lt;/p&gt;
+
+    &lt;p&gt;修改/etc/apache2/sites-available/default，在合适的标签下添加：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;VirtualHost *:80&amp;gt;
+ ...
+ ServerName gw.buaa.edu.cn             # 伪造服务器名
+ DirectoryIndex gw.buaa.edu.cn.html    # 将默认界面改为钓鱼网站页面
+ ...
+ &amp;lt;Directory &quot;/usr/lib/cgi-bin&quot;&amp;gt;
+     AddHandler cgi-script .py         # 添加对.py的支持
+ ...
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;启动apache2：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # service apache2 start
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
