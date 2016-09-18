@@ -5,9 +5,100 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 18 Sep 2016 13:20:17 +0800</pubDate>
-    <lastBuildDate>Sun, 18 Sep 2016 13:20:17 +0800</lastBuildDate>
+    <pubDate>Sun, 18 Sep 2016 21:11:51 +0800</pubDate>
+    <lastBuildDate>Sun, 18 Sep 2016 21:11:51 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
+    
+      <item>
+        <title>MOOC论坛帖子的半自动标注</title>
+        <description>&lt;p&gt;&lt;em&gt;目前对于理解MOOC论坛帖子潜在因素的研究较少，其中一个阻碍研究的原因就是需要对大量的论坛帖子进行人工标注。因此，文章使用机器学习技术，使用少量的标注来推断整个论坛。这些标注不仅仅使得MOOC的管理者总结论坛的状态，而且能过让研究者更深层次地认识在学习的进程中MOOC论坛的作用&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;文章&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://infoscience.epfl.ch/record/210990/files/paper.pdf&quot;&gt;Semi-automatic annotation of MOOC forum posts&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;研究现状&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;非监督学习可以使用强加的方法将帖子聚类，每个类别的语义并不是由算法决定，因此经常难以翻译语义。相反的，监督学习基于ground truth——一个标注好的帖子集合，其中每个帖子的语义已经被预先定义。这允许我们将已知的语义扩展到大的集合中。在文章中，我们使用半自动标注方法进行监督学习。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;帖子分类&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;文章使用&lt;a href=&quot;http://www.aclweb.org/anthology/W14-2715&quot;&gt;Sridhar的分类方法&lt;/a&gt;，并根据MOOC的特点进行修改，得出以下特征：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;问题 关于课程的信息请求&lt;/li&gt;
+  &lt;li&gt;回答 尝试回答帖子中的问题&lt;/li&gt;
+  &lt;li&gt;请求说明 请求更多关于答案的细节或说明&lt;/li&gt;
+  &lt;li&gt;正面反馈 学生的正面反馈（例如感激等）&lt;/li&gt;
+  &lt;li&gt;负面反馈 学生的负面反馈（例如答案不正确、有错误等）&lt;/li&gt;
+  &lt;li&gt;与学习无关 任何形式的与学习无关的内容&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;因为在我们研究中自动标注的一个目标是发现没有被正确处理的那些重要的帖子，因为我们选择评价帖子内容与课程的关系的重要性。我们引入两个指标：相关性和可理解性。这些指标是主观的，可以在其它特定的应用中被修改。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;相关性 描述一个帖子内容和课程内容的相关度，分为5个级别：
+    &lt;ol&gt;
+      &lt;li&gt;不相关 学生发帖内容没有意图与课程内容接近&lt;/li&gt;
+      &lt;li&gt;轻微不相关 关系非常的表面，主要内容仍是不相关的&lt;/li&gt;
+      &lt;li&gt;中性 含有与主题相关的内容，但是模糊不清楚&lt;/li&gt;
+      &lt;li&gt;相关 含有理解或解决问题的明确意图&lt;/li&gt;
+      &lt;li&gt;高度相关 学生论证了自己的理解和他对解决问题的尝试&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;相关性只作用于三个类别：问题、回答和请求说明。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;可理解性 描述一个帖子被可读的难易程度，分为三个级别：
+    &lt;ol&gt;
+      &lt;li&gt;令人误解 不清楚或令人误解的语言&lt;/li&gt;
+      &lt;li&gt;中性 清楚并且准确的描述&lt;/li&gt;
+      &lt;li&gt;高度可理解性 学生陈述了关于问题的所有必须的细节，或者他对于解决问题的尝试&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;特征提取&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;我们的目标是通过少量的人工标注的集合预测变量。我们在帖子中提取如下的特征：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;单词个数&lt;/li&gt;
+  &lt;li&gt;相关的单词个数&lt;/li&gt;
+  &lt;li&gt;相关词率 相关的单词个数/单词总个数&lt;/li&gt;
+  &lt;li&gt;句子个数&lt;/li&gt;
+  &lt;li&gt;拼写错误个数&lt;/li&gt;
+  &lt;li&gt;语法错误个数&lt;/li&gt;
+  &lt;li&gt;问号个数&lt;/li&gt;
+  &lt;li&gt;在一个Post Thread中的位置索引&lt;/li&gt;
+  &lt;li&gt;标题中单词个数&lt;/li&gt;
+  &lt;li&gt;标题中相关的单词个数&lt;/li&gt;
+  &lt;li&gt;标题相关词率 标题中相关的单词个数/标题单词总个数&lt;/li&gt;
+  &lt;li&gt;语法质量 语法正确性（1-10）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;其中，相关词语将来自从讲课幻灯片和帖子内容，人工地列举出出现最多的单词并提取出于课程相关的单词。语法质量、拼写错误数和语法错误数使用R语言的text mining tm包生成。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+</description>
+        <pubDate>Sun, 18 Sep 2016 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2016/MOOC%E8%AE%BA%E5%9D%9B%E5%B8%96%E5%AD%90%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/MOOC%E8%AE%BA%E5%9D%9B%E5%B8%96%E5%AD%90%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/</guid>
+        
+        <category>nlp</category>
+        
+        
+        <category>nlp</category>
+        
+      </item>
     
       <item>
         <title>基于Tweet特征的短文本分类</title>
