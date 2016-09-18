@@ -5,39 +5,12 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 18 Sep 2016 13:18:50 +0800</pubDate>
-    <lastBuildDate>Sun, 18 Sep 2016 13:18:50 +0800</lastBuildDate>
+    <pubDate>Sun, 18 Sep 2016 13:20:17 +0800</pubDate>
+    <lastBuildDate>Sun, 18 Sep 2016 13:20:17 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
-        <title>基于微博特征的短文本主题提取</title>
-        <description>&lt;p&gt;**&lt;/p&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;文章&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;a href=&quot;http://ieeexplore.ieee.org/document/7529582/&quot;&gt;Hot Topic Extraction Based on Chinese Microblog’s Features Topic Model&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;section-1&quot;&gt;论文摘要&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;文章提出了一种基于微博特征的隐狄利克雷分布模型（Microblog Features Latent Dirichlet Allocation, MF-LDA）。特征包括：赞、评论、转发、发布时间和用户权威。这些特征被用于计算每个微博的关注量、权威值和单词频率。一个词语拥有越高的特征值，则它越可能是热点话题。&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 18 Sep 2016 08:00:00 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2016/%E5%9F%BA%E4%BA%8E%E5%BE%AE%E5%8D%9A%E7%89%B9%E5%BE%81%E7%9A%84%E7%9F%AD%E6%96%87%E6%9C%AC%E4%B8%BB%E9%A2%98%E6%8F%90%E5%8F%96/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%9F%BA%E4%BA%8E%E5%BE%AE%E5%8D%9A%E7%89%B9%E5%BE%81%E7%9A%84%E7%9F%AD%E6%96%87%E6%9C%AC%E4%B8%BB%E9%A2%98%E6%8F%90%E5%8F%96/</guid>
-        
-        <category>nlp</category>
-        
-        
-        <category>nlp</category>
-        
-      </item>
-    
-      <item>
-        <title>短文本分类</title>
+        <title>基于Tweet特征的短文本分类</title>
         <description>&lt;p&gt;&lt;em&gt;由于短文本不能提供足够多的文字，因此“Bag-Of-Words”方法具有局限性。文章提出一种使用小规模的、从作者profile和发布的文本内容中提取的domain-specific特征集合进行短文本分类，并允许用户根据自己的兴趣添加新的分类&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;文章&lt;/h2&gt;
