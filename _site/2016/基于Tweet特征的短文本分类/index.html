@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%9F%BA%E4%BA%8ETweet%E7%89%B9%E5%BE%81%E7%9A%84%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -216,7 +216,7 @@
 
 <p>总而言之，现有的短文本分类技术框架如图所示：</p>
 
-<p><img src="/assets/2016-09-15-短文本分类-1.png" alt="现有的短文本分类技术框架" title="现有的短文本分类技术框架" /></p>
+<p><img src="/assets/2016-09-15-1.png" alt="现有的短文本分类技术框架" title="现有的短文本分类技术框架" /></p>
 
 <p>现有的研究通过结合使用WordNet和Wikpedia来提高有效特征，通过解析短文本将其分类成segments, phrases and words，并从中寻找短语作为查询Wikipedia和WordNet的关键词。这需要NLP技术。</p>
 
@@ -276,7 +276,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], & H(P\ AND\ Q)\gt\theta
 
 <p>一旦新的特征被认为是正确的，我们更新训练数据以包括新的特征并重新训练分类器。流程如下图：</p>
 
-<p><img src="/assets/2016-09-15-短文本分类-2.png" alt="特征添加流程" title="特征添加流程" /></p>
+<p><img src="/assets/2016-09-15-2.png" alt="特征添加流程" title="特征添加流程" /></p>
 
 <hr />
 
@@ -286,6 +286,8 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], & H(P\ AND\ Q)\gt\theta
     
       <a class="prev" href="/2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">&laquo; GitHub个人博客搭建</a>
     
+    
+      <a class="next" href="/2016/%E5%9F%BA%E4%BA%8E%E5%BE%AE%E5%8D%9A%E7%89%B9%E5%BE%81%E7%9A%84%E7%9F%AD%E6%96%87%E6%9C%AC%E4%B8%BB%E9%A2%98%E6%8F%90%E5%8F%96/">基于微博特征的短文本主题提取 &raquo;</a>
     
     </div>
 
@@ -303,8 +305,8 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], & H(P\ AND\ Q)\gt\theta
      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
 
     var disqus_config = function () {
-        this.page.url = 'https://wuyinan0126.github.io/2016/%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2016/短文本分类'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%9F%BA%E4%BA%8ETweet%E7%89%B9%E5%BE%81%E7%9A%84%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/基于Tweet特征的短文本分类'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         this.page.title = '短文本分类';
     };
 
