@@ -5,12 +5,12 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 19 Sep 2016 20:39:44 +0800</pubDate>
-    <lastBuildDate>Mon, 19 Sep 2016 20:39:44 +0800</lastBuildDate>
+    <pubDate>Mon, 19 Sep 2016 20:48:07 +0800</pubDate>
+    <lastBuildDate>Mon, 19 Sep 2016 20:48:07 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
-        <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt;学生对话行为的非监督分类</title>
+        <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt; 学生对话行为的非监督分类</title>
         <description>&lt;p&gt;&lt;em&gt;文章介绍了一种针对学生对话行为的非监督分类方法。首先对学生对话使用词性标签进行自然语言预处理，然后使用Query-Likelihood进行相似对话行为的信息检索，最后使用k-means聚类算法将相似对话行为进行聚类&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;文章&lt;/h2&gt;
@@ -203,7 +203,7 @@
       </item>
     
       <item>
-        <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt;MOOC论坛帖子的半自动标注</title>
+        <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt; MOOC论坛帖子的半自动标注</title>
         <description>&lt;p&gt;&lt;em&gt;目前对于理解MOOC论坛帖子潜在因素的研究较少，其中一个阻碍研究的原因就是需要对大量的论坛帖子进行人工标注。因此，文章使用机器学习技术，使用少量的标注来推断整个论坛。这些标注不仅仅使得MOOC的管理者总结论坛的状态，而且能过让研究者更深层次地认识在学习的进程中MOOC论坛的作用&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;文章&lt;/h2&gt;
@@ -374,7 +374,7 @@
       </item>
     
       <item>
-        <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt;基于Tweet特征的短文本分类</title>
+        <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt; 基于Tweet特征的短文本分类</title>
         <description>&lt;p&gt;&lt;em&gt;由于短文本不能提供足够多的文字，因此“Bag-Of-Words”方法具有局限性。文章提出一种使用小规模的、从作者profile和发布的文本内容中提取的domain-specific特征集合进行短文本分类，并允许用户根据自己的兴趣添加新的分类&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;文章&lt;/h2&gt;
@@ -503,7 +503,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
       </item>
     
       <item>
-        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt;GitHub个人博客搭建</title>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; GitHub个人博客搭建</title>
         <description>&lt;p&gt;&lt;em&gt;使用Jekyll-Uno模版在GitHub上搭建个人博客，并添加评论和Google Analytics的功能。包括GitHub相关准备工作、本地开发环境的搭建和其它实用工具&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;github&quot;&gt;GitHub相关准备工作&lt;/h2&gt;
@@ -890,7 +890,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
       </item>
     
       <item>
-        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt;树莓派2创建钓鱼热点</title>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 树莓派2创建钓鱼热点</title>
         <description>&lt;p&gt;&lt;em&gt;使用树莓派2和无线网卡创建钓鱼热点。包括树莓派、Raspbian系统、无线网卡和Micro SD卡的介绍，以及相关软件的安装和配置&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;关于树莓派&lt;/h2&gt;
