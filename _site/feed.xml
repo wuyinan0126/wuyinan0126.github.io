@@ -5,13 +5,13 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 19 Sep 2016 20:03:01 +0800</pubDate>
-    <lastBuildDate>Mon, 19 Sep 2016 20:03:01 +0800</lastBuildDate>
+    <pubDate>Mon, 19 Sep 2016 20:07:40 +0800</pubDate>
+    <lastBuildDate>Mon, 19 Sep 2016 20:07:40 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
         <title>学生对话行为的非监督分类</title>
-        <description>&lt;p&gt;**&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;文章介绍了一种针对学生对话行为的非监督分类方法。首先对学生对话使用词性标签进行自然语言预处理，然后使用Query-Likelihood进行相似对话行为的信息检索，最后使用k-means聚类算法将相似对话行为进行聚类&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;文章&lt;/h2&gt;
 
