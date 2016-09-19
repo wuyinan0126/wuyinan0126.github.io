@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>基于Tweet特征的短文本分类</title>
+  <title>[摘译]基于Tweet特征的短文本分类</title>
   <meta name="description" content="Welcome to my blog!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -169,9 +169,9 @@
         <article class="post-container post-container--single">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="15 Sep 2016" class="post-meta__date date">15 Sep 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#nlp">nlp</a> </span>
+      <time datetime="15 Sep 2016" class="post-meta__date date">15 Sep 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#nlp 摘译 机器学习">nlp 摘译 机器学习</a> </span>
     </div>
-    <h1 class="post-title">基于Tweet特征的短文本分类</h1>
+    <h1 class="post-title">[摘译]基于Tweet特征的短文本分类</h1>
   </header>
 
   <section class="post">
@@ -256,7 +256,7 @@
 
 <p>用户不用指出新特征确切是什么，只需要通过提供sample tweets给系统学习新的特征来增加新特征。系统通过查找用户提供的sampled tweets中的共同词语、出现的URL、共同的特定字符或共同的作者来分析，当然也可能存在在sampled tweets中没有共同的特征的情况，因此采用如下的方法。</p>
 
-<h6 id="key-term-identification">Key Term Identification</h6>
+<h3 id="key-term-identification">Key Term Identification</h3>
 
 <p>为了明确中心主题，我们需要搜寻可以表示这个主题的词条（term）。将两条tweets作为输入。首先先对tweet进行预处理，包括去除停用词和opinionated words（？），同时去除特殊的字符。然后，考虑两条tweets中的每一对词语，并在搜索引擎中获得这两个词组成的短语的条数。这个方法可以发现两条tweets间相似的词语，条数越多，它们越有可能同时出现在一个文档中并且越有可能表示同一个主题。我们考虑条数top n（n通常为1～5）的词语对。并且通过使用WebJaccard co-efficient来减少false positives（被模型预测为正的负样本），则两个单词的相似度计算公式如下：</p>
 
@@ -269,6 +269,8 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], & H(P\ AND\ Q)\gt\theta
 <p>其中，‘P’和‘Q’是独立查找的关键词，“P AND Q”是同时查找的关键词，H(P)是关键词‘P’的条数，<script type="math/tex">\theta</script>是用户设置的阈值。</p>
 
 <p>然而，false positive不能被系统所确定，因此需要用户判断系统分析的主题是否正确。用户可以明确地去除无关的主题词，之后系统再重新运算。</p>
+
+<h3 id="section-7">计算相似词</h3>
 
 <p>在确定tweets的主题词后，我们进一步计算其它相似的可以表示该主题的词语。这是为了确保没有出现在sampled tweets中的主题词但能够表达该主题的词语也能被作为特征。通过查询Microsoft Word Thesaurus或WordNet。</p>
 
@@ -284,10 +286,10 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], & H(P\ AND\ Q)\gt\theta
 
     <div class="page_navigation">
     
-      <a class="prev" href="/2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">&laquo; GitHub个人博客搭建</a>
+      <a class="prev" href="/2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">&laquo; [原创]GitHub个人博客搭建</a>
     
     
-      <a class="next" href="/2016/MOOC%E8%AE%BA%E5%9D%9B%E5%B8%96%E5%AD%90%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/">MOOC论坛帖子的半自动标注 &raquo;</a>
+      <a class="next" href="/2016/MOOC%E8%AE%BA%E5%9D%9B%E5%B8%96%E5%AD%90%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/">[摘译]MOOC论坛帖子的半自动标注 &raquo;</a>
     
     </div>
 
@@ -307,7 +309,7 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], & H(P\ AND\ Q)\gt\theta
     var disqus_config = function () {
         this.page.url = 'https://wuyinan0126.github.io/2016/%E5%9F%BA%E4%BA%8ETweet%E7%89%B9%E5%BE%81%E7%9A%84%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/';  // Replace PAGE_URL with your page's canonical URL variable
         this.page.identifier = '/2016/基于Tweet特征的短文本分类'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        this.page.title = '基于Tweet特征的短文本分类';
+        this.page.title = '[摘译]基于Tweet特征的短文本分类';
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE
