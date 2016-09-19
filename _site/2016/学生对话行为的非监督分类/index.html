@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>MOOC论坛帖子的半自动标注</title>
+  <title>学生对话行为的非监督分类</title>
   <meta name="description" content="Welcome to my blog!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//2016/MOOC%E8%AE%BA%E5%9D%9B%E5%B8%96%E5%AD%90%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%AD%A6%E7%94%9F%E5%AF%B9%E8%AF%9D%E8%A1%8C%E4%B8%BA%E7%9A%84%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%88%86%E7%B1%BB/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -169,158 +169,180 @@
         <article class="post-container post-container--single">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="18 Sep 2016" class="post-meta__date date">18 Sep 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#nlp">nlp</a> </span>
+      <time datetime="19 Sep 2016" class="post-meta__date date">19 Sep 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#nlp">nlp</a> </span>
     </div>
-    <h1 class="post-title">MOOC论坛帖子的半自动标注</h1>
+    <h1 class="post-title">学生对话行为的非监督分类</h1>
   </header>
 
   <section class="post">
-    <p><em>目前对于理解MOOC论坛帖子潜在因素的研究较少，其中一个阻碍研究的原因就是需要对大量的论坛帖子进行人工标注。因此，文章使用机器学习技术，使用少量的标注来推断整个论坛。这些标注不仅仅使得MOOC的管理者总结论坛的状态，而且能过让研究者更深层次地认识在学习的进程中MOOC论坛的作用</em></p>
+    <p>**</p>
 
 <h2 id="section">文章</h2>
 
 <blockquote>
-  <p><a href="https://infoscience.epfl.ch/record/210990/files/paper.pdf">Semi-automatic annotation of MOOC forum posts</a></p>
+  <p><a href="http://www.educationaldatamining.org/EDM2013/papers/rn_paper_06.pdf">Unsupervised Classification of Student Dialogue Acts With Query-Likelihood Clustering</a></p>
 </blockquote>
 
-<h2 id="section-1">研究现状</h2>
+<h2 id="section-1">语料库</h2>
 <hr />
 
-<p>非监督学习可以使用强加的方法将帖子聚类，每个类别的语义并不是由算法决定，因此经常难以翻译语义。相反的，监督学习基于ground truth——一个标注好的帖子集合，其中每个帖子的语义已经被预先定义。这允许我们将已知的语义扩展到大的集合中。在文章中，我们使用半自动标注方法进行监督学习。</p>
-
-<h2 id="section-2">帖子分类</h2>
-<hr />
-
-<p>文章使用<a href="http://www.aclweb.org/anthology/W14-2715">Sridhar的分类方法</a>，并根据MOOC的特点进行修改，得出以下特征：</p>
+<p>语料库由参与2007春的JavaTutor项目的师生对话构成。师生通过网络使用文本对话进行交流，共有43个对话，包含1525个学生对话（平均每句话7.54个单词）和3332个老师对话（平均每句话9.04个单词）。文章专注于分类学生对话，而老师对话分类将由系统生成。下表是对话类别和频率，Kappa系数为0.76:</p>
 
 <table>
   <thead>
     <tr>
-      <th>类别</th>
+      <th>标签</th>
+      <th>行为</th>
       <th>描述</th>
+      <th>频率</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>问题</td>
-      <td>关于课程的信息请求</td>
+      <td>Q</td>
+      <td>一般问题</td>
+      <td>一个于学习任务无关的问题</td>
+      <td>276</td>
     </tr>
     <tr>
-      <td>回答</td>
-      <td>尝试回答帖子中的问题</td>
+      <td>EQ</td>
+      <td>学习问题</td>
+      <td>一个于学习任务相关的问题</td>
+      <td>416</td>
     </tr>
     <tr>
-      <td>请求说明</td>
-      <td>请求更多关于答案的细节或说明</td>
+      <td>S</td>
+      <td>陈述</td>
+      <td>对一个事实的陈述</td>
+      <td>211</td>
     </tr>
     <tr>
+      <td>G</td>
+      <td>Grounding</td>
+      <td>对先前对话的承认</td>
+      <td>192</td>
+    </tr>
+    <tr>
+      <td>EX</td>
+      <td>Extra-Domain</td>
+      <td>任何于学习无关的对话</td>
+      <td>133</td>
+    </tr>
+    <tr>
+      <td>PF</td>
       <td>正面反馈</td>
-      <td>学生的正面反馈（例如感激等）</td>
+      <td>对于知识或学习任务的正面评价</td>
+      <td>116</td>
     </tr>
     <tr>
+      <td>NF</td>
       <td>负面反馈</td>
-      <td>学生的负面反馈（例如答案不正确、有错误等）</td>
+      <td>对于知识或学习任务的负面评价</td>
+      <td>92</td>
     </tr>
     <tr>
-      <td>与学习无关</td>
-      <td>任何形式的与学习无关的内容</td>
+      <td>LF</td>
+      <td>Lukewarm反馈</td>
+      <td>同时含有正面和负面评价的评价</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>GRE</td>
+      <td>问候</td>
+      <td>问候词语</td>
+      <td>57</td>
     </tr>
   </tbody>
 </table>
 
-<p><br />
-因为在我们研究中自动标注的一个目标是发现没有被正确处理的那些重要的帖子，因为我们选择评价帖子内容与课程的关系的重要性。我们引入两个指标：相关性和可理解性。这些指标是主观的，可以在其它特定的应用中被修改。</p>
-
-<ul>
-  <li>相关性 描述一个帖子内容和课程内容的相关度，分为5个级别：
-    <ol>
-      <li>不相关 学生发帖内容没有意图与课程内容接近</li>
-      <li>轻微不相关 关系非常的表面，主要内容仍是不相关的</li>
-      <li>中性 含有与主题相关的内容，但是模糊不清楚</li>
-      <li>相关 含有理解或解决问题的明确意图</li>
-      <li>高度相关 学生论证了自己的理解和他对解决问题的尝试</li>
-    </ol>
-  </li>
-</ul>
-
-<p>相关性只作用于三个类别：问题、回答和请求说明。</p>
-
-<ul>
-  <li>可理解性 描述一个帖子被可读的难易程度，分为三个级别：
-    <ol>
-      <li>令人误解 不清楚或令人误解的语言</li>
-      <li>中性 清楚并且准确的描述</li>
-      <li>高度可理解性 学生陈述了关于问题的所有必须的细节，或者他对于解决问题的尝试</li>
-    </ol>
-  </li>
-</ul>
-
-<h2 id="section-3">特征提取</h2>
+<h2 id="query-likelihood-">Query-Likelihood 聚类</h2>
 <hr />
 
-<p>我们的目标是通过少量的人工标注的集合预测变量。我们在帖子中提取如下的特征：</p>
+<p>IR（Information Retrieval，信息检索）是搜索可用的资源用于检索和查询词相似的结果的过程。IR技术大部分用于搜索引擎检索和查询词相似的结果。在提出的方法中，将被分类的目标对话将被用作一个查询，而与它相似的对话将通过query likelihood进行收集。之后，与查询相似的结果被用于聚类。</p>
+
+<h3 id="section-2">自然语言预处理</h3>
+
+<p>Query-likelihood信息检索操作的是token或word级别的。实验证实，为了增加从语料库中提取有识别力的线索，预处理是一个关键的步骤。</p>
+
+<p>词性（Part-of-speech, POS）标签是一项根据词语在语言中的语法部分将其标注为名词、动词或形容词的技术。它允许我们概括词语在句子中的功能。实验证明，使用单词和词性标签作为查询词能得到很好的效果。这个方法将一些功能词语替代为它们的词性标签，例如限定词（’the’, ‘a’）、连词（’and’, ‘but’）和介词（’in’, ‘after’），而内容词语将被保留并提取词干，这将减少特征词语的数量。这个方法是通过观察，发现关于对话的重要的词语存在于内容词语中。</p>
+
+<p>当然，在计算机科学领域，一些包含特定字符的自然语言可能表示重要的语义，因此在预处理阶段需要适当的处理。因此，在语料库中的代码片段将被替换为具有意义的标签。例如，’x[i]’将被替换为’ARRAY_INDEXING’，if、for和算数表达式将使用相似的规定替换。</p>
+
+<h3 id="query-likelihood--1">Query-Likelihood 表示</h3>
+
+<p>Query-likelihood模型将每个对话视为一个文档，将被预测的目标对话作为查询，我们提供对目标对话的信息检索。这个查询将产生一个文档的排名列表，从最像到最不像。Query-likelihood的实现<a href="http://www.lemurproject.org/">The Lemur Project</a>使用论文<a href="http://ciir.cs.umass.edu/pubfiles/ir-407.pdf">A language-model based search engine forcomplex queries</a>。</p>
+
+<p>词语的顺序包含了对话结构的重要信息，因此我们使用一个修改过的查询方法，考虑一个对话里相邻的两个单词进行查询。</p>
+
+<p>下表中展示了多个原始的对话、在被词性标签替换及提取词干后的形式、和最后提交给算法的查询形式：</p>
 
 <table>
   <thead>
     <tr>
-      <th>特征</th>
-      <th>描述</th>
+      <th>原始对话</th>
+      <th>POS和词干提取形式</th>
+      <th>查询形式</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>单词个数</td>
-      <td> </td>
+      <td>I’m reading it right now</td>
+      <td>VB read PRP right now</td>
+      <td>(VB read)(read PRP)(PRP right)(right now)</td>
     </tr>
     <tr>
-      <td>相关的单词个数</td>
-      <td> </td>
+      <td>what is the basic structure to begin an array?</td>
+      <td>WDT VBZ DT basic structur TO begin DT array?</td>
+      <td>(WDT VBZ)(VBZ DT)(DT basic)(basic structur)(structur TO)(TO begin)(begin DT)(DT array)(array ?)</td>
     </tr>
     <tr>
-      <td>相关词率</td>
-      <td>相关的单词个数/单词总个数</td>
+      <td>that was correct</td>
+      <td>WDT VBD correct</td>
+      <td>(WDT VBD)(VBD correct)</td>
     </tr>
     <tr>
-      <td>句子个数</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>拼写错误个数</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>语法错误个数</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>问号个数</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>索引</td>
-      <td>在一个Post Thread中的位置索引</td>
-    </tr>
-    <tr>
-      <td>标题中单词个数</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>标题中相关的单词个数</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>标题相关词率</td>
-      <td>标题中相关的单词个数/标题单词总个数</td>
-    </tr>
-    <tr>
-      <td>语法质量</td>
-      <td>语法正确性（1-10）</td>
+      <td>how do you thinkyou should start it?</td>
+      <td>WRB do PRP think PRP MD start PRP?</td>
+      <td>(WRB do)(do PRP)(PRP think)(think PRP)(PRP MD)(PRP start)(startPRP)(PRP ?)</td>
     </tr>
   </tbody>
 </table>
 
 <p><br />
-其中，相关词语将来自从讲课幻灯片和帖子内容，人工地列举出出现最多的单词并提取出于课程相关的单词。语法质量、拼写错误数和语法错误数使用R语言的text mining tm包生成。</p>
+其中VBZ是第三人称现在时的单数动词，DT是限定词，TO是’to’，VBD是过去式动词，WDT和WRB是疑问词，MD是情态动词。</p>
+
+<p>下面是一个查询样例和它的相似检索：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Query</th>
+      <th>Query Likelihood results</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>How can I solve this problem?</td>
+      <td>How can I do addition?<br />What would be the results?<br />Which should go first?</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="section-3">聚类</h3>
+
+<p>查询获得的相似结果将被用作k-means聚类算法中的距离矩阵。这个想法实现依赖于为相似的对话创造一个二进制向量，然后group这些向量。每个在相似列表中的对话表示为1，其它表示为0。这样，每个在语料库中的目标对话将被表示为一个向量，这个向量表示和它相似的对话。算法如下：</p>
+
+<ul>
+  <li>D为所有对话组成的语料库，<script type="math/tex">D=\lbrace u_1,u_2,...,u_n \rbrace</script>，目标是对于D中的任意一个对话<script type="math/tex">u_i</script>，确定一个标签<script type="math/tex">l_i</script></li>
+  <li>对于每个<script type="math/tex">u_i</script>，
+    <ol>
+      <li>设目标对话<script type="math/tex">q_i=u_i</script></li>
+      <li>设<script type="math/tex">u_i</script>的查询结果相似列表为<script type="math/tex">R=(u_t,u_{t+1},...,u_z)</script></li>
+      <li>创建查询结果向量，<script type="math/tex">V_i=(v_1,v_2,...,v_j,...,v_n)\ such\ that\ v_j=1\ if\ u_j\in R\ else\ v_j=0</script></li>
+    </ol>
+  </li>
+  <li>设总向量为<script type="math/tex">V_T=(V_1,V_2,...,V_n)</script>，返回k-means(<script type="math/tex">V_T</script>)的聚类结果<script type="math/tex">C=\lbrace c_1,c_2,...,c_k \rbrace</script></li>
+</ul>
 
 <hr />
 
@@ -328,10 +350,8 @@
 
     <div class="page_navigation">
     
-      <a class="prev" href="/2016/%E5%9F%BA%E4%BA%8ETweet%E7%89%B9%E5%BE%81%E7%9A%84%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/">&laquo; 基于Tweet特征的短文本分类</a>
+      <a class="prev" href="/2016/MOOC%E8%AE%BA%E5%9D%9B%E5%B8%96%E5%AD%90%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/">&laquo; MOOC论坛帖子的半自动标注</a>
     
-    
-      <a class="next" href="/2016/%E5%AD%A6%E7%94%9F%E5%AF%B9%E8%AF%9D%E8%A1%8C%E4%B8%BA%E7%9A%84%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%88%86%E7%B1%BB/">学生对话行为的非监督分类 &raquo;</a>
     
     </div>
 
@@ -349,9 +369,9 @@
      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
 
     var disqus_config = function () {
-        this.page.url = 'https://wuyinan0126.github.io/2016/MOOC%E8%AE%BA%E5%9D%9B%E5%B8%96%E5%AD%90%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2016/MOOC论坛帖子的半自动标注'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        this.page.title = 'MOOC论坛帖子的半自动标注';
+        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%AD%A6%E7%94%9F%E5%AF%B9%E8%AF%9D%E8%A1%8C%E4%B8%BA%E7%9A%84%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%88%86%E7%B1%BB/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/学生对话行为的非监督分类'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '学生对话行为的非监督分类';
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE

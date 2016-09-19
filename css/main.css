@@ -1,6 +1,27 @@
 @import url(uno.css);
 @import url(monokai.css);
 
+/* Add by wuyinan0126@gmail.com*/
+
+<style type="text/css">
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #F3F3F3;
+}
+
+th{
+    border: 1px solid #F3F3F3;
+    padding: 6px 13px;
+}
+
+td{
+    border: 1px solid #F3F3F3;
+    padding: 6px 13px;
+}
+</style>
+
+
 /* Modifications */
 
 pre.highlight,
