@@ -5,9 +5,171 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 19 Sep 2016 22:42:34 +0800</pubDate>
-    <lastBuildDate>Mon, 19 Sep 2016 22:42:34 +0800</lastBuildDate>
+    <pubDate>Thu, 22 Sep 2016 00:11:54 +0800</pubDate>
+    <lastBuildDate>Thu, 22 Sep 2016 00:11:54 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
+    
+      <item>
+        <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt; 基于MOOC论坛信息分析的学生认知行为分类</title>
+        <description>&lt;p&gt;&lt;em&gt;文章使用关键词分类法分析大量的MOOC论坛数据以区分学习交互在论坛对话中的种类。文章使用Bloom’s Taxonomy（布鲁姆分类法）对51761条论坛帖子进行分类。实验结果表明MOOC论坛中不同的交互行为对应于不同的认知行为等级。&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;文章&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://www.asist.org/files/meetings/am15/proceedings/submissions/papers/35paper.pdf&quot;&gt;Analyzing MOOC Discussion Forum Messages to Identify Cognitive Learning Information Exchanges&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;研究问题&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the major linguistically content features of discussion forum messages?（什么是MOOC论坛信息的主要的语言学内容特征？）&lt;/p&gt;
+
+    &lt;p&gt;一个人在交流中使用的术语表达了一个人的关注点、感觉、为何组织信息、怎样分析信息、在思考什么主题和如何思考信息等。因此，语言学等内容分析可以提供MOOC论坛中的消息结构的insights。&lt;/p&gt;
+
+    &lt;p&gt;除了对论坛信息使用topical分类，我们也使用语言学内容分类作为下一个问题的基础。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are MOOCs discussion forum messages exchanges occurring within a learning context?（在一个学习环境中，是否有MOOC论坛信息的交换发生？）&lt;/p&gt;
+
+    &lt;p&gt;如果在线论坛信息是learning events，那么一个人在不同的认知等级将具有不同的语言学。为了分析这个问题，我们使用Anderson和 Krathwohl对于Bloom分类法的重新设计，在认知领域将关键词为分为6个类别。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;论坛数据预处理&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;我们使用Natural Language Toolkit(NLTK)，这是一个处理文本语言数据的Python程序。NLTK提供了对超过50种语料库和文本资源的接口，例如WordNet。我们使用它进行分词（tokenization）、词干提取（stemming）、标注（tagging）和解析（parsing）。具体包括：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;去除html标签&lt;/li&gt;
+  &lt;li&gt;去除标点符号&lt;/li&gt;
+  &lt;li&gt;去除停用词，将单词变为小写形式&lt;/li&gt;
+  &lt;li&gt;去除非ASCII编码的单词&lt;/li&gt;
+  &lt;li&gt;词干提取&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;数据处理&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;在我们的分析中，我们使用两种不同的方法分别处理我们的两个研究问题。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;内容分析法&lt;/p&gt;
+
+    &lt;p&gt;为了研究第一个问题，我们使用Linguistic Inquiry and Word Count（LIWC）package进行内容分析。LIWC是一个提供大范围的不同的文本特征分析的应用，包括语言学的处理例如代词数量等。它也提供心理学等处理例如情感分析。&lt;/p&gt;
+
+    &lt;p&gt;我们使用LIWC进行消息的topical和term分析。这个文本分析提供给我们一个分析认知行为的基础。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;认知行为分析分类法&lt;/p&gt;
+
+    &lt;p&gt;为了研究第二个问题，我们使用了在认知领域的学习等级的结构，这个结构由Anderson和Krathwohl提出，是Bloom’s Taxonomy的升级版。&lt;/p&gt;
+
+    &lt;p&gt;Bloom’s Taxonomy是最为广泛接受的认知行为框架。它是基于抽象的难度，从事实的认识到创造性概念的开发。它的支配法则之一是它的描述方案，在描述方案里每一个学习目标的类型都能使用相关的文本进行表示。&lt;/p&gt;
+
+    &lt;p&gt;我们使用这个分类法对论坛消息进行分类，以确定它们是否是分类法中的一个等级。我们的假设是，消息可能会包含能够区分出合适等级的关键词。&lt;/p&gt;
+
+    &lt;p&gt;Anderson和Krathwohl的分类法是我们在研究中使用的方法。这个分类法的要点如下表所示：&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;类别&lt;/th&gt;
+          &lt;th&gt;定义&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Remembering&lt;/td&gt;
+          &lt;td&gt;检索、识别和回忆相关的知识&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Understanding&lt;/td&gt;
+          &lt;td&gt;通过翻译、举例、分类、概括、推理、对比、解释从口语、书写和图表信息中构造含义&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Applying&lt;/td&gt;
+          &lt;td&gt;实施、使用一个手段执行或实现&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Analysing&lt;/td&gt;
+          &lt;td&gt;将材料分成几个部分，通过区分、组织和归因确定部分之间的关系，以及部分与整体的结构或意图&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Evaluating&lt;/td&gt;
+          &lt;td&gt;通过批判并根据条件和标准作出判断&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Creating&lt;/td&gt;
+          &lt;td&gt;将基础元素组合成一个连贯的整体&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;p&gt;&lt;br /&gt;
+  虽然类别的描述反映了不同学习者行为的区别，然而Anderson and Krathwohl’s taxonomy并不sharp。因此，下表展示了用于区分论坛消息的关键元素。我们使用&lt;code class=&quot;highlighter-rouge&quot;&gt;244个公认的认知行为关键词&lt;/code&gt;对类别进行区分。&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;类别&lt;/th&gt;
+          &lt;th&gt;定义&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Remembering&lt;/td&gt;
+          &lt;td&gt;论坛消息必须描述、列出或说出事实信息&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Understanding&lt;/td&gt;
+          &lt;td&gt;论坛消息必须翻译、分析、解释或推断信息&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Applying&lt;/td&gt;
+          &lt;td&gt;论坛消息必须利用信息并且将结果知识化为行动&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Analysing&lt;/td&gt;
+          &lt;td&gt;论坛消息必须论断、批阅或调查信息&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Evaluating&lt;/td&gt;
+          &lt;td&gt;论坛消息必须评价或将信息联系到真实世界中&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Creating&lt;/td&gt;
+          &lt;td&gt;论坛消息必须公式化、生成、重构或结合信息&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+</description>
+        <pubDate>Wed, 21 Sep 2016 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2016/%E5%9F%BA%E4%BA%8EMOOC%E8%AE%BA%E5%9D%9B%E4%BF%A1%E6%81%AF%E5%88%86%E6%9E%90%E7%9A%84%E5%AD%A6%E7%94%9F%E8%AE%A4%E7%9F%A5%E8%A1%8C%E4%B8%BA%E5%88%86%E7%B1%BB/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%9F%BA%E4%BA%8EMOOC%E8%AE%BA%E5%9D%9B%E4%BF%A1%E6%81%AF%E5%88%86%E6%9E%90%E7%9A%84%E5%AD%A6%E7%94%9F%E8%AE%A4%E7%9F%A5%E8%A1%8C%E4%B8%BA%E5%88%86%E7%B1%BB/</guid>
+        
+        <category>摘译</category>
+        
+        <category>机器学习</category>
+        
+        <category>MOOC</category>
+        
+        
+        <category>摘译</category>
+        
+        <category>机器学习</category>
+        
+        <category>MOOC</category>
+        
+      </item>
     
       <item>
         <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt; 学生对话行为的非监督分类</title>
@@ -187,18 +349,26 @@
         <link>https://wuyinan0126.github.io//2016/%E5%AD%A6%E7%94%9F%E5%AF%B9%E8%AF%9D%E8%A1%8C%E4%B8%BA%E7%9A%84%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%88%86%E7%B1%BB/</link>
         <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%AD%A6%E7%94%9F%E5%AF%B9%E8%AF%9D%E8%A1%8C%E4%B8%BA%E7%9A%84%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%88%86%E7%B1%BB/</guid>
         
-        <category>nlp</category>
+        <category>NLP</category>
         
         <category>摘译</category>
         
         <category>机器学习</category>
         
+        <category>聚类</category>
         
-        <category>nlp</category>
+        <category>MOOC</category>
+        
+        
+        <category>NLP</category>
         
         <category>摘译</category>
         
         <category>机器学习</category>
+        
+        <category>聚类</category>
+        
+        <category>MOOC</category>
         
       </item>
     
@@ -358,18 +528,22 @@
         <link>https://wuyinan0126.github.io//2016/MOOC%E8%AE%BA%E5%9D%9B%E5%B8%96%E5%AD%90%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/</link>
         <guid isPermaLink="true">https://wuyinan0126.github.io//2016/MOOC%E8%AE%BA%E5%9D%9B%E5%B8%96%E5%AD%90%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/</guid>
         
-        <category>nlp</category>
+        <category>摘译</category>
+        
+        <category>机器学习</category>
+        
+        <category>分类</category>
+        
+        <category>MOOC</category>
+        
         
         <category>摘译</category>
         
         <category>机器学习</category>
         
+        <category>分类</category>
         
-        <category>nlp</category>
-        
-        <category>摘译</category>
-        
-        <category>机器学习</category>
+        <category>MOOC</category>
         
       </item>
     
@@ -487,18 +661,18 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
         <link>https://wuyinan0126.github.io//2016/%E5%9F%BA%E4%BA%8ETweet%E7%89%B9%E5%BE%81%E7%9A%84%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</link>
         <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%9F%BA%E4%BA%8ETweet%E7%89%B9%E5%BE%81%E7%9A%84%E7%9F%AD%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/</guid>
         
-        <category>nlp</category>
+        <category>摘译</category>
+        
+        <category>机器学习</category>
+        
+        <category>分类</category>
+        
         
         <category>摘译</category>
         
         <category>机器学习</category>
         
-        
-        <category>nlp</category>
-        
-        <category>摘译</category>
-        
-        <category>机器学习</category>
+        <category>分类</category>
         
       </item>
     
@@ -878,12 +1052,12 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
         <link>https://wuyinan0126.github.io//2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
         <guid isPermaLink="true">https://wuyinan0126.github.io//2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
         
-        <category>geek</category>
+        <category>GEEK</category>
         
         <category>原创</category>
         
         
-        <category>geek</category>
+        <category>GEEK</category>
         
         <category>原创</category>
         
@@ -1245,14 +1419,14 @@ H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], &amp; H(P\ AND\ Q)\gt\theta
         <link>https://wuyinan0126.github.io//2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/</link>
         <guid isPermaLink="true">https://wuyinan0126.github.io//2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/</guid>
         
-        <category>geek</category>
+        <category>GEEK</category>
         
         <category>原创</category>
         
         <category>树莓派</category>
         
         
-        <category>geek</category>
+        <category>GEEK</category>
         
         <category>原创</category>
         
