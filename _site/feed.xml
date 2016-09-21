@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 22 Sep 2016 00:11:54 +0800</pubDate>
-    <lastBuildDate>Thu, 22 Sep 2016 00:11:54 +0800</lastBuildDate>
+    <pubDate>Thu, 22 Sep 2016 00:13:17 +0800</pubDate>
+    <lastBuildDate>Thu, 22 Sep 2016 00:13:17 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -162,12 +162,16 @@
         
         <category>MOOC</category>
         
+        <category>分类</category>
+        
         
         <category>摘译</category>
         
         <category>机器学习</category>
         
         <category>MOOC</category>
+        
+        <category>分类</category>
         
       </item>
     
