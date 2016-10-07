@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 07 Oct 2016 22:23:08 +0800</pubDate>
-    <lastBuildDate>Fri, 07 Oct 2016 22:23:08 +0800</lastBuildDate>
+    <pubDate>Fri, 07 Oct 2016 22:24:39 +0800</pubDate>
+    <lastBuildDate>Fri, 07 Oct 2016 22:24:39 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -26,7 +26,7 @@
 
 &lt;p&gt;NDN项目提出了一个IP架构的演化，使得数据包可以命名不是通信端点的其他对象。如下图所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/2016-10-07-1.jpg&quot; alt=&quot;NDN架构和IP架构对比&quot; title=&quot;NDN架构和IP架构对比&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/2016-10-07-1.png&quot; alt=&quot;NDN架构和IP架构对比&quot; title=&quot;NDN架构和IP架构对比&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;更具体的说，NDN改变了网络服务的语义，从 传输分组至指定的终点地址 到 获取由给定名字标识的数据。在NDN包中的名字可以命名任何东西，一个终端、一个电影或书本中的数据块、一个打开灯光的命令等。这些概念上的简单变化使得NDN网络能够使用所有几乎所有的互联网的测试好的工程属性来解决范围更广的问题，不仅包括端到端的通信，而且也包括内容分发和控制问题。根据目前互联网架构的优势与局限性的三十年的经验，NDN设计也建立在安全的原则上（通过所有命名的数据的签名）和网络流量的自我调节（通过Interest和Data包之间的流量平衡）。&lt;/p&gt;
 
@@ -35,7 +35,7 @@
 
 &lt;p&gt;NDN中的通信是由接收者，即消费者驱动，通过两个类型的数据包交换：Interest和Data。这两种类型的包都携带一个名字用以标识能够在一个Data包中传输的一片数据。消费者将需要的数据片的名字放入一个Interest包，然后将它发送到网络中。路由器使用这个名字来将Interest包转发给数据生产者。一旦Interest到达具有所请求数据的节点，这个节点将返回一个包含名字和内容的Data包，同时包含一个生产者密钥的签名。然后这个Data包按照Interest的相反路径发回给请求者。NDN架构的数据包如下所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/2016-10-07-2.jpg&quot; alt=&quot;NDN架构的数据包&quot; title=&quot;NDN架构的数据包&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/2016-10-07-2.png&quot; alt=&quot;NDN架构的数据包&quot; title=&quot;NDN架构的数据包&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;section-1&quot;&gt;命名&lt;/h3&gt;
 
@@ -55,7 +55,7 @@
 
 &lt;p&gt;为了能够转发Interest和Data包，每个NDN路由器需要维护三个数据结构：待Interest表（Pending Interest Table, PIT），转发信息库（Forwarding Information Base, FIB）和内容存储（Content Store, CS），当然也包括转发策略模块来决定是否、何时以及何处转发每个Interest包。PIT存储所有已经被转发但是还未被满足的的Interests。每个PIT表项纪录了互联网中携带的数据名称，也包括它的传入和传出的接口。当一个Interest包到达时，NDN路由器首先检查CS中是否有匹配的数据，如果存在，路由器从Interest来的接口返回Data包；否则路由器查找PIT中是否有匹配的名字，路由器在表项中只是简单记录Interest包来的接口。如果PIT中没有对应的表项，路由器将根据FIB中的信息和路由器的自适应转发策略，将Interest包转发给数据生产者。当一个路由器接收到来自多个下游节点的相同名称的Interest包，它只向上游的生产者转发第一个Interest包。FIB由一个基于名称前缀的路由协议所构成，并且对于一个前缀，能够含有多个输出接口&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/2016-10-07-2.jpg&quot; alt=&quot;NDN路由器转发过程&quot; title=&quot;NDN路由器转发过程&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/2016-10-07-3.png&quot; alt=&quot;NDN路由器转发过程&quot; title=&quot;NDN路由器转发过程&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;转发策略可能决定在某些情况下丢弃一个Interest包，例如，如果所有的上游链路都处于拥挤状态或Interest包被怀疑是DoS攻击的一部分。对于没一个Interest包，转发策略在FIB中检索最长前缀的匹配项，并决定何时及何地转发这个Interest。CS是路由器收到的Data包的临时缓存。因为NDN的Data包，从哪儿来或到哪儿去在意义上是独立的，因此能够被缓存以满足之后的Interests。&lt;/p&gt;
 
