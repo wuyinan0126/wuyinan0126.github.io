@@ -5,9 +5,101 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 07 Oct 2016 22:49:40 +0800</pubDate>
-    <lastBuildDate>Fri, 07 Oct 2016 22:49:40 +0800</lastBuildDate>
+    <pubDate>Thu, 13 Oct 2016 22:35:14 +0800</pubDate>
+    <lastBuildDate>Thu, 13 Oct 2016 22:35:14 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
+    
+      <item>
+        <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt; ICAP认知行为框架</title>
+        <description>&lt;p&gt;&lt;em&gt;Active，constructive和interactive是广泛使用在认知和学习科学领域的术语。它们描述了学习者可以进行的活动。这篇文章不是关于如何定义这些术语、它们的区别、它们的明显表现、它们的学习过程及学习成果。文章提供了一个用于区分active、constructive和interactive的框架，通过观察明显的活动和学习过程。这个框架生成了一个可测试的理论：interactive活动很可能比constructive活动好，同时也比active活动好，同时也比passive活动好。&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;文章&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://onlinelibrary.wiley.com/doi/10.1111/j.1756-8765.2008.01005.x/full&quot;&gt;Active-Constructive-Interactive: A Conceptual Framework for Differentiating Learning Activities&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;分类法&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;这个分类法试图使用一种允许我们对文献中现有的研究中使用的明显活动（overt activities）进行分类的方式来特征化active、constructive和interactive活动。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Being active&lt;/p&gt;
+
+    &lt;p&gt;Being active可以被表征为在学习时做某事（通常设计物理运动（physical movement））。例如，在一个虚拟的环境中，如果学生通过操作一个固定的自行车穿越一个虚拟的环境来探索环境，那么这将被视为active活动。另一方面，如果学生只是观看录像而没有探索或操作环境，那么这将被认为是passive，学生没有做任何事情。&lt;/p&gt;
+
+    &lt;p&gt;使用严格的标准，做一些物理运动的指标在许多文献中都提供了active活动的精彩的例子。一些明显的活动如下：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;……&lt;/li&gt;
+      &lt;li&gt;强调或复制粘贴文本的一部分&lt;/li&gt;
+      &lt;li&gt;逐字重复句子或复制问题的解决步骤&lt;/li&gt;
+      &lt;li&gt;使用删除和替换概括段落&lt;/li&gt;
+      &lt;li&gt;操作录像带如暂停和倒带&lt;/li&gt;
+      &lt;li&gt;……&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;&lt;br /&gt;
+ 这些active活动集合也被称为“参与活动（engaging activities）”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Being constructive&lt;/p&gt;
+
+    &lt;p&gt;constructive活动与active活动的区别在于学习者产生了一些额外的产出，这些产出经常（不总是）包括新的超出给定信息的内容相关的想法。例如，在active活动如划线中，学习者没有产生任何额外的产出，他们的输出是原始材料的一部分。相反的，在constructive活动如自我解释中，学习者清楚地表达了文本句子或解决步骤对他们的意义。这些自我解释经常包含文本中没有明确说明的阐述和想法，因此它们超出了提供的信息。此外，通过表达，学习者也是active的，因为他们正在积极地生成言语。因此，constructive包含active。&lt;/p&gt;
+
+    &lt;p&gt;重申，一种活动只有在产出包含超越学习材料并且没有在学习材料中明确提出的想法时才能被分类为constructive活动。否则，这种活动仅仅是active的活动。例如，在表述中，如果自我解释是无意义的，不相关的或逐字的话语，那么学习者只是active而不是constructive的。 但是如果产生的自我解释是超出现有的有意义的阐释，那么学习者是constructive的。因此，为了知道学习者是否实际的在活动中产生新想法，必须分析产出的内容。&lt;/p&gt;
+
+    &lt;p&gt;有许多constructive的例子，如：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;自我解释（self-explaining）&lt;/li&gt;
+      &lt;li&gt;画概念图（drawing a concept map）&lt;/li&gt;
+      &lt;li&gt;记笔记（taking notes）&lt;/li&gt;
+      &lt;li&gt;问问题（asking questions）&lt;/li&gt;
+      &lt;li&gt;提出问题（posing problems）&lt;/li&gt;
+      &lt;li&gt;比较和对比案例（comparing and contrasting cases）&lt;/li&gt;
+      &lt;li&gt;整合文字图表或交叉媒体资源（integrating text and diagram or across multimedia resources）&lt;/li&gt;
+      &lt;li&gt;制定计划（making plans）&lt;/li&gt;
+      &lt;li&gt;归纳假设（inducing hypotheses）&lt;/li&gt;
+      &lt;li&gt;类比（drawing analogies）&lt;/li&gt;
+      &lt;li&gt;预测（generating predictions）&lt;/li&gt;
+      &lt;li&gt;反映和监测自己的理解和其他自我监管活动（reflecting and monitoring one’s own understanding and other self-regulatory activities ）&lt;/li&gt;
+      &lt;li&gt;构建历史事件的时间线（constructing timelines for historical phenomena）&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;&lt;br /&gt;
+ constructive的活动有两个特征，一个是上面描述的，需要学习者产生某种明显的产出，例如自我解释的解释、记笔记的笔记、归纳得出的假设、提问的问题、预测、概念图、自我报告的断言如“我不明白”，可能在其他对话的上下文中的解决问题。第二个特征是他们倾向于要求学习者产生一些不包含在或呈现在学习材料中的产出。例如，例如，要求学生比较和对比两个实例，这需要学习者说明两个实例之间相同或不同，当教学材料显然没有提到这两个例子的相同或不同的信息。类似的，要求学生自我解释一个句子对他们意味着什么意思，这显然需要他们推断关于那个句子没有被明确提出的新信息。要求学生构建一个概念图，这显然需要学生产生关于概念之间的因果关系的新信息，这些概念在文本或其他来源中没有阐明。&lt;/p&gt;
+
+    &lt;p&gt;要注意的是产出的内容。进行一个含有产出的活动不能保证，但很有可能，促进新信息的产生。以提问为例，如果一个学生问一个浅显的问题，本质上是一个文本句子的逐字重复，而不是将它转换成问题格式，那么这个学生不是constructive的，相反，他只是active的。但是，在产生问题的过程中，学生更有可能产生超出现有明确信息的想法。如果我们能够确定产出的内容是否包含超出现有的信息，那么就能确定这样的活动是否为constructive。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Being interactive&lt;/p&gt;
+
+    &lt;p&gt;Being interactive可以指几种类型的明显的活动，例如学习者和其他人（可以是同伴、老师、教师、父母）说话，回应一个系统（例如智能辅导系统），或者用一些涉及motor movement的物理方式的交互。&lt;/p&gt;
+
+    &lt;p&gt;所有的话语活动都是相同的么？表面上，在对话中交互的明显活动看起来是直接和统一的。可以将它描述为两个学习者一起讨论一些概念，主题或问题。然而，如果分析对话的内容，则会出现不同的对话模式，并且一些模式实际上根本不是交互的。例如，通常情况下，一个同伴主导并且贡献大部分贡献，并且另一个同伴仅仅同意或响应诸如“ok”或“uh-huh”。&lt;/p&gt;
+
+    &lt;p&gt;贡献较大的同伴，或称为说话者，在活动中可以被表征为自我解释或向同伴解释。在自我解释中，说话者基本上是自我解释，而在向同伴解释中，说话者基本上只是以老师的身份告诉同伴。在这两种活动中，说话者忽略了同伴的任何的贡献，可能是因为同伴几乎没有贡献或者是同伴的贡献不是实质性的。简而言之，在这种类型的个人对话模式中，合作伙伴并没有很多交互。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Thu, 13 Oct 2016 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2016/ICAP%E8%AE%A4%E7%9F%A5%E8%A1%8C%E4%B8%BA%E6%A1%86%E6%9E%B6/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/ICAP%E8%AE%A4%E7%9F%A5%E8%A1%8C%E4%B8%BA%E6%A1%86%E6%9E%B6/</guid>
+        
+        <category>摘译</category>
+        
+        <category>MOOC</category>
+        
+        
+        <category>摘译</category>
+        
+        <category>MOOC</category>
+        
+      </item>
     
       <item>
         <title>&lt;font color=&#39;orange&#39;&gt;[摘译]&lt;/font&gt; 命名数据网络</title>
