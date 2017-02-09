@@ -1,0 +1,107 @@
+<p><em>由于短文本不能提供足够多的文字，因此“Bag-Of-Words”方法具有局限性。文章提出一种使用小规模的、从作者profile和发布的文本内容中提取的domain-specific特征集合进行短文本分类，并允许用户根据自己的兴趣添加新的分类</em></p>
+
+<h2 id="section">文章</h2>
+
+<blockquote>
+  <p><a href="https://www.researchgate.net/profile/Hakan_Ferhatosmanoglu/publication/221300153_Short_text_classification_in_twitter_to_improve_information_filtering/links/55b2111608ae9289a084fccd.pdf">Short text classification in twitter to improve information filtering</a></p>
+</blockquote>
+
+<h2 id="section-1">论文摘要</h2>
+<hr />
+
+<p>由于短文本不能提供足够多的文字，因此“Bag-Of-Words”方法具有局限性。文章提出一种使用小规模的、从作者profile和发布的文本内容中提取的domain-specific特征集合进行短文本分类（文章针对Twitter），预先分为新闻（News）、事件（Events）、观点（Opinions）、交易或产品（Deals）和私人信息（Private Message）。</p>
+
+<p>由于短文本字数的限制，目前对于短文本分类的方法主要是根据文本的源信息在Wikipedia和WordNet上搜索额外的相关信息，以扩充短文本内容。然而这需要在线的查询，其时间花费使其不适合用于实时的应用。同时，这也提高了特征的数量，因此需要复杂的算法来减少冗余的特征，以避免出现维度诅咒（curse of dimensionality）。</p>
+
+<p>因此，最有效的可以提高分类准确率的方法就是用最小的特征集合来表示短文本。文章提出根据用户意图，将Tweet分为五类，并能涵盖大部分的Tweet话题。</p>
+
+<p>接下来，文章介绍如何让用户根据自己的兴趣添加新的分类。因为算法的准确度随着分类数量的增加而降低，因此用户需要添加新类别对应的特征。具体是，系统根据用户提供的sampled tweets生成新的特征。</p>
+
+<h2 id="section-2">文本的表示</h2>
+<hr />
+
+<p>最通用的表示文本的技术是Bag-Of-Words(BOW)模型。文本被分成一个一个的单词，每个单词代表一个特征，这个过程也被叫做”Tokenization”。在BOW模型中，单词出现的顺序是无关的。但由于特征向量过大，需要使用去除停用词（stop word removal）或词干提取（stemming）技术来降低维度。去除停用词指去除没有明显意义的词，例如a，an，the，if，for等；词干提取指提取单词的基本形态，例如ran、running、runs的基本形态都是run。一个通用的英文词干提取算法是“Porter’s Algorithm”。</p>
+
+<p>另外一种用于加权特征的方法是TF-IDF模型。TF是指一个单词的出现频率（Term Frequency），TF值越高，该词的特征权重越高。但是TF的不足在于，例如文章都是关于“Google Search Algorithm”，那么术语“Google”很大可能出现频繁，然而文章大重点不是关于Google公司而是它的搜索算法。因此，为了减少“Google”单词的影响，使用IDF（Inverse Document Frequency）。DF（Document Frequency）是指包含特定单词的文章数，DF值越高，该单词的特征越不重要。一个特征的IDF的公式如下：</p>
+
+<script type="math/tex; mode=display">IDF=log(\frac{N}{DF})</script>
+
+<p>其中，N是语料库中的文章数。最终，一个特征的TF-IDF表示如下：</p>
+
+<script type="math/tex; mode=display">TFIDF=TF*IDF</script>
+
+<p>在表示了文本后，可以使用多种分类算法进行分类。例如Naïve Bayes Classifier、Support Vector Models、Decision Trees、Voted Perception。</p>
+
+<h2 id="section-3">短文本分类的研究现状</h2>
+<hr />
+
+<p>传统使用BOW模型适用于大量的数据集，因为单词出现频率高且顺序无关，词频足以表示文章的语义。对于短文本，大量的工作是扩充文本使其成为一个长文本，例如使用搜索引擎，但是这需要单词不具有二义性。如”jaguar”和”car”是高度相关的，但搜索引擎可能会将它联系到动物”jaguar”。同时，在线搜索的时间花费不适合于实时应用。而使用Wikipedia数据库的snap shot虽然解决了耗时问题，但是容易过期。并且BOW模型中的单个单词可能不具有上下文语义，而需要多个单词才能表达。</p>
+
+<p>总而言之，现有的短文本分类技术框架如图所示：</p>
+
+<p><img src="/assets/2016-09-15-1.png" alt="现有的短文本分类技术框架" title="现有的短文本分类技术框架" /></p>
+
+<p>现有的研究通过结合使用WordNet和Wikpedia来提高有效特征，通过解析短文本将其分类成segments, phrases and words，并从中寻找短语作为查询Wikipedia和WordNet的关键词。这需要NLP技术。</p>
+
+<p>同时，现有的研究中最大的挑战之一是维度诅咒。</p>
+
+<h2 id="f8">使用8F（8个特征）进行信息过滤</h2>
+<hr />
+
+<h3 id="section-4">特征选择</h3>
+
+<p>由于使用词频作为特征不能很好的表示短文本，因此根据Tweet的特性，使用以下八个authorship information特征来表示Tweet文本：</p>
+
+<ul>
+  <li>Shortening of words and slangs (Binary)</li>
+  <li>ime-event information (Binary)</li>
+  <li>Opinions (Binary)</li>
+  <li>Emphasis on words (Binary)</li>
+  <li>Currency, statistical information (Binary)</li>
+  <li>Reference to another user at beginning of tweet (Binary)</li>
+  <li>Reference to another user within tweet (Binary)</li>
+</ul>
+
+<h3 id="section-5">特征提取</h3>
+
+<ul>
+  <li>新闻（News）：公共的Tweet通常与私人Tweet具有不同的动机。前者通常具有干净的格式，而后者的表达经常带有口头语、缩写和表情。</li>
+  <li>事件（Events）：如果我们定义事件为“在特定地点和时间发生的事情”，那么参与者、地点、时间信息可能意味着Tweet中含有事件。</li>
+  <li>观点（Opinions）：通过查找包含3000个与观点相关的单词的词典，也通过查找Tweet中大写字母、一个单词中的重复字母，例如veery，来进行筛选。</li>
+  <li>交易或产品（Deals）：通过查找货币、百分比符号等来进行筛选。</li>
+  <li>私人信息（Private Messages）：通过查找“@”+人名符号来进行筛选。</li>
+</ul>
+
+<p>当然，一个Tweet可能属于多个类别，因此可以设定一个阈值<script type="math/tex">\Theta</script>，当一个Tweet被标记为某一类别的概率低于<script type="math/tex">\Theta</script>时，将其同时标记为多个类别。</p>
+
+<h2 id="section-6">用户自定义类别和特征</h2>
+<hr />
+
+<p>用户不用指出新特征确切是什么，只需要通过提供sample tweets给系统学习新的特征来增加新特征。系统通过查找用户提供的sampled tweets中的共同词语、出现的URL、共同的特定字符或共同的作者来分析，当然也可能存在在sampled tweets中没有共同的特征的情况，因此采用如下的方法。</p>
+
+<h3 id="key-term-identification">Key Term Identification</h3>
+
+<p>为了明确中心主题，我们需要搜寻可以表示这个主题的词条（term）。将两条tweets作为输入。首先先对tweet进行预处理，包括去除停用词和opinionated words（？），同时去除特殊的字符。然后，考虑两条tweets中的每一对词语，并在搜索引擎中获得这两个词组成的短语的条数。这个方法可以发现两条tweets间相似的词语，条数越多，它们越有可能同时出现在一个文档中并且越有可能表示同一个主题。我们考虑条数top n（n通常为1～5）的词语对。并且通过使用WebJaccard co-efficient来减少false positives（被模型预测为正的负样本），则两个单词的相似度计算公式如下：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+WebJaccard(P,Q)=\begin {cases}
+0, & H(P\ AND\ Q)\leq\theta \\\
+H(P\ AND\ Q)/[H(P)+H(Q)-H(P\ AND\ Q)], & H(P\ AND\ Q)\gt\theta
+\end {cases} %]]></script>
+
+<p>其中，‘P’和‘Q’是独立查找的关键词，“P AND Q”是同时查找的关键词，H(P)是关键词‘P’的条数，<script type="math/tex">\theta</script>是用户设置的阈值。</p>
+
+<p>然而，false positive不能被系统所确定，因此需要用户判断系统分析的主题是否正确。用户可以明确地去除无关的主题词，之后系统再重新运算。</p>
+
+<h3 id="section-7">计算相似词</h3>
+
+<p>在确定tweets的主题词后，我们进一步计算其它相似的可以表示该主题的词语。这是为了确保没有出现在sampled tweets中的主题词但能够表达该主题的词语也能被作为特征。通过查询Microsoft Word Thesaurus或WordNet。</p>
+
+<p>除了计算出相似的单词，也需要计算很有可能出现在主题中的相似词语，例如Coffee主题中可能出现chocolate, bar, espresso, kaffee, food, eating, wifi, coffeehouse starbucks等。通过使用Google Sets API。</p>
+
+<p>一旦新的特征被认为是正确的，我们更新训练数据以包括新的特征并重新训练分类器。流程如下图：</p>
+
+<p><img src="/assets/2016-09-15-2.png" alt="特征添加流程" title="特征添加流程" /></p>
+
+<hr />
+
