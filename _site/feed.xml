@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 23 Feb 2017 15:58:01 +0800</pubDate>
-    <lastBuildDate>Thu, 23 Feb 2017 15:58:01 +0800</lastBuildDate>
+    <pubDate>Thu, 23 Feb 2017 16:04:36 +0800</pubDate>
+    <lastBuildDate>Thu, 23 Feb 2017 16:04:36 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -45,22 +45,22 @@
       &lt;li&gt;
         &lt;p&gt;生成密钥:&lt;/p&gt;
 
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ssh-keygen -t dsa
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ssh-keygen -t dsa
 &lt;/code&gt;&lt;/pre&gt;
         &lt;/div&gt;
       &lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;生成authorized_keys，进入.ssh目录:&lt;/p&gt;
 
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cat id_dsa.pub &amp;gt;&amp;gt; authorized_keys
- chmod 600 authorized_keys
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cat id_dsa.pub &amp;gt;&amp;gt; authorized_keys
+ $ chmod 600 authorized_keys
 &lt;/code&gt;&lt;/pre&gt;
         &lt;/div&gt;
       &lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;测试:&lt;/p&gt;
 
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ssh localhost
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ssh localhost
 &lt;/code&gt;&lt;/pre&gt;
         &lt;/div&gt;
       &lt;/li&gt;
@@ -69,7 +69,7 @@
   &lt;li&gt;
     &lt;p&gt;下载Hadoop二进制包（或源码自行编译），解压至/opt/:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; tar -zxvf ./hadoop-2.7.3.tar.gz -C /opt/
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./hadoop-2.7.3.tar.gz -C /opt/
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
@@ -215,46 +215,40 @@
   &lt;li&gt;
     &lt;p&gt;根据hadoop.tmp.dir, dfs.namenode.name.dir, dfs.datanode.name.dir在相应位置创建目录&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; mkdir /opt/hadoop-2.7.3/var/
- mkdir /opt/hadoop-2.7.3/var/tmp
- mkdir /opt/hadoop-2.7.3/var/name
- mkdir /opt/hadoop-2.7.3/var/data
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mkdir /opt/hadoop-2.7.3/var/
+ $ mkdir /opt/hadoop-2.7.3/var/tmp
+ $ mkdir /opt/hadoop-2.7.3/var/name
+ $ mkdir /opt/hadoop-2.7.3/var/data
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;格式化namenode，如果Exiting with status 0，说明格式化成功:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; hdfs namenode -format
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hdfs namenode -format
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;启动namenode、datanode、yarn，每启动一个后都用jps查看是否启动成功，最后启动的进程应该包括NameNode、DataNode、ResorceManager、NodeManager:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; hadoop-daemon.sh start namenode
- hadoop-daemon.sh start datanode
- start-yarn.sh
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hadoop-daemon.sh start namenode
+ $ hadoop-daemon.sh start datanode
+ $ start-yarn.sh
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;在浏览器查看：&lt;/p&gt;
+    &lt;p&gt;在浏览器查看：&lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:50070/&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:8088/&lt;/code&gt;&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;[http://localhost:50070/][http://localhost:50070/]
-[http://localhost:8088/][http://localhost:8088/]&lt;/p&gt;
-
-&lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;测试，运行wordcount例子:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; hadoop fs -mkdir /test
- hadoop fs -mkdir /test/input
- hadoop fs -put ./words.txt /test/input
- hadoop jar /opt/hadoop-2.7.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /test/input/ /test/output
- hadoop fs -cat /test/output/part-r-00000
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hadoop fs -mkdir /test
+ $ hadoop fs -mkdir /test/input
+ $ hadoop fs -put ./words.txt /test/input
+ $ hadoop jar /opt/hadoop-2.7.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /test/input/ /test/output
+ $ hadoop fs -cat /test/output/part-r-00000
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
@@ -266,7 +260,7 @@
   &lt;li&gt;
     &lt;p&gt;下载Scala二进制包，解压至/opt/:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; tar -zxvf ./scala-2.11.8.tgz -C /opt/
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./scala-2.11.8.tgz -C /opt/
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
@@ -280,8 +274,8 @@
   &lt;li&gt;
     &lt;p&gt;下载Spark二进制包（或源码自行编译），解压至/opt/:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; tar -zxvf ./spark-2.1.0-bin-hadoop2.7 -C /opt/
- mv /opt/spark-2.1.0-bin-hadoop2.7 /opt/spark-2.1.0
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./spark-2.1.0-bin-hadoop2.7 -C /opt/
+ $ mv /opt/spark-2.1.0-bin-hadoop2.7 /opt/spark-2.1.0
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
@@ -312,15 +306,15 @@
   &lt;li&gt;
     &lt;p&gt;启动Spark，用jps查看，启动的进程应包括Master、Worker:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; start-all.sh
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ start-all.sh
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;测试，运行SparkPi例子:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cd /opt/spark-2.1.0
- ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd /opt/spark-2.1.0
+ $ ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
  --master yarn-cluster \
  --num-executors 3 \
  --driver-memory 2g \
@@ -335,7 +329,7 @@
   &lt;li&gt;
     &lt;p&gt;查看结果:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; yarn logs -applicationId ${applicationId} | grep &#39;Pi&#39;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ yarn logs -applicationId ${applicationId} | grep &#39;Pi&#39;
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
@@ -717,6 +711,43 @@
         &lt;/div&gt;
 
         &lt;p&gt;此适用于Jekyll Server进行预览，不适用于OmniMarkupPreviewer预览&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;语法高亮&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;语法高亮将仅支持Rouge&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ rougify help style
+ usage: rougify style [&amp;lt;theme-name&amp;gt;] [&amp;lt;options&amp;gt;]
+
+ Print CSS styles for the given theme.  Extra options are
+ passed to the theme.  Theme defaults to thankful_eyes.
+
+ options:
+   --scope	(default: .highlight) a css selector to scope by
+
+ available themes:
+   base16, base16.dark, base16.monokai, base16.monokai.light, base16.solarized, base16.solarized.dark, colorful, github, molokai, monokai, monokai.sublime, thankful_eyes
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;使用Rouge生成样式&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ rougify style colorful &amp;gt; css/colorful.css
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;修改css/main.css&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; @import url(colorful.css);
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
       &lt;/li&gt;
     &lt;/ol&gt;
   &lt;/li&gt;

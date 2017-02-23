@@ -540,6 +540,43 @@
       </li>
     </ol>
   </li>
+  <li>
+    <p>语法高亮</p>
+
+    <ol>
+      <li>
+        <p>语法高亮将仅支持Rouge</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ rougify help style
+ usage: rougify style [&lt;theme-name&gt;] [&lt;options&gt;]
+
+ Print CSS styles for the given theme.  Extra options are
+ passed to the theme.  Theme defaults to thankful_eyes.
+
+ options:
+   --scope	(default: .highlight) a css selector to scope by
+
+ available themes:
+   base16, base16.dark, base16.monokai, base16.monokai.light, base16.solarized, base16.solarized.dark, colorful, github, molokai, monokai, monokai.sublime, thankful_eyes
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>使用Rouge生成样式</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ rougify style colorful &gt; css/colorful.css
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>修改css/main.css</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> @import url(colorful.css);
+</code></pre>
+        </div>
+      </li>
+    </ol>
+  </li>
 </ol>
 
 <hr />
