@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 23 Feb 2017 15:48:54 +0800</pubDate>
-    <lastBuildDate>Thu, 23 Feb 2017 15:48:54 +0800</lastBuildDate>
+    <pubDate>Thu, 23 Feb 2017 15:50:49 +0800</pubDate>
+    <lastBuildDate>Thu, 23 Feb 2017 15:50:49 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -278,28 +278,31 @@ mv /opt/spark-2.1.0-bin-hadoop2.7 /opt/spark-2.1.0&lt;/code&gt;&lt;/pre&gt;&lt;/
   &lt;li&gt;启动Spark，用jps查看，启动的进程应包括Master、Worker:&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;start-all.sh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;	start-all.sh
+	&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ol&gt;
   &lt;li&gt;测试，运行SparkPi例子:&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/spark-2.1.0
-./bin/spark-submit --class org.apache.spark.examples.SparkPi &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
---master yarn-cluster &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
---num-executors 3 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
---driver-memory 2g &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
---executor-memory 1g &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
---executor-cores 1 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
---queue thequeue &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-examples/jars/spark-examples_2.11-2.1.0.jar &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-10&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;	&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/spark-2.1.0
+	./bin/spark-submit --class org.apache.spark.examples.SparkPi &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+	--master yarn-cluster &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+	--num-executors 3 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+	--driver-memory 2g &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+	--executor-memory 1g &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+	--executor-cores 1 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+	--queue thequeue &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+	examples/jars/spark-examples_2.11-2.1.0.jar &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+	10
+	&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ol&gt;
   &lt;li&gt;查看结果:&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;yarn logs -applicationId &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;applicationId&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; | grep &lt;span class=&quot;s1&quot;&gt;&#39;Pi&#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;	yarn logs -applicationId &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;applicationId&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; | grep &lt;span class=&quot;s1&quot;&gt;&#39;Pi&#39;&lt;/span&gt;
+	&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Wed, 16 Nov 2016 08:00:00 +0800</pubDate>

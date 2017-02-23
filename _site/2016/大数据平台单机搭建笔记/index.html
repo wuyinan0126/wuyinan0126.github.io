@@ -442,28 +442,31 @@ mv /opt/spark-2.1.0-bin-hadoop2.7 /opt/spark-2.1.0</code></pre></figure>
   <li>启动Spark，用jps查看，启动的进程应包括Master、Worker:</li>
 </ol>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">start-all.sh</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">	start-all.sh
+	</code></pre></figure>
 
 <ol>
   <li>测试，运行SparkPi例子:</li>
 </ol>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/spark-2.1.0
-./bin/spark-submit --class org.apache.spark.examples.SparkPi <span class="se">\</span>
---master yarn-cluster <span class="se">\</span>
---num-executors 3 <span class="se">\</span>
---driver-memory 2g <span class="se">\</span>
---executor-memory 1g <span class="se">\</span>
---executor-cores 1 <span class="se">\</span>
---queue thequeue <span class="se">\</span>
-examples/jars/spark-examples_2.11-2.1.0.jar <span class="se">\</span>
-10</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="nb">cd</span> /opt/spark-2.1.0
+	./bin/spark-submit --class org.apache.spark.examples.SparkPi <span class="se">\</span>
+	--master yarn-cluster <span class="se">\</span>
+	--num-executors 3 <span class="se">\</span>
+	--driver-memory 2g <span class="se">\</span>
+	--executor-memory 1g <span class="se">\</span>
+	--executor-cores 1 <span class="se">\</span>
+	--queue thequeue <span class="se">\</span>
+	examples/jars/spark-examples_2.11-2.1.0.jar <span class="se">\</span>
+	10
+	</code></pre></figure>
 
 <ol>
   <li>查看结果:</li>
 </ol>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">yarn logs -applicationId <span class="k">${</span><span class="nv">applicationId</span><span class="k">}</span> | grep <span class="s1">'Pi'</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">	yarn logs -applicationId <span class="k">${</span><span class="nv">applicationId</span><span class="k">}</span> | grep <span class="s1">'Pi'</span>
+	</code></pre></figure>
 
 
 
