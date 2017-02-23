@@ -206,33 +206,36 @@
     <p>SSH免密码登录:</p>
 
     <ol>
-      <li>生成密钥:</li>
+      <li>
+        <p>生成密钥:</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> ssh-keygen -t dsa
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>生成authorized_keys，进入.ssh目录:</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> cat id_dsa.pub &gt;&gt; authorized_keys
+ chmod 600 authorized_keys
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>测试:</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> ssh localhost
+</code></pre>
+        </div>
+      </li>
     </ol>
   </li>
-</ol>
-
-<figure class="highlight"><pre><code class="language-xml" data-lang="xml">ssh-keygen -t dsa</code></pre></figure>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>2. 生成authorized_keys，进入.ssh目录:
-
-		cat id_dsa.pub &gt;&gt; authorized_keys
-		chmod 600 authorized_keys
-
-3. 测试:
-
-		ssh localhost
-</code></pre>
-</div>
-
-<ol>
   <li>
     <p>下载Hadoop二进制包（或源码自行编译），解压至/opt/:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> tar -zxvf ./hadoop-2.7.3.tar.gz -C /opt/
-</code></pre>
-    </div>
   </li>
 </ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">tar -zxvf ./hadoop-2.7.3.tar.gz -C /opt/</code></pre></figure>
 
 <h4 id="hadoop">配置Hadoop</h4>
 <ol>
@@ -339,153 +342,128 @@
 <span class="nt">&lt;/configuration&gt;</span></code></pre></figure>
 
 <ol>
-  <li>
-    <p>etc/hadoop/mapred-env.sh:
-     export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
-     export HADOOP_MAPRED_PID_DIR=/opt/hadoop-2.7.3/var/tmp</p>
-  </li>
-  <li>
-    <p>etc/hadoop/hadoop-env.sh:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
- export HADOOP_PID_DIR=/opt/hadoop-2.7.3/var/tmp
- export HADOOP_SECURE_DN_PID_DIR=/opt/hadoop-2.7.3/var/tmp
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>etc/hadoop/slaves:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> localhost
-</code></pre>
-    </div>
-  </li>
+  <li>etc/hadoop/mapred-env.sh:</li>
 </ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+<span class="nb">export </span><span class="nv">HADOOP_MAPRED_PID_DIR</span><span class="o">=</span>/opt/hadoop-2.7.3/var/tmp</code></pre></figure>
+
+<ol>
+  <li>etc/hadoop/hadoop-env.sh:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+<span class="nb">export </span><span class="nv">HADOOP_PID_DIR</span><span class="o">=</span>/opt/hadoop-2.7.3/var/tmp
+<span class="nb">export </span><span class="nv">HADOOP_SECURE_DN_PID_DIR</span><span class="o">=</span>/opt/hadoop-2.7.3/var/tmp</code></pre></figure>
+
+<ol>
+  <li>etc/hadoop/slaves:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">localhost</code></pre></figure>
 
 <h4 id="hadoop-1">启动Hadoop</h4>
 <ol>
-  <li>
-    <p>根据hadoop.tmp.dir, dfs.namenode.name.dir, dfs.datanode.name.dir在相应位置创建目录</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> mkdir /opt/hadoop-2.7.3/var/
- mkdir /opt/hadoop-2.7.3/var/tmp
- mkdir /opt/hadoop-2.7.3/var/name
- mkdir /opt/hadoop-2.7.3/var/data
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>格式化namenode，如果Exiting with status 0，说明格式化成功:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> hdfs namenode -format
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>启动namenode、datanode、yarn，每启动一个后都用jps查看是否启动成功，最后启动的进程应该包括NameNode、DataNode、ResorceManager、NodeManager:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> hadoop-daemon.sh start namenode
- hadoop-daemon.sh start datanode
- start-yarn.sh
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>在浏览器查看：</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> http://localhost:50070/
- http://localhost:8088/
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>测试，运行wordcount例子:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> hadoop fs -mkdir /test
- hadoop fs -mkdir /test/input
- hadoop fs -put ./words.txt /test/input
- hadoop jar /opt/hadoop-2.7.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /test/input/ /test/output
- hadoop fs -cat /test/output/part-r-00000
-</code></pre>
-    </div>
-  </li>
+  <li>根据hadoop.tmp.dir, dfs.namenode.name.dir, dfs.datanode.name.dir在相应位置创建目录</li>
 </ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir /opt/hadoop-2.7.3/var/
+mkdir /opt/hadoop-2.7.3/var/tmp
+mkdir /opt/hadoop-2.7.3/var/name
+mkdir /opt/hadoop-2.7.3/var/data</code></pre></figure>
+
+<ol>
+  <li>格式化namenode，如果Exiting with status 0，说明格式化成功:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">hdfs namenode -format</code></pre></figure>
+
+<ol>
+  <li>启动namenode、datanode、yarn，每启动一个后都用jps查看是否启动成功，最后启动的进程应该包括NameNode、DataNode、ResorceManager、NodeManager:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">hadoop-daemon.sh start namenode
+hadoop-daemon.sh start datanode
+start-yarn.sh</code></pre></figure>
+
+<ol>
+  <li>在浏览器查看：</li>
+</ol>
+
+<p>[http://localhost:50070/][http://localhost:50070/]
+[http://localhost:8088/][http://localhost:8088/]</p>
+
+<ol>
+  <li>测试，运行wordcount例子:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">hadoop fs -mkdir /test
+hadoop fs -mkdir /test/input
+hadoop fs -put ./words.txt /test/input
+hadoop jar /opt/hadoop-2.7.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /test/input/ /test/output
+hadoop fs -cat /test/output/part-r-00000</code></pre></figure>
 
 <h2 id="scala2118">安装Scala（版本2.11.8）</h2>
 <hr />
 <ol>
-  <li>下载Scala二进制包，解压至/opt/:
-     tar -zxvf ./scala-2.11.8.tgz -C /opt/</li>
+  <li>下载Scala二进制包，解压至/opt/:</li>
 </ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">tar -zxvf ./scala-2.11.8.tgz -C /opt/</code></pre></figure>
 
 <h2 id="spark210">安装Spark（版本2.1.0）</h2>
 <hr />
 
 <h4 id="section-1">准备工作</h4>
 <ol>
-  <li>
-    <p>下载Spark二进制包（或源码自行编译），解压至/opt/:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> tar -zxvf ./spark-2.1.0-bin-hadoop2.7 -C /opt/
- mv /opt/spark-2.1.0-bin-hadoop2.7 /opt/spark-2.1.0
-</code></pre>
-    </div>
-  </li>
+  <li>下载Spark二进制包（或源码自行编译），解压至/opt/:</li>
 </ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">tar -zxvf ./spark-2.1.0-bin-hadoop2.7 -C /opt/
+mv /opt/spark-2.1.0-bin-hadoop2.7 /opt/spark-2.1.0</code></pre></figure>
 
 <h4 id="spark">配置Spark</h4>
 <ol>
-  <li>
-    <p>conf/spark-env.sh:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
- export HADOOP_HOME=/opt/hadoop-2.7.3
- export SCALA_HOME=/opt/scala-2.11.8	
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>conf/slaves:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> localhost
-</code></pre>
-    </div>
-  </li>
+  <li>conf/spark-env.sh:</li>
 </ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+<span class="nb">export </span><span class="nv">HADOOP_HOME</span><span class="o">=</span>/opt/hadoop-2.7.3
+<span class="nb">export </span><span class="nv">SCALA_HOME</span><span class="o">=</span>/opt/scala-2.11.8	</code></pre></figure>
+
+<ol>
+  <li>conf/slaves:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">localhost</code></pre></figure>
 
 <h4 id="spark-1">启动Spark</h4>
 <ol>
-  <li>
-    <p>启动Spark，用jps查看，启动的进程应包括Master、Worker:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> start-all.sh
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>测试，运行SparkPi例子:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> cd /opt/spark-2.1.0
- ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
- --master yarn-cluster \
- --num-executors 3 \
- --driver-memory 2g \
- --executor-memory 1g \
- --executor-cores 1 \
- --queue thequeue \
- examples/jars/spark-examples_2.11-2.1.0.jar \
- 10
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>查看结果:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> yarn logs -applicationId ${applicationId} | grep 'Pi'
-</code></pre>
-    </div>
-  </li>
+  <li>启动Spark，用jps查看，启动的进程应包括Master、Worker:</li>
 </ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">start-all.sh</code></pre></figure>
+
+<ol>
+  <li>测试，运行SparkPi例子:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/spark-2.1.0
+./bin/spark-submit --class org.apache.spark.examples.SparkPi <span class="se">\</span>
+--master yarn-cluster <span class="se">\</span>
+--num-executors 3 <span class="se">\</span>
+--driver-memory 2g <span class="se">\</span>
+--executor-memory 1g <span class="se">\</span>
+--executor-cores 1 <span class="se">\</span>
+--queue thequeue <span class="se">\</span>
+examples/jars/spark-examples_2.11-2.1.0.jar <span class="se">\</span>
+10</code></pre></figure>
+
+<ol>
+  <li>查看结果:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">yarn logs -applicationId <span class="k">${</span><span class="nv">applicationId</span><span class="k">}</span> | grep <span class="s1">'Pi'</span></code></pre></figure>
 
 
 
