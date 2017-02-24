@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 24 Feb 2017 15:41:28 +0800</pubDate>
-    <lastBuildDate>Fri, 24 Feb 2017 15:41:28 +0800</lastBuildDate>
+    <pubDate>Fri, 24 Feb 2017 15:45:55 +0800</pubDate>
+    <lastBuildDate>Fri, 24 Feb 2017 15:45:55 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -500,7 +500,7 @@
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;在浏览器查看：&lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:50070/&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:8088/&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;在浏览器查看：&lt;a href=&quot;http://localhost:50070/&quot;&gt;http://localhost:50070/&lt;/a&gt;和&lt;a href=&quot;http://localhost:8088/&quot;&gt;http://localhost:8088/&lt;/a&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;测试，运行wordcount例子:&lt;/p&gt;
@@ -533,6 +533,12 @@
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(1)-Overview</title>
         <description>&lt;p&gt;**&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;搭建环境&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;机型：MacBook Pro (Retina, 13-inch, Early 2015)
+操作系统：MacOS Sierra&lt;/p&gt;
 
 &lt;h2 id=&quot;etcprofile&quot;&gt;/etc/profile&lt;/h2&gt;
 &lt;hr /&gt;
@@ -653,7 +659,7 @@
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:4000/&lt;/code&gt;查看本地预览&lt;/p&gt;
+    &lt;p&gt;在&lt;a href=&quot;http://localhost:4000/&quot;&gt;http://localhost:4000/&lt;/a&gt;查看本地预览&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
