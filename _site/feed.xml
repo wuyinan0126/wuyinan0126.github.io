@@ -5,33 +5,114 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 23 Feb 2017 16:08:23 +0800</pubDate>
-    <lastBuildDate>Thu, 23 Feb 2017 16:08:23 +0800</lastBuildDate>
+    <pubDate>Fri, 24 Feb 2017 10:15:52 +0800</pubDate>
+    <lastBuildDate>Fri, 24 Feb 2017 10:15:52 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
-        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记</title>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(3)-Spark</title>
         <description>&lt;p&gt;**&lt;/p&gt;
 
-&lt;h2 id=&quot;etcprofile&quot;&gt;/etc/profile&lt;/h2&gt;
+&lt;h2 id=&quot;scala2118&quot;&gt;安装Scala（版本2.11.8）&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载Scala二进制包，解压至/opt/:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./scala-2.11.8.tgz -C /opt/
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;spark210&quot;&gt;安装Spark（版本2.1.0）&lt;/h2&gt;
 &lt;hr /&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HADOOP_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/hadoop-2.7.3
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SCALA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/scala-2.11.8
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SPARK_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/spark-2.1.0
-&lt;span class=&quot;c&quot;&gt;# Spark运行必须export下面三个变量&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HADOOP_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HDFS_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;YARN_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HIVE_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/hive-2.1.0
+&lt;h4 id=&quot;section&quot;&gt;准备工作&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载Spark二进制包（或源码自行编译），解压至/opt/:&lt;/p&gt;
 
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$JAVA_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/bin:&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/sbin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$SCALA_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$SPARK_HOME&lt;/span&gt;/bin:&lt;span class=&quot;nv&quot;&gt;$SPARK_HOME&lt;/span&gt;/sbin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$HIVE_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-/usr/local/sbin:&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./spark-2.1.0-bin-hadoop2.7 -C /opt/
+ $ mv /opt/spark-2.1.0-bin-hadoop2.7 /opt/spark-2.1.0
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;spark&quot;&gt;配置Spark&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;conf/spark-env.sh:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+ export HADOOP_HOME=/opt/hadoop-2.7.3
+ export SCALA_HOME=/opt/scala-2.11.8	
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;conf/slaves:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; localhost
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;spark-1&quot;&gt;启动Spark&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动Spark，用jps查看，启动的进程应包括Master、Worker:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ start-all.sh
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;测试，运行SparkPi例子:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd /opt/spark-2.1.0
+ $ ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
+ --master yarn-cluster \
+ --num-executors 3 \
+ --driver-memory 2g \
+ --executor-memory 1g \
+ --executor-cores 1 \
+ --queue thequeue \
+ examples/jars/spark-examples_2.11-2.1.0.jar \
+ 10
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;查看结果:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ yarn logs -applicationId ${applicationId} | grep &#39;Pi&#39;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Sun, 04 Dec 2016 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark/</guid>
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+      </item>
+    
+      <item>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(2)-Hadoop</title>
+        <description>&lt;p&gt;**&lt;/p&gt;
 
 &lt;h2 id=&quot;hadoop273&quot;&gt;安装Hadoop（版本2.7.3）&lt;/h2&gt;
 &lt;hr /&gt;
@@ -253,97 +334,59 @@
     &lt;/div&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
+</description>
+        <pubDate>Thu, 01 Dec 2016 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(2)-Hadoop/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(2)-Hadoop/</guid>
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+      </item>
+    
+      <item>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(1)-Overview</title>
+        <description>&lt;p&gt;**&lt;/p&gt;
 
-&lt;h2 id=&quot;scala2118&quot;&gt;安装Scala（版本2.11.8）&lt;/h2&gt;
+&lt;h2 id=&quot;etcprofile&quot;&gt;/etc/profile&lt;/h2&gt;
 &lt;hr /&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载Scala二进制包，解压至/opt/:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./scala-2.11.8.tgz -C /opt/
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HADOOP_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/hadoop-2.7.3
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SCALA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/scala-2.11.8
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SPARK_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/spark-2.1.0
+&lt;span class=&quot;c&quot;&gt;# Spark运行必须export下面三个变量&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HADOOP_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HDFS_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;YARN_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HIVE_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/hive-2.1.0
 
-&lt;h2 id=&quot;spark210&quot;&gt;安装Spark（版本2.1.0）&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;h4 id=&quot;section-1&quot;&gt;准备工作&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载Spark二进制包（或源码自行编译），解压至/opt/:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./spark-2.1.0-bin-hadoop2.7 -C /opt/
- $ mv /opt/spark-2.1.0-bin-hadoop2.7 /opt/spark-2.1.0
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;spark&quot;&gt;配置Spark&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;conf/spark-env.sh:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
- export HADOOP_HOME=/opt/hadoop-2.7.3
- export SCALA_HOME=/opt/scala-2.11.8	
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;conf/slaves:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; localhost
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;spark-1&quot;&gt;启动Spark&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;启动Spark，用jps查看，启动的进程应包括Master、Worker:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ start-all.sh
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;测试，运行SparkPi例子:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd /opt/spark-2.1.0
- $ ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
- --master yarn-cluster \
- --num-executors 3 \
- --driver-memory 2g \
- --executor-memory 1g \
- --executor-cores 1 \
- --queue thequeue \
- examples/jars/spark-examples_2.11-2.1.0.jar \
- 10
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;查看结果:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ yarn logs -applicationId ${applicationId} | grep &#39;Pi&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$JAVA_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/bin:&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/sbin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$SCALA_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$SPARK_HOME&lt;/span&gt;/bin:&lt;span class=&quot;nv&quot;&gt;$SPARK_HOME&lt;/span&gt;/sbin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$HIVE_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+/usr/local/sbin:&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Wed, 16 Nov 2016 08:00:00 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/</guid>
+        <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/</guid>
         
         <category>原创</category>
         
+        <category>大数据</category>
+        
         
         <category>原创</category>
+        
+        <category>大数据</category>
         
       </item>
     

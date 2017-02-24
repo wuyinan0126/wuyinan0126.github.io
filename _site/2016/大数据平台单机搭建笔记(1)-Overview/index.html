@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Tags</title>
+  <title><font color='red'>[原创]</font> 大数据平台单机搭建笔记(1)-Overview</title>
   <meta name="description" content="Welcome to my blog!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//tags/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -166,164 +166,84 @@
 
     <div class="content-wrapper">
       <div class="content-wrapper__inner">
-        <h2>Tags:</h2>
-<div class="tags"> 
- 
-  <a href="#GEEK">GEEK</a>
- 
-  <a href="#原创">原创</a>
- 
-  <a href="#树莓派">树莓派</a>
- 
-  <a href="#大数据">大数据</a>
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="16 Nov 2016" class="post-meta__date date">16 Nov 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
+    </div>
+    <h1 class="post-title"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(1)-Overview</h1>
+  </header>
 
-</div>
+  <section class="post">
+    <p>**</p>
 
-<!-- iterate through all tags on the site --> 
- 
-  <!-- for each tag, create an anchor by using the tag name as an id --> 
-  <div id="GEEK">  
-    <h3> GEEK </h3>  <!-- for create a heading --> 
+<h2 id="etcprofile">/etc/profile</h2>
+<hr />
 
-    <ul> <!-- create the list of posts -->
-      <!-- iterate through all the posts on the site --> 
-       
-        <!-- list only those which contain the current tag --> 
-        
-       
-        <!-- list only those which contain the current tag --> 
-        
-       
-        <!-- list only those which contain the current tag --> 
-        
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"><font color='red'>[原创]</font> GitHub个人博客搭建</a>
-            </li>
-        
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/"><font color='red'>[原创]</font> 树莓派2创建钓鱼热点</a>
-            </li>
-        
-      
-    </ul>
-  </div>
- 
-  <!-- for each tag, create an anchor by using the tag name as an id --> 
-  <div id="原创">  
-    <h3> 原创 </h3>  <!-- for create a heading --> 
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+<span class="nb">export </span><span class="nv">HADOOP_HOME</span><span class="o">=</span>/opt/hadoop-2.7.3
+<span class="nb">export </span><span class="nv">SCALA_HOME</span><span class="o">=</span>/opt/scala-2.11.8
+<span class="nb">export </span><span class="nv">SPARK_HOME</span><span class="o">=</span>/opt/spark-2.1.0
+<span class="c"># Spark运行必须export下面三个变量</span>
+<span class="nb">export </span><span class="nv">HADOOP_CONF_DIR</span><span class="o">=</span><span class="nv">$HADOOP_HOME</span>/etc/hadoop
+<span class="nb">export </span><span class="nv">HDFS_CONF_DIR</span><span class="o">=</span><span class="nv">$HADOOP_HOME</span>/etc/hadoop
+<span class="nb">export </span><span class="nv">YARN_CONF_DIR</span><span class="o">=</span><span class="nv">$HADOOP_HOME</span>/etc/hadoop
+<span class="nb">export </span><span class="nv">HIVE_HOME</span><span class="o">=</span>/opt/hive-2.1.0
 
-    <ul> <!-- create the list of posts -->
-      <!-- iterate through all the posts on the site --> 
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark</a>
-            </li>
-        
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(2)-Hadoop/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(2)-Hadoop</a>
-            </li>
-        
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(1)-Overview</a>
-            </li>
-        
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"><font color='red'>[原创]</font> GitHub个人博客搭建</a>
-            </li>
-        
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/"><font color='red'>[原创]</font> 树莓派2创建钓鱼热点</a>
-            </li>
-        
-      
-    </ul>
-  </div>
- 
-  <!-- for each tag, create an anchor by using the tag name as an id --> 
-  <div id="树莓派">  
-    <h3> 树莓派 </h3>  <!-- for create a heading --> 
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin: <span class="se">\</span>
+<span class="nv">$HADOOP_HOME</span>/bin:<span class="nv">$HADOOP_HOME</span>/sbin: <span class="se">\</span>
+<span class="nv">$SCALA_HOME</span>/bin: <span class="se">\</span>
+<span class="nv">$SPARK_HOME</span>/bin:<span class="nv">$SPARK_HOME</span>/sbin: <span class="se">\</span>
+<span class="nv">$HIVE_HOME</span>/bin: <span class="se">\</span>
+/usr/local/sbin:<span class="nv">$PATH</span></code></pre></figure>
 
-    <ul> <!-- create the list of posts -->
-      <!-- iterate through all the posts on the site --> 
-       
-        <!-- list only those which contain the current tag --> 
-        
-       
-        <!-- list only those which contain the current tag --> 
-        
-       
-        <!-- list only those which contain the current tag --> 
-        
-       
-        <!-- list only those which contain the current tag --> 
-        
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/"><font color='red'>[原创]</font> 树莓派2创建钓鱼热点</a>
-            </li>
-        
-      
-    </ul>
-  </div>
- 
-  <!-- for each tag, create an anchor by using the tag name as an id --> 
-  <div id="大数据">  
-    <h3> 大数据 </h3>  <!-- for create a heading --> 
 
-    <ul> <!-- create the list of posts -->
-      <!-- iterate through all the posts on the site --> 
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark</a>
-            </li>
-        
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(2)-Hadoop/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(2)-Hadoop</a>
-            </li>
-        
-       
-        <!-- list only those which contain the current tag --> 
-         
-            <li>
-              <a href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(1)-Overview</a>
-            </li>
-        
-       
-        <!-- list only those which contain the current tag --> 
-        
-       
-        <!-- list only those which contain the current tag --> 
-        
-      
-    </ul>
-  </div>
+
+    <div class="page_navigation">
+    
+      <a class="prev" href="/2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">&laquo; <font color='red'>[原创]</font> GitHub个人博客搭建</a>
+    
+    
+      <a class="next" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(2)-Hadoop/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(2)-Hadoop &raquo;</a>
+    
+    </div>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <div id="disqus_thread"></div>
+    <script>
+
+    var disqus_shortname = 'wuyinan0126';
+
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+
+    var disqus_config = function () {
+        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/大数据平台单机搭建笔记(1)-Overview'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2016/大数据平台单机搭建笔记(1)-Overview';
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//wuyinan0126.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
 
       </div>
 
