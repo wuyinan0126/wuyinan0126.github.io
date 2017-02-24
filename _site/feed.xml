@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 24 Feb 2017 15:38:01 +0800</pubDate>
-    <lastBuildDate>Fri, 24 Feb 2017 15:38:01 +0800</lastBuildDate>
+    <pubDate>Fri, 24 Feb 2017 15:41:28 +0800</pubDate>
+    <lastBuildDate>Fri, 24 Feb 2017 15:41:28 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -91,7 +91,7 @@
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;下载Mysql驱动包[https://dev.mysql.com/downloads/connector/j/][https://dev.mysql.com/downloads/connector/j/]，并放入/opt/hive-2.1.0/lib中&lt;/p&gt;
+    &lt;p&gt;下载Mysql驱动包&lt;a href=&quot;https://dev.mysql.com/downloads/connector/j/&quot;&gt;https://dev.mysql.com/downloads/connector/j/&lt;/a&gt;，并放入/opt/hive-2.1.0/lib中&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
