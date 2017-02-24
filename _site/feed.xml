@@ -5,16 +5,37 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 24 Feb 2017 15:52:01 +0800</pubDate>
-    <lastBuildDate>Fri, 24 Feb 2017 15:52:01 +0800</lastBuildDate>
+    <pubDate>Fri, 24 Feb 2017 16:02:14 +0800</pubDate>
+    <lastBuildDate>Fri, 24 Feb 2017 16:02:14 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(5)-Kafka</title>
         <description>&lt;p&gt;**&lt;/p&gt;
 
-&lt;h2 id=&quot;kafka&quot;&gt;Kafka&lt;/h2&gt;
+&lt;h2 id=&quot;zookeeper349&quot;&gt;安装Zookeeper（版本3.4.9）&lt;/h2&gt;
 &lt;hr /&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;准备工作&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载Zookeeper二进制包，解压至/opt/:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./zookeeper-3.4.9.tar.gz -C /opt/
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;zookeeper&quot;&gt;配置Zookeeper&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;conf/zoo.cfg&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 </description>
         <pubDate>Fri, 24 Feb 2017 08:00:00 +0800</pubDate>
