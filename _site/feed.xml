@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 24 Feb 2017 16:03:32 +0800</pubDate>
-    <lastBuildDate>Fri, 24 Feb 2017 16:03:32 +0800</lastBuildDate>
+    <pubDate>Fri, 24 Feb 2017 16:40:16 +0800</pubDate>
+    <lastBuildDate>Fri, 24 Feb 2017 16:40:16 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -25,6 +25,14 @@
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建数据文件夹和日志文件夹:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mkdir /opt/zookeeper-3.4.9/var/data
+ $ mkdir /opt/zookeeper-3.4.9/var/log
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h4 id=&quot;zookeeper&quot;&gt;配置Zookeeper&lt;/h4&gt;
@@ -32,14 +40,69 @@
   &lt;li&gt;
     &lt;p&gt;conf/zoo.cfg&lt;/p&gt;
 
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
- import a;
- public int b;
-&lt;/code&gt;&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # 这个时间(ms)是作为Zookeeper服务器之间或客户端与服务器之间维持心跳的时间间隔
+ tickTime=2000
+ # Zookeeper服务器集群中的Follower服务器初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过10个tickTime的时间长度后 Leader服务器还没有收到Follower的返回信息，表明这个Follower连接失败
+ initLimit=10
+ # 标识Leader与Follower之间发送消息，请求和应答时间长度最长不能超过多少个tickTime的时间长度
+ syncLimit=5
+ # 客户端连接Zookeeper服务器的端口，Zookeeper会监听这个端口，接受客户端的访问请求。
+ clientPort=2181
+ dataDir=/opt/zookeeper-3.4.9/var/data
+ dataLogDir=/opt/zookeeper-3.4.9/var/log
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
 
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
- set a=1
-&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;zookeeper-1&quot;&gt;启动Zookeeper&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动Zookeeper服务器&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; zkServer.sh start
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动Zookeeper客户端&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; zkCli.sh
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;kafka01020&quot;&gt;安装Kafka（版本0.10.2.0）&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;准备工作&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载Kafka二进制包，解压至/opt/:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./kafka_2.11-0.10.2.0.tgz -C /opt/
+ $ mv /opt/kafka_2.11-0.10.2.0 /opt/kafka-0.10.2.0
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建kafka日志目录:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mkdir /opt/kafka-0.10.2.0/var/log
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;kafka&quot;&gt;配置Kafka&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;conf/server.properties&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; log.dirs=/opt/kafka-0.10.2.0/var/log
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 </description>
@@ -560,17 +623,21 @@
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(1)-Overview</title>
         <description>&lt;p&gt;**&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;搭建环境&lt;/h2&gt;
+&lt;h2 id=&quot;section&quot;&gt;环境&lt;/h2&gt;
 &lt;hr /&gt;
 
 &lt;p&gt;机型：MacBook Pro (Retina, 13-inch, Early 2015)&lt;/p&gt;
 
 &lt;p&gt;操作系统：MacOS Sierra&lt;/p&gt;
 
-&lt;h2 id=&quot;etcprofile&quot;&gt;/etc/profile&lt;/h2&gt;
+&lt;h2 id=&quot;section-1&quot;&gt;大数据平台单机架构&lt;/h2&gt;
+
+&lt;h2 id=&quot;jdk&quot;&gt;安装JDK&lt;/h2&gt;
+
+&lt;h2 id=&quot;etcprofile&quot;&gt;修改/etc/profile&lt;/h2&gt;
 &lt;hr /&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HADOOP_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/hadoop-2.7.3
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SCALA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/scala-2.11.8
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SPARK_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/spark-2.1.0
@@ -579,14 +646,19 @@
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HDFS_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;YARN_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HIVE_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/hive-2.1.0
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ZOOKEEPER_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/zookeeper-3.4.9
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;KAFKA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/kafka-0.10.2.0
 
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$JAVA_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/bin:&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/sbin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$SCALA_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$SPARK_HOME&lt;/span&gt;/bin:&lt;span class=&quot;nv&quot;&gt;$SPARK_HOME&lt;/span&gt;/sbin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$HIVE_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-/usr/local/sbin:&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
+&lt;span class=&quot;nv&quot;&gt;$ZOOKEEPER_HOME&lt;/span&gt;/bin: &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$KAFKA_HOME&lt;/span&gt;/bin &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+/usr/local/sbin:&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
         <pubDate>Wed, 16 Nov 2016 08:00:00 +0800</pubDate>
         <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/</link>

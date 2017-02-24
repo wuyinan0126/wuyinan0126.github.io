@@ -189,6 +189,14 @@
 </code></pre>
     </div>
   </li>
+  <li>
+    <p>创建数据文件夹和日志文件夹:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ mkdir /opt/zookeeper-3.4.9/var/data
+ $ mkdir /opt/zookeeper-3.4.9/var/log
+</code></pre>
+    </div>
+  </li>
 </ol>
 
 <h4 id="zookeeper">配置Zookeeper</h4>
@@ -196,14 +204,69 @@
   <li>
     <p>conf/zoo.cfg</p>
 
-    <p><code class="highlighter-rouge">java
- import a;
- public int b;
-</code></p>
+    <div class="highlighter-rouge"><pre class="highlight"><code> # 这个时间(ms)是作为Zookeeper服务器之间或客户端与服务器之间维持心跳的时间间隔
+ tickTime=2000
+ # Zookeeper服务器集群中的Follower服务器初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过10个tickTime的时间长度后 Leader服务器还没有收到Follower的返回信息，表明这个Follower连接失败
+ initLimit=10
+ # 标识Leader与Follower之间发送消息，请求和应答时间长度最长不能超过多少个tickTime的时间长度
+ syncLimit=5
+ # 客户端连接Zookeeper服务器的端口，Zookeeper会监听这个端口，接受客户端的访问请求。
+ clientPort=2181
+ dataDir=/opt/zookeeper-3.4.9/var/data
+ dataLogDir=/opt/zookeeper-3.4.9/var/log
+</code></pre>
+    </div>
+  </li>
+</ol>
 
-    <p><code class="highlighter-rouge">bash
- set a=1
-</code></p>
+<h4 id="zookeeper-1">启动Zookeeper</h4>
+<ol>
+  <li>
+    <p>启动Zookeeper服务器</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> zkServer.sh start
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>启动Zookeeper客户端</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> zkCli.sh
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h2 id="kafka01020">安装Kafka（版本0.10.2.0）</h2>
+<hr />
+
+<h4 id="section-1">准备工作</h4>
+<ol>
+  <li>
+    <p>下载Kafka二进制包，解压至/opt/:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ tar -zxvf ./kafka_2.11-0.10.2.0.tgz -C /opt/
+ $ mv /opt/kafka_2.11-0.10.2.0 /opt/kafka-0.10.2.0
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>创建kafka日志目录:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ mkdir /opt/kafka-0.10.2.0/var/log
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h4 id="kafka">配置Kafka</h4>
+<ol>
+  <li>
+    <p>conf/server.properties</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> log.dirs=/opt/kafka-0.10.2.0/var/log
+</code></pre>
+    </div>
   </li>
 </ol>
 

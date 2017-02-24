@@ -177,17 +177,21 @@
   <section class="post">
     <p>**</p>
 
-<h2 id="section">搭建环境</h2>
+<h2 id="section">环境</h2>
 <hr />
 
 <p>机型：MacBook Pro (Retina, 13-inch, Early 2015)</p>
 
 <p>操作系统：MacOS Sierra</p>
 
-<h2 id="etcprofile">/etc/profile</h2>
+<h2 id="section-1">大数据平台单机架构</h2>
+
+<h2 id="jdk">安装JDK</h2>
+
+<h2 id="etcprofile">修改/etc/profile</h2>
 <hr />
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
 <span class="nb">export </span><span class="nv">HADOOP_HOME</span><span class="o">=</span>/opt/hadoop-2.7.3
 <span class="nb">export </span><span class="nv">SCALA_HOME</span><span class="o">=</span>/opt/scala-2.11.8
 <span class="nb">export </span><span class="nv">SPARK_HOME</span><span class="o">=</span>/opt/spark-2.1.0
@@ -196,14 +200,19 @@
 <span class="nb">export </span><span class="nv">HDFS_CONF_DIR</span><span class="o">=</span><span class="nv">$HADOOP_HOME</span>/etc/hadoop
 <span class="nb">export </span><span class="nv">YARN_CONF_DIR</span><span class="o">=</span><span class="nv">$HADOOP_HOME</span>/etc/hadoop
 <span class="nb">export </span><span class="nv">HIVE_HOME</span><span class="o">=</span>/opt/hive-2.1.0
+<span class="nb">export </span><span class="nv">ZOOKEEPER_HOME</span><span class="o">=</span>/opt/zookeeper-3.4.9
+<span class="nb">export </span><span class="nv">KAFKA_HOME</span><span class="o">=</span>/opt/kafka-0.10.2.0
 
 <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin: <span class="se">\</span>
 <span class="nv">$HADOOP_HOME</span>/bin:<span class="nv">$HADOOP_HOME</span>/sbin: <span class="se">\</span>
 <span class="nv">$SCALA_HOME</span>/bin: <span class="se">\</span>
 <span class="nv">$SPARK_HOME</span>/bin:<span class="nv">$SPARK_HOME</span>/sbin: <span class="se">\</span>
 <span class="nv">$HIVE_HOME</span>/bin: <span class="se">\</span>
-/usr/local/sbin:<span class="nv">$PATH</span></code></pre></figure>
-
+<span class="nv">$ZOOKEEPER_HOME</span>/bin: <span class="se">\</span>
+<span class="nv">$KAFKA_HOME</span>/bin <span class="se">\</span>
+/usr/local/sbin:<span class="nv">$PATH</span>
+</code></pre>
+</div>
 
 
     <div class="page_navigation">
