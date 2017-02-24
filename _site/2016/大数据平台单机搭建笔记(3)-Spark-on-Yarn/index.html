@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title><font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark</title>
+  <title><font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark on Yarn</title>
   <meta name="description" content="Welcome to my blog!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark-on-Yarn/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -171,7 +171,7 @@
     <div class="post-meta">
       <time datetime="4 Dec 2016" class="post-meta__date date">4 Dec 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
     </div>
-    <h1 class="post-title"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark</h1>
+    <h1 class="post-title"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark on Yarn</h1>
   </header>
 
   <section class="post">
@@ -227,9 +227,18 @@
 <h4 id="spark-1">启动Spark</h4>
 <ol>
   <li>
+    <p>启动Hadoop</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hadoop-daemon.sh start namenode
+ $ hadoop-daemon.sh start datanode
+ $ start-yarn.sh
+</code></pre>
+    </div>
+  </li>
+  <li>
     <p>启动Spark，用jps查看，启动的进程应包括Master、Worker:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ start-all.sh
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ /opt/spark-2.1.0/sbin/start-all.sh
 </code></pre>
     </div>
   </li>
@@ -265,6 +274,8 @@
       <a class="prev" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(2)-Hadoop/">&laquo; <font color='red'>[原创]</font> 大数据平台单机搭建笔记(2)-Hadoop</a>
     
     
+      <a class="next" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(4)-Hive/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(4)-Hive &raquo;</a>
+    
     </div>
 
   </section>
@@ -281,9 +292,9 @@
      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
 
     var disqus_config = function () {
-        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2016/大数据平台单机搭建笔记(3)-Spark'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        this.page.title = '/2016/大数据平台单机搭建笔记(3)-Spark';
+        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark-on-Yarn/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/大数据平台单机搭建笔记(3)-Spark on Yarn'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2016/大数据平台单机搭建笔记(3)-Spark on Yarn';
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE

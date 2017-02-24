@@ -1,5 +1,5 @@
 ---
-title:  "<font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark"
+title:  "<font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark on Yarn"
 date:   2016-12-04 00:00:00
 categories: [原创,大数据]
 tags: [原创,大数据]
@@ -34,9 +34,15 @@ tags: [原创,大数据]
 		localhost
 
 #### 启动Spark	
+1. 启动Hadoop
+		
+		$ hadoop-daemon.sh start namenode
+		$ hadoop-daemon.sh start datanode
+		$ start-yarn.sh
+
 1. 启动Spark，用jps查看，启动的进程应包括Master、Worker:
 
-		$ start-all.sh
+		$ /opt/spark-2.1.0/sbin/start-all.sh
 
 2. 测试，运行SparkPi例子:
 

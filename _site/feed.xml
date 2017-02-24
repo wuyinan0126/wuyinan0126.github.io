@@ -5,12 +5,183 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 24 Feb 2017 10:15:52 +0800</pubDate>
-    <lastBuildDate>Fri, 24 Feb 2017 10:15:52 +0800</lastBuildDate>
+    <pubDate>Fri, 24 Feb 2017 15:38:01 +0800</pubDate>
+    <lastBuildDate>Fri, 24 Feb 2017 15:38:01 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
-        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(3)-Spark</title>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(5)-Kafka</title>
+        <description>&lt;p&gt;**&lt;/p&gt;
+
+&lt;h2 id=&quot;kafka&quot;&gt;Kafka&lt;/h2&gt;
+&lt;hr /&gt;
+
+</description>
+        <pubDate>Fri, 24 Feb 2017 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(5)-Kafka/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(5)-Kafka/</guid>
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+      </item>
+    
+      <item>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(4)-Hive</title>
+        <description>&lt;p&gt;**&lt;/p&gt;
+
+&lt;h2 id=&quot;mysql&quot;&gt;配置MySQL&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;为Hive建立相应的MySQL账户,并赋予足够的权限:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mysql -uroot -p
+ mysql&amp;gt; CREATE USER &#39;hive&#39; IDENTIFIED BY &#39;yourpassword&#39;;
+ mysql&amp;gt; GRANT ALL PRIVILEGES ON *.* TO &#39;hive&#39;@&#39;%&#39; WITH GRANT OPTION;
+ mysql&amp;gt; flush privileges;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;[可选] 解除Mysql只允许本地登录，/etc/mysql/my.cnf:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; #bind-address           = 127.0.0.1
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;重启mysql服务:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ launchctl unload /Users/wuyinan/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+ $ launchctl load /Users/wuyinan/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;建立Hive专用的元数据库:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mysql -uhive -p
+ mysql&amp;gt; create database metastore;
+ mysql&amp;gt; USE metastore;
+ mysql&amp;gt; SOURCE /opt/hive-2.1.0/scripts/metastore/upgrade/mysql/hive-schema-2.1.0.mysql.sql;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;hive210&quot;&gt;安装Hive（版本2.1.0）&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;准备工作&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载Hive二进制包，解压至/opt/:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./apache-hive-2.1.0-bin.tar.gz -C /opt/
+ $ mv /opt/apache-hive-2.1.0-bin /opt/hive-2.1.0
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载Mysql驱动包[https://dev.mysql.com/downloads/connector/j/][https://dev.mysql.com/downloads/connector/j/]，并放入/opt/hive-2.1.0/lib中&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;hive&quot;&gt;配置Hive&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;增加/opt/hive-2.1.0/conf/hive-site.xml文件::&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&amp;gt;
+ &amp;lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&amp;gt;
+ &amp;lt;configuration&amp;gt;
+   &amp;lt;property&amp;gt;
+     &amp;lt;name&amp;gt;javax.jdo.option.ConnectionURL&amp;lt;/name&amp;gt;
+     &amp;lt;value&amp;gt;jdbc:mysql://127.0.0.1:3306/metastore?characterEncoding=UTF-8&amp;amp;amp;useSSL=false&amp;lt;/value&amp;gt;
+     &amp;lt;description&amp;gt;元数据存储的Mysql路径&amp;lt;/description&amp;gt;
+   &amp;lt;/property&amp;gt;
+   &amp;lt;property&amp;gt;
+     &amp;lt;name&amp;gt;javax.jdo.option.ConnectionDriverName&amp;lt;/name&amp;gt;
+     &amp;lt;value&amp;gt;com.mysql.jdbc.Driver&amp;lt;/value&amp;gt;
+   &amp;lt;/property&amp;gt;
+   &amp;lt;property&amp;gt;
+     &amp;lt;name&amp;gt;javax.jdo.option.ConnectionUserName&amp;lt;/name&amp;gt;
+     &amp;lt;value&amp;gt;hive&amp;lt;/value&amp;gt;
+   &amp;lt;/property&amp;gt;
+   &amp;lt;property&amp;gt;
+     &amp;lt;name&amp;gt;javax.jdo.option.ConnectionPassword&amp;lt;/name&amp;gt;
+     &amp;lt;value&amp;gt;yourpassword&amp;lt;/value&amp;gt;
+   &amp;lt;/property&amp;gt;
+   &amp;lt;property&amp;gt;
+      &amp;lt;name&amp;gt;hive.metastore.warehouse.dir&amp;lt;/name&amp;gt;
+      &amp;lt;value&amp;gt;/hive/warehouse&amp;lt;/value&amp;gt;
+      &amp;lt;description&amp;gt;数据存储的HDFS路径&amp;lt;/description&amp;gt;
+   &amp;lt;/property&amp;gt;
+ &amp;lt;/configuration&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;增加/opt/hive-2.1.0/conf/hive-env.sh文件:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export HADOOP_HOME=/opt/hadoop-2.7.3
+ export HIVE_CONF_DIR=/opt/hive-2.1.0/conf	
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;hive-1&quot;&gt;启动Hive&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动Hadoop&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hadoop-daemon.sh start namenode
+ $ hadoop-daemon.sh start datanode
+ $ start-yarn.sh
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动Hive，进入Hive交互界面:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hive
+ hive&amp;gt;
+ hive&amp;gt; show databases;
+ hive&amp;gt; use default;
+ hive&amp;gt; create table test(id INT);
+ hive&amp;gt; select count(*) from test;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Thu, 26 Jan 2017 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(4)-Hive/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(4)-Hive/</guid>
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+      </item>
+    
+      <item>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(3)-Spark on Yarn</title>
         <description>&lt;p&gt;**&lt;/p&gt;
 
 &lt;h2 id=&quot;scala2118&quot;&gt;安装Scala（版本2.11.8）&lt;/h2&gt;
@@ -63,9 +234,18 @@
 &lt;h4 id=&quot;spark-1&quot;&gt;启动Spark&lt;/h4&gt;
 &lt;ol&gt;
   &lt;li&gt;
+    &lt;p&gt;启动Hadoop&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hadoop-daemon.sh start namenode
+ $ hadoop-daemon.sh start datanode
+ $ start-yarn.sh
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
     &lt;p&gt;启动Spark，用jps查看，启动的进程应包括Master、Worker:&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ start-all.sh
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ /opt/spark-2.1.0/sbin/start-all.sh
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
@@ -96,8 +276,8 @@
 
 </description>
         <pubDate>Sun, 04 Dec 2016 08:00:00 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark/</guid>
+        <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark-on-Yarn/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark-on-Yarn/</guid>
         
         <category>原创</category>
         
