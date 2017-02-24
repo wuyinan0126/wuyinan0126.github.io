@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 24 Feb 2017 15:45:55 +0800</pubDate>
-    <lastBuildDate>Fri, 24 Feb 2017 15:45:55 +0800</lastBuildDate>
+    <pubDate>Fri, 24 Feb 2017 15:50:48 +0800</pubDate>
+    <lastBuildDate>Fri, 24 Feb 2017 15:50:48 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -537,8 +537,10 @@
 &lt;h2 id=&quot;section&quot;&gt;搭建环境&lt;/h2&gt;
 &lt;hr /&gt;
 
-&lt;p&gt;机型：MacBook Pro (Retina, 13-inch, Early 2015)
-操作系统：MacOS Sierra&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;机型：MacBook Pro (Retina, 13-inch, Early 2015)
+操作系统：MacOS Sierra
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;etcprofile&quot;&gt;/etc/profile&lt;/h2&gt;
 &lt;hr /&gt;
