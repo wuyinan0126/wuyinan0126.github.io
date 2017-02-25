@@ -177,6 +177,17 @@
   <section class="post">
     <p>**</p>
 
+<h2 id="hadoop">Hadoop</h2>
+<hr />
+
+<h4 id="yarn">YARN</h4>
+
+<p>YARN的全称是”Yet Another Resource Negotiator”，是一个独立的<strong>资源调度与管理系统</strong>。</p>
+
+<p>在Hadoop1.x中，所有任务的<strong>资源管理</strong>以及<strong>生命周期管理</strong>都由全局唯一的JobTracker负责，造成其功能繁复，限制了系统的可扩展性。同时JobTracker还存在单点失效的问题，一旦JobTracker故障，整个Hadoop集群将崩溃。</p>
+
+<p>在Hadoop2.x中，将<strong>资源管理</strong>与<strong>任务生命周期管理</strong>功能分离，由ResourceManager(RM)负责资源管理，由ApplicationMaster(AM)负责任务所需资源申请管理与任务生命周期管理。这样的好处除了<strong>增强系统的可扩展性</strong>，<strong>解决JobTracker单点故障问题</strong>，还<strong>可以部署除MapReduce计算框架外的其他计算框架，共享底层硬件资源</strong>。</p>
+
 <h2 id="hadoop273">安装Hadoop（版本2.7.3）</h2>
 <hr />
 
@@ -219,7 +230,7 @@
   </li>
 </ol>
 
-<h4 id="hadoop">配置Hadoop</h4>
+<h4 id="hadoop-1">配置Hadoop</h4>
 <ol>
   <li>
     <p>etc/hadoop/core-site.xml:</p>
@@ -354,7 +365,7 @@
   </li>
 </ol>
 
-<h4 id="hadoop-1">启动Hadoop</h4>
+<h4 id="hadoop-2">启动Hadoop</h4>
 <ol>
   <li>
     <p>根据hadoop.tmp.dir, dfs.namenode.name.dir, dfs.datanode.name.dir在相应位置创建目录</p>

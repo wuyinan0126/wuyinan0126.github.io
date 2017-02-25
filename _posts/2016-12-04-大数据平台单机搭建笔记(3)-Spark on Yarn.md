@@ -28,6 +28,9 @@ tags: [原创,大数据]
 		export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
 		export HADOOP_HOME=/opt/hadoop-2.7.3
 		export SCALA_HOME=/opt/scala-2.11.8	
+		export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+		export HDFS_CONF_DIR=$HADOOP_HOME/etc/hadoop
+		export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
 
 2. conf/slaves:
 

@@ -5,73 +5,38 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 24 Feb 2017 16:40:28 +0800</pubDate>
-    <lastBuildDate>Fri, 24 Feb 2017 16:40:28 +0800</lastBuildDate>
+    <pubDate>Sat, 25 Feb 2017 20:28:06 +0800</pubDate>
+    <lastBuildDate>Sat, 25 Feb 2017 20:28:06 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
-        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(5)-Kafka</title>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(6)-Kafka</title>
         <description>&lt;p&gt;**&lt;/p&gt;
 
-&lt;h2 id=&quot;zookeeper349&quot;&gt;安装Zookeeper（版本3.4.9）&lt;/h2&gt;
+&lt;h2 id=&quot;section&quot;&gt;消息队列&lt;/h2&gt;
 &lt;hr /&gt;
 
-&lt;h4 id=&quot;section&quot;&gt;准备工作&lt;/h4&gt;
+&lt;p&gt;消息队列是在消息传输过程中保存消息的容器或中间件，其主要目的是提供消息路由并保障消息的可靠传递。&lt;/p&gt;
+
+&lt;p&gt;常见的消息中间件包括ActiveMQ、ZeroMQ、RabbitMQ和Kafka等。一般消息中间件支持两种模式的队列：&lt;/p&gt;
+
 &lt;ol&gt;
   &lt;li&gt;
-    &lt;p&gt;下载Zookeeper二进制包，解压至/opt/:&lt;/p&gt;
+    &lt;p&gt;消息队列模式&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./zookeeper-3.4.9.tar.gz -C /opt/
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
+    &lt;p&gt;即&lt;strong&gt;消息生产者将消息存入队列，消息消费者从队列消费消息&lt;/strong&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;创建数据文件夹和日志文件夹:&lt;/p&gt;
+    &lt;p&gt;Pub-Sub模式&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mkdir /opt/zookeeper-3.4.9/var/data
- $ mkdir /opt/zookeeper-3.4.9/var/log
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
+    &lt;p&gt;消息生产者将消息&lt;strong&gt;发布到指定主题的队列中&lt;/strong&gt;，而消费者&lt;strong&gt;订阅指定主题的队列消息&lt;/strong&gt;，当订阅的主题有新消息时，消费者可以通过拉取(Pull)或中间件的推送(Push)消费消息&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h4 id=&quot;zookeeper&quot;&gt;配置Zookeeper&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;conf/zoo.cfg&lt;/p&gt;
+&lt;h2 id=&quot;kafka&quot;&gt;Kafka&lt;/h2&gt;
+&lt;hr /&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # 这个时间(ms)是作为Zookeeper服务器之间或客户端与服务器之间维持心跳的时间间隔
- tickTime=2000
- # Zookeeper服务器集群中的Follower服务器初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过10个tickTime的时间长度后 Leader服务器还没有收到Follower的返回信息，表明这个Follower连接失败
- initLimit=10
- # 标识Leader与Follower之间发送消息，请求和应答时间长度最长不能超过多少个tickTime的时间长度
- syncLimit=5
- # 客户端连接Zookeeper服务器的端口，Zookeeper会监听这个端口，接受客户端的访问请求。
- clientPort=2181
- dataDir=/opt/zookeeper-3.4.9/var/data
- dataLogDir=/opt/zookeeper-3.4.9/var/log
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;zookeeper-1&quot;&gt;启动Zookeeper&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;启动Zookeeper服务器&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; zkServer.sh start
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;启动Zookeeper客户端&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; zkCli.sh
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;Kafka是LinkedIn开源的采用Pub-Sub模式的分布式消息系统，最初被设计作为Log收集工具，因其具有极高吞吐量、低延迟、可扩展、高可用以及能够对消息队列进行持久化保存（不是将全部消息保存在内存中传递），因此应用场景较多，比如作为通用的消息系统、消息实时收集等。&lt;/p&gt;
 
 &lt;h2 id=&quot;kafka01020&quot;&gt;安装Kafka（版本0.10.2.0）&lt;/h2&gt;
 &lt;hr /&gt;
@@ -95,7 +60,7 @@
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h4 id=&quot;kafka&quot;&gt;配置Kafka&lt;/h4&gt;
+&lt;h4 id=&quot;kafka-1&quot;&gt;配置Kafka&lt;/h4&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;conf/server.properties&lt;/p&gt;
@@ -107,8 +72,91 @@
 &lt;/ol&gt;
 </description>
         <pubDate>Fri, 24 Feb 2017 08:00:00 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(5)-Kafka/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(5)-Kafka/</guid>
+        <link>https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(6)-Kafka/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(6)-Kafka/</guid>
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+      </item>
+    
+      <item>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(5)-Zookeeper</title>
+        <description>&lt;p&gt;**&lt;/p&gt;
+
+&lt;h2 id=&quot;zookeeper&quot;&gt;Zookeeper&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;zookeeper349&quot;&gt;安装Zookeeper（版本3.4.9）&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;准备工作&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载Zookeeper二进制包，解压至/opt/:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./zookeeper-3.4.9.tar.gz -C /opt/
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建数据文件夹和日志文件夹:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mkdir /opt/zookeeper-3.4.9/var/data
+ $ mkdir /opt/zookeeper-3.4.9/var/log
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;zookeeper-1&quot;&gt;配置Zookeeper&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;conf/zoo.cfg&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # 这个时间(ms)是作为Zookeeper服务器之间或客户端与服务器之间维持心跳的时间间隔
+ tickTime=2000
+ # Zookeeper服务器集群中的Follower服务器初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过10个tickTime的时间长度后 Leader服务器还没有收到Follower的返回信息，表明这个Follower连接失败
+ initLimit=10
+ # 标识Leader与Follower之间发送消息，请求和应答时间长度最长不能超过多少个tickTime的时间长度
+ syncLimit=5
+ # 客户端连接Zookeeper服务器的端口，Zookeeper会监听这个端口，接受客户端的访问请求。
+ clientPort=2181
+ dataDir=/opt/zookeeper-3.4.9/var/data
+ dataLogDir=/opt/zookeeper-3.4.9/var/log
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;zookeeper-2&quot;&gt;启动Zookeeper&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动Zookeeper服务器&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; zkServer.sh start
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动Zookeeper客户端&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; zkCli.sh
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Tue, 14 Feb 2017 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(5)-Zookeeper/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(5)-Zookeeper/</guid>
         
         <category>原创</category>
         
@@ -308,6 +356,9 @@
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
  export HADOOP_HOME=/opt/hadoop-2.7.3
  export SCALA_HOME=/opt/scala-2.11.8	
+ export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+ export HDFS_CONF_DIR=$HADOOP_HOME/etc/hadoop
+ export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
@@ -383,6 +434,17 @@
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据平台单机搭建笔记(2)-Hadoop</title>
         <description>&lt;p&gt;**&lt;/p&gt;
 
+&lt;h2 id=&quot;hadoop&quot;&gt;Hadoop&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;h4 id=&quot;yarn&quot;&gt;YARN&lt;/h4&gt;
+
+&lt;p&gt;YARN的全称是”Yet Another Resource Negotiator”，是一个独立的&lt;strong&gt;资源调度与管理系统&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;在Hadoop1.x中，所有任务的&lt;strong&gt;资源管理&lt;/strong&gt;以及&lt;strong&gt;生命周期管理&lt;/strong&gt;都由全局唯一的JobTracker负责，造成其功能繁复，限制了系统的可扩展性。同时JobTracker还存在单点失效的问题，一旦JobTracker故障，整个Hadoop集群将崩溃。&lt;/p&gt;
+
+&lt;p&gt;在Hadoop2.x中，将&lt;strong&gt;资源管理&lt;/strong&gt;与&lt;strong&gt;任务生命周期管理&lt;/strong&gt;功能分离，由ResourceManager(RM)负责资源管理，由ApplicationMaster(AM)负责任务所需资源申请管理与任务生命周期管理。这样的好处除了&lt;strong&gt;增强系统的可扩展性&lt;/strong&gt;，&lt;strong&gt;解决JobTracker单点故障问题&lt;/strong&gt;，还&lt;strong&gt;可以部署除MapReduce计算框架外的其他计算框架，共享底层硬件资源&lt;/strong&gt;。&lt;/p&gt;
+
 &lt;h2 id=&quot;hadoop273&quot;&gt;安装Hadoop（版本2.7.3）&lt;/h2&gt;
 &lt;hr /&gt;
 
@@ -425,7 +487,7 @@
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h4 id=&quot;hadoop&quot;&gt;配置Hadoop&lt;/h4&gt;
+&lt;h4 id=&quot;hadoop-1&quot;&gt;配置Hadoop&lt;/h4&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;etc/hadoop/core-site.xml:&lt;/p&gt;
@@ -560,7 +622,7 @@
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h4 id=&quot;hadoop-1&quot;&gt;启动Hadoop&lt;/h4&gt;
+&lt;h4 id=&quot;hadoop-2&quot;&gt;启动Hadoop&lt;/h4&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;根据hadoop.tmp.dir, dfs.namenode.name.dir, dfs.datanode.name.dir在相应位置创建目录&lt;/p&gt;
@@ -641,10 +703,6 @@
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HADOOP_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/hadoop-2.7.3
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SCALA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/scala-2.11.8
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SPARK_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/spark-2.1.0
-&lt;span class=&quot;c&quot;&gt;# Spark运行必须export下面三个变量&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HADOOP_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HDFS_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;YARN_CONF_DIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HADOOP_HOME&lt;/span&gt;/etc/hadoop
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HIVE_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/hive-2.1.0
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ZOOKEEPER_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/zookeeper-3.4.9
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;KAFKA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/kafka-0.10.2.0
@@ -1136,14 +1194,7 @@
 
 &lt;p&gt;当然其他的操作系统，如Ubuntu、Fedora都有针对树莓派的版本。我选的系统是Kali Linux，选它的原因请参考标题&lt;/p&gt;
 
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Kali官方有针对树莓派2的版本，具体安装教程：[Kali Linux – Raspberry Pi&lt;/td&gt;
-      &lt;td&gt;Kali Linux]&lt;a href=&quot;http://docs.kali.org/kali-on-arm/install-kali-linux-arm-raspberry-pi&quot;&gt;kali-linux&lt;/a&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;Kali官方有针对树莓派2的版本，具体安装教程：&lt;a href=&quot;http://docs.kali.org/kali-on-arm/install-kali-linux-arm-raspberry-pi&quot;&gt;Kali Linux – Raspberry Pi&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;micro-sd&quot;&gt;关于无线网卡和Micro SD卡&lt;/h2&gt;
 &lt;hr /&gt;
