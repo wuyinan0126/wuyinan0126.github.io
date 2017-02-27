@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 27 Feb 2017 20:53:47 +0800</pubDate>
-    <lastBuildDate>Mon, 27 Feb 2017 20:53:47 +0800</lastBuildDate>
+    <pubDate>Mon, 27 Feb 2017 21:04:47 +0800</pubDate>
+    <lastBuildDate>Mon, 27 Feb 2017 21:04:47 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -304,7 +304,7 @@
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(1)-Overview</title>
         <description>&lt;p&gt;&lt;em&gt;系统学习大数据生态圈中的理论知识和常用工具，并在MBP上搭建单机版的大数据平台，包括Hadoop、Spark、Hive、Zookeeper、Kafka等常用大数据工具及其涉及的理论知识&lt;/em&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;环境配置&lt;/h2&gt;
+&lt;h2 id=&quot;section&quot;&gt;单机搭建环境配置&lt;/h2&gt;
 &lt;hr /&gt;
 
 &lt;ul&gt;
@@ -315,8 +315,10 @@
   &lt;li&gt;存储：128G SSD&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;大数据平台单机架构&lt;/h2&gt;
+&lt;h2 id=&quot;section-1&quot;&gt;大数据平台架构&lt;/h2&gt;
 &lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2016-11-16-1.jpeg&quot; alt=&quot;大数据平台架构&quot; title=&quot;大数据平台架构&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section-2&quot;&gt;环境变量&lt;/h2&gt;
 &lt;hr /&gt;
