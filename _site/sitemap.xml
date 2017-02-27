@@ -3,52 +3,7 @@
   
     
     <url>
-      <loc>https://wuyinan0126.github.io/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(6)-Kafka/</loc>
-      
-        <lastmod>2017-02-24T08:00:00+08:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>https://wuyinan0126.github.io/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(5)-Zookeeper/</loc>
-      
-        <lastmod>2017-02-14T08:00:00+08:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>https://wuyinan0126.github.io/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)-Hive/</loc>
-      
-        <lastmod>2017-01-26T08:00:00+08:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.5</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-Spark/</loc>
+      <loc>https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-MapReduce/</loc>
       
         <lastmod>2016-12-04T08:00:00+08:00</lastmod>
       
@@ -229,9 +184,69 @@
   
     
     <url>
+      <loc>https://wuyinan0126.github.io/posts/2016-12-04-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-Spark/</loc>
+      
+        <lastmod>2016-12-04T08:00:00+08:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://wuyinan0126.github.io/posts/2017-01-26-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)-Hive/</loc>
+      
+        <lastmod>2017-01-26T08:00:00+08:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://wuyinan0126.github.io/posts/2017-02-14-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(5)-Zookeeper/</loc>
+      
+        <lastmod>2017-02-14T08:00:00+08:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://wuyinan0126.github.io/posts/2017-02-24-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(6)-Kafka/</loc>
+      
+        <lastmod>2017-02-24T08:00:00+08:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
       <loc>https://wuyinan0126.github.io/categories/</loc>
       
-        <lastmod>2017-02-27T20:33:59+08:00</lastmod>
+        <lastmod>2017-02-27T20:48:34+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -246,7 +261,7 @@
     <url>
       <loc>https://wuyinan0126.github.io/feed.xml</loc>
       
-        <lastmod>2017-02-27T20:33:59+08:00</lastmod>
+        <lastmod>2017-02-27T20:48:34+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -261,7 +276,7 @@
     <url>
       <loc>https://wuyinan0126.github.io/</loc>
       
-        <lastmod>2017-02-27T20:33:59+08:00</lastmod>
+        <lastmod>2017-02-27T20:48:34+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -276,7 +291,7 @@
     <url>
       <loc>https://wuyinan0126.github.io/js/main.js</loc>
       
-        <lastmod>2017-02-27T20:33:59+08:00</lastmod>
+        <lastmod>2017-02-27T20:48:34+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -291,7 +306,7 @@
     <url>
       <loc>https://wuyinan0126.github.io/me/</loc>
       
-        <lastmod>2017-02-27T20:33:59+08:00</lastmod>
+        <lastmod>2017-02-27T20:48:34+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -308,7 +323,7 @@
     <url>
       <loc>https://wuyinan0126.github.io/tags/</loc>
       
-        <lastmod>2017-02-27T20:33:59+08:00</lastmod>
+        <lastmod>2017-02-27T20:48:34+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>

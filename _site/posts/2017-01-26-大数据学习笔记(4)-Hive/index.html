@@ -1,0 +1,130 @@
+<p>**</p>
+
+<h2 id="mysql">配置MySQL</h2>
+<hr />
+
+<ol>
+  <li>
+    <p>为Hive建立相应的MySQL账户,并赋予足够的权限:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ mysql -uroot -p
+ mysql&gt; CREATE USER 'hive' IDENTIFIED BY 'yourpassword';
+ mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'hive'@'%' WITH GRANT OPTION;
+ mysql&gt; flush privileges;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>[可选] 解除Mysql只允许本地登录，/etc/mysql/my.cnf:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> #bind-address           = 127.0.0.1
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>重启mysql服务:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ launchctl unload /Users/wuyinan/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+ $ launchctl load /Users/wuyinan/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>建立Hive专用的元数据库:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ mysql -uhive -p
+ mysql&gt; create database metastore;
+ mysql&gt; USE metastore;
+ mysql&gt; SOURCE /opt/hive-2.1.0/scripts/metastore/upgrade/mysql/hive-schema-2.1.0.mysql.sql;
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h2 id="hive210">安装Hive（版本2.1.0）</h2>
+<hr />
+
+<h4 id="section">准备工作</h4>
+<ol>
+  <li>
+    <p>下载Hive二进制包，解压至/opt/:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ tar -zxvf ./apache-hive-2.1.0-bin.tar.gz -C /opt/
+ $ mv /opt/apache-hive-2.1.0-bin /opt/hive-2.1.0
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>下载Mysql驱动包<a href="https://dev.mysql.com/downloads/connector/j/">https://dev.mysql.com/downloads/connector/j/</a>，并放入/opt/hive-2.1.0/lib中</p>
+  </li>
+</ol>
+
+<h4 id="hive">配置Hive</h4>
+<ol>
+  <li>
+    <p>增加/opt/hive-2.1.0/conf/hive-site.xml文件::</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+ &lt;?xml-stylesheet type="text/xsl" href="configuration.xsl"?&gt;
+ &lt;configuration&gt;
+   &lt;property&gt;
+     &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;
+     &lt;value&gt;jdbc:mysql://127.0.0.1:3306/metastore?characterEncoding=UTF-8&amp;amp;useSSL=false&lt;/value&gt;
+     &lt;description&gt;元数据存储的Mysql路径&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;
+     &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;
+     &lt;value&gt;hive&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;
+     &lt;value&gt;yourpassword&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+      &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;
+      &lt;value&gt;/hive/warehouse&lt;/value&gt;
+      &lt;description&gt;数据存储的HDFS路径&lt;/description&gt;
+   &lt;/property&gt;
+ &lt;/configuration&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>增加/opt/hive-2.1.0/conf/hive-env.sh文件:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> export HADOOP_HOME=/opt/hadoop-2.7.3
+ export HIVE_CONF_DIR=/opt/hive-2.1.0/conf	
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h4 id="hive-1">启动Hive</h4>
+<ol>
+  <li>
+    <p>启动Hadoop</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hadoop-daemon.sh start namenode
+ $ hadoop-daemon.sh start datanode
+ $ start-yarn.sh
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>启动Hive，进入Hive交互界面:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hive
+ hive&gt;
+ hive&gt; show databases;
+ hive&gt; use default;
+ hive&gt; create table test(id INT);
+ hive&gt; select count(*) from test;
+</code></pre>
+    </div>
+  </li>
+</ol>
+
