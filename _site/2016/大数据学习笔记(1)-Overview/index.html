@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title><font color='red'>[原创]</font> 大数据平台单机搭建笔记(1)-Overview</title>
+  <title><font color='red'>[原创]</font> 大数据学习笔记(1)-Overview</title>
   <meta name="description" content="Welcome to my blog!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(1)-Overview/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -171,25 +171,30 @@
     <div class="post-meta">
       <time datetime="16 Nov 2016" class="post-meta__date date">16 Nov 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
     </div>
-    <h1 class="post-title"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(1)-Overview</h1>
+    <h1 class="post-title"><font color='red'>[原创]</font> 大数据学习笔记(1)-Overview</h1>
   </header>
 
   <section class="post">
-    <p>**</p>
+    <p><em>学习大数据生态圈中的理论知识和常用工具，并在MBP上搭建单机版的大数据平台，理论包括，常用工具包括Hadoop, Spark, Hive, Zookeeper, Kafka等</em></p>
 
-<h2 id="section">环境</h2>
+<h2 id="section">环境配置</h2>
 <hr />
 
-<p>机型：MacBook Pro (Retina, 13-inch, Early 2015)</p>
-
-<p>操作系统：MacOS Sierra</p>
+<ul>
+  <li>机型：MacBook Pro (Retina, 13-inch, Early 2015)</li>
+  <li>操作系统：MacOS Sierra</li>
+  <li>内存：8 GB 1867 MHz DDR3</li>
+  <li>处理器：2.7 GHz Intel Core i5</li>
+  <li>存储：128G SSD</li>
+</ul>
 
 <h2 id="section-1">大数据平台单机架构</h2>
-
-<h2 id="jdk">安装JDK</h2>
-
-<h2 id="etcprofile">修改/etc/profile</h2>
 <hr />
+
+<h2 id="section-2">环境变量</h2>
+<hr />
+
+<p>在/etc/profile行尾添加：</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
 <span class="nb">export </span><span class="nv">HADOOP_HOME</span><span class="o">=</span>/opt/hadoop-2.7.3
@@ -199,14 +204,7 @@
 <span class="nb">export </span><span class="nv">ZOOKEEPER_HOME</span><span class="o">=</span>/opt/zookeeper-3.4.9
 <span class="nb">export </span><span class="nv">KAFKA_HOME</span><span class="o">=</span>/opt/kafka-0.10.2.0
 
-<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin: <span class="se">\</span>
-<span class="nv">$HADOOP_HOME</span>/bin:<span class="nv">$HADOOP_HOME</span>/sbin: <span class="se">\</span>
-<span class="nv">$SCALA_HOME</span>/bin: <span class="se">\</span>
-<span class="nv">$SPARK_HOME</span>/bin:<span class="nv">$SPARK_HOME</span>/sbin: <span class="se">\</span>
-<span class="nv">$HIVE_HOME</span>/bin: <span class="se">\</span>
-<span class="nv">$ZOOKEEPER_HOME</span>/bin: <span class="se">\</span>
-<span class="nv">$KAFKA_HOME</span>/bin <span class="se">\</span>
-/usr/local/sbin:<span class="nv">$PATH</span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin:<span class="nv">$HADOOP_HOME</span>/bin:<span class="nv">$HADOOP_HOME</span>/sbin:<span class="nv">$SCALA_HOME</span>/bin:<span class="nv">$SPARK_HOME</span>/bin:<span class="nv">$SPARK_HOME</span>/sbin:<span class="nv">$HIVE_HOME</span>/bin:<span class="nv">$ZOOKEEPER_HOME</span>/bin:<span class="nv">$KAFKA_HOME</span>/bin:/usr/local/sbin:<span class="nv">$PATH</span>
 </code></pre>
 </div>
 
@@ -216,7 +214,7 @@
       <a class="prev" href="/2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">&laquo; <font color='red'>[原创]</font> GitHub个人博客搭建</a>
     
     
-      <a class="next" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(2)-Hadoop/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(2)-Hadoop &raquo;</a>
+      <a class="next" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)-Hadoop/"><font color='red'>[原创]</font> 大数据学习笔记(2)-Hadoop &raquo;</a>
     
     </div>
 
@@ -234,9 +232,9 @@
      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
 
     var disqus_config = function () {
-        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2016/大数据平台单机搭建笔记(1)-Overview'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        this.page.title = '/2016/大数据平台单机搭建笔记(1)-Overview';
+        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(1)-Overview/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/大数据学习笔记(1)-Overview'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2016/大数据学习笔记(1)-Overview';
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE

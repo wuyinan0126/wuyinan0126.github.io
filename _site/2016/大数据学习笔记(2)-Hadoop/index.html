@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title><font color='red'>[原创]</font> 大数据平台单机搭建笔记(2)-Hadoop</title>
+  <title><font color='red'>[原创]</font> 大数据学习笔记(2)-Hadoop</title>
   <meta name="description" content="Welcome to my blog!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(2)-Hadoop/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)-Hadoop/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -171,16 +171,29 @@
     <div class="post-meta">
       <time datetime="1 Dec 2016" class="post-meta__date date">1 Dec 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
     </div>
-    <h1 class="post-title"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(2)-Hadoop</h1>
+    <h1 class="post-title"><font color='red'>[原创]</font> 大数据学习笔记(2)-Hadoop</h1>
   </header>
 
   <section class="post">
-    <p>**</p>
+    <p><em>学习Hadoop相关知识，包括MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统，并单机搭建Hadoop平台</em></p>
 
 <h2 id="hadoop">Hadoop</h2>
 <hr />
 
-<h4 id="yarn">YARN</h4>
+<h3 id="mapreduce">MapReduce</h3>
+
+<p>大数据计算中最常见的一种计算方式是<strong>批处理</strong>。2004年Google发表了MapReduce计算范型和框架论文，这是一种构建在大规模PC之上的批处理计算框架，也是一种分布式计算模型，获得了极为广泛的应用。</p>
+
+<p>MapReduce和传统的并行数据库系统(MPP)相比，更适合<strong>非结构化数据的ETL处理</strong>(将数据从来源端经过抽取(extract)、转换(transform)、加载(load)至目的端的过程)，且其更具有<strong>扩展性和容错性</strong>，但单机处理效率低。</p>
+
+<p>MapReduce计算提供了简洁的编程接口，<strong>输入和输出均是Key/Value键值对</strong>，只需根据业务逻辑实现Map和Reduce函数即可完成大规模数据的并行批处理任务。</p>
+
+<ul>
+  <li>Map函数以Key/Value作为输入，经逻辑计算产生若干仍以Key/Value形式表达的中间数据。计算框架自动将中间数据中具有相同Key值的记录聚在一起，传递给Reduce函数作为输入</li>
+  <li>Reduce函数以Map阶段传递过来的某个Key值及其对应的若干Value值作为输入，对这些Value进行逻辑计算，生成Key/Value即计算结果</li>
+</ul>
+
+<h3 id="yarn">YARN</h3>
 
 <p>YARN的全称是”Yet Another Resource Negotiator”，是一个独立的<strong>资源调度与管理系统</strong>。</p>
 
@@ -412,10 +425,10 @@
 
     <div class="page_navigation">
     
-      <a class="prev" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(1)-Overview/">&laquo; <font color='red'>[原创]</font> 大数据平台单机搭建笔记(1)-Overview</a>
+      <a class="prev" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(1)-Overview/">&laquo; <font color='red'>[原创]</font> 大数据学习笔记(1)-Overview</a>
     
     
-      <a class="next" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark-on-Yarn/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark on Yarn &raquo;</a>
+      <a class="next" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-Spark/"><font color='red'>[原创]</font> 大数据学习笔记(3)-Spark &raquo;</a>
     
     </div>
 
@@ -433,9 +446,9 @@
      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
 
     var disqus_config = function () {
-        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(2)-Hadoop/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2016/大数据平台单机搭建笔记(2)-Hadoop'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        this.page.title = '/2016/大数据平台单机搭建笔记(2)-Hadoop';
+        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)-Hadoop/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/大数据学习笔记(2)-Hadoop'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2016/大数据学习笔记(2)-Hadoop';
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE

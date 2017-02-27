@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title><font color='red'>[原创]</font> 大数据平台单机搭建笔记(4)-Hive</title>
+  <title><font color='red'>[原创]</font> 大数据学习笔记(5)-Zookeeper</title>
   <meta name="description" content="Welcome to my blog!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(4)-Hive/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(5)-Zookeeper/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -169,137 +169,72 @@
         <article class="post-container post-container--single">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="26 Jan 2017" class="post-meta__date date">26 Jan 2017</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
+      <time datetime="14 Feb 2017" class="post-meta__date date">14 Feb 2017</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
     </div>
-    <h1 class="post-title"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(4)-Hive</h1>
+    <h1 class="post-title"><font color='red'>[原创]</font> 大数据学习笔记(5)-Zookeeper</h1>
   </header>
 
   <section class="post">
     <p>**</p>
 
-<h2 id="mysql">配置MySQL</h2>
+<h2 id="zookeeper">Zookeeper</h2>
 <hr />
 
-<ol>
-  <li>
-    <p>为Hive建立相应的MySQL账户,并赋予足够的权限:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ mysql -uroot -p
- mysql&gt; CREATE USER 'hive' IDENTIFIED BY 'yourpassword';
- mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'hive'@'%' WITH GRANT OPTION;
- mysql&gt; flush privileges;
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>[可选] 解除Mysql只允许本地登录，/etc/mysql/my.cnf:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> #bind-address           = 127.0.0.1
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>重启mysql服务:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ launchctl unload /Users/wuyinan/Library/LaunchAgents/homebrew.mxcl.mysql.plist
- $ launchctl load /Users/wuyinan/Library/LaunchAgents/homebrew.mxcl.mysql.plist
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>建立Hive专用的元数据库:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ mysql -uhive -p
- mysql&gt; create database metastore;
- mysql&gt; USE metastore;
- mysql&gt; SOURCE /opt/hive-2.1.0/scripts/metastore/upgrade/mysql/hive-schema-2.1.0.mysql.sql;
-</code></pre>
-    </div>
-  </li>
-</ol>
-
-<h2 id="hive210">安装Hive（版本2.1.0）</h2>
+<h2 id="zookeeper349">安装Zookeeper（版本3.4.9）</h2>
 <hr />
 
 <h4 id="section">准备工作</h4>
 <ol>
   <li>
-    <p>下载Hive二进制包，解压至/opt/:</p>
+    <p>下载Zookeeper二进制包，解压至/opt/:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ tar -zxvf ./apache-hive-2.1.0-bin.tar.gz -C /opt/
- $ mv /opt/apache-hive-2.1.0-bin /opt/hive-2.1.0
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ tar -zxvf ./zookeeper-3.4.9.tar.gz -C /opt/
 </code></pre>
     </div>
   </li>
   <li>
-    <p>下载Mysql驱动包<a href="https://dev.mysql.com/downloads/connector/j/">https://dev.mysql.com/downloads/connector/j/</a>，并放入/opt/hive-2.1.0/lib中</p>
-  </li>
-</ol>
+    <p>创建数据文件夹和日志文件夹:</p>
 
-<h4 id="hive">配置Hive</h4>
-<ol>
-  <li>
-    <p>增加/opt/hive-2.1.0/conf/hive-site.xml文件::</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
- &lt;?xml-stylesheet type="text/xsl" href="configuration.xsl"?&gt;
- &lt;configuration&gt;
-   &lt;property&gt;
-     &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;
-     &lt;value&gt;jdbc:mysql://127.0.0.1:3306/metastore?characterEncoding=UTF-8&amp;amp;useSSL=false&lt;/value&gt;
-     &lt;description&gt;元数据存储的Mysql路径&lt;/description&gt;
-   &lt;/property&gt;
-   &lt;property&gt;
-     &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;
-     &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;
-   &lt;/property&gt;
-   &lt;property&gt;
-     &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;
-     &lt;value&gt;hive&lt;/value&gt;
-   &lt;/property&gt;
-   &lt;property&gt;
-     &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;
-     &lt;value&gt;yourpassword&lt;/value&gt;
-   &lt;/property&gt;
-   &lt;property&gt;
-      &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;
-      &lt;value&gt;/hive/warehouse&lt;/value&gt;
-      &lt;description&gt;数据存储的HDFS路径&lt;/description&gt;
-   &lt;/property&gt;
- &lt;/configuration&gt;
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>增加/opt/hive-2.1.0/conf/hive-env.sh文件:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> export HADOOP_HOME=/opt/hadoop-2.7.3
- export HIVE_CONF_DIR=/opt/hive-2.1.0/conf	
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ mkdir /opt/zookeeper-3.4.9/var/data
+ $ mkdir /opt/zookeeper-3.4.9/var/log
 </code></pre>
     </div>
   </li>
 </ol>
 
-<h4 id="hive-1">启动Hive</h4>
+<h4 id="zookeeper-1">配置Zookeeper</h4>
 <ol>
   <li>
-    <p>启动Hadoop</p>
+    <p>conf/zoo.cfg</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ hadoop-daemon.sh start namenode
- $ hadoop-daemon.sh start datanode
- $ start-yarn.sh
+    <div class="highlighter-rouge"><pre class="highlight"><code> # 这个时间(ms)是作为Zookeeper服务器之间或客户端与服务器之间维持心跳的时间间隔
+ tickTime=2000
+ # Zookeeper服务器集群中的Follower服务器初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过10个tickTime的时间长度后 Leader服务器还没有收到Follower的返回信息，表明这个Follower连接失败
+ initLimit=10
+ # 标识Leader与Follower之间发送消息，请求和应答时间长度最长不能超过多少个tickTime的时间长度
+ syncLimit=5
+ # 客户端连接Zookeeper服务器的端口，Zookeeper会监听这个端口，接受客户端的访问请求。
+ clientPort=2181
+ dataDir=/opt/zookeeper-3.4.9/var/data
+ dataLogDir=/opt/zookeeper-3.4.9/var/log
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h4 id="zookeeper-2">启动Zookeeper</h4>
+<ol>
+  <li>
+    <p>启动Zookeeper服务器</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> zkServer.sh start
 </code></pre>
     </div>
   </li>
   <li>
-    <p>启动Hive，进入Hive交互界面:</p>
+    <p>启动Zookeeper客户端</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ hive
- hive&gt;
- hive&gt; show databases;
- hive&gt; use default;
- hive&gt; create table test(id INT);
- hive&gt; select count(*) from test;
+    <div class="highlighter-rouge"><pre class="highlight"><code> zkCli.sh
 </code></pre>
     </div>
   </li>
@@ -309,10 +244,10 @@
 
     <div class="page_navigation">
     
-      <a class="prev" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(3)-Spark-on-Yarn/">&laquo; <font color='red'>[原创]</font> 大数据平台单机搭建笔记(3)-Spark on Yarn</a>
+      <a class="prev" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)-Hive/">&laquo; <font color='red'>[原创]</font> 大数据学习笔记(4)-Hive</a>
     
     
-      <a class="next" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(5)-Zookeeper/"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(5)-Zookeeper &raquo;</a>
+      <a class="next" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(6)-Kafka/"><font color='red'>[原创]</font> 大数据学习笔记(6)-Kafka &raquo;</a>
     
     </div>
 
@@ -330,9 +265,9 @@
      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
 
     var disqus_config = function () {
-        this.page.url = 'https://wuyinan0126.github.io/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(4)-Hive/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2017/大数据平台单机搭建笔记(4)-Hive'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        this.page.title = '/2017/大数据平台单机搭建笔记(4)-Hive';
+        this.page.url = 'https://wuyinan0126.github.io/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(5)-Zookeeper/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2017/大数据学习笔记(5)-Zookeeper'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2017/大数据学习笔记(5)-Zookeeper';
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title><font color='red'>[原创]</font> 大数据平台单机搭建笔记(6)-Kafka</title>
+  <title><font color='red'>[原创]</font> 大数据学习笔记(3)-Spark</title>
   <meta name="description" content="Welcome to my blog!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(6)-Kafka/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-Spark/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -169,77 +169,115 @@
         <article class="post-container post-container--single">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="24 Feb 2017" class="post-meta__date date">24 Feb 2017</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
+      <time datetime="4 Dec 2016" class="post-meta__date date">4 Dec 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
     </div>
-    <h1 class="post-title"><font color='red'>[原创]</font> 大数据平台单机搭建笔记(6)-Kafka</h1>
+    <h1 class="post-title"><font color='red'>[原创]</font> 大数据学习笔记(3)-Spark</h1>
   </header>
 
   <section class="post">
     <p>**</p>
 
-<h2 id="section">消息队列</h2>
+<h2 id="scala2118">安装Scala（版本2.11.8）</h2>
 <hr />
-
-<p>消息队列是在消息传输过程中保存消息的容器或中间件，其主要目的是提供消息路由并保障消息的可靠传递。</p>
-
-<p>常见的消息中间件包括ActiveMQ、ZeroMQ、RabbitMQ和Kafka等。一般消息中间件支持两种模式的队列：</p>
-
 <ol>
   <li>
-    <p>消息队列模式</p>
+    <p>下载Scala二进制包，解压至/opt/:</p>
 
-    <p>即<strong>消息生产者将消息存入队列，消息消费者从队列消费消息</strong></p>
-  </li>
-  <li>
-    <p>Pub-Sub模式</p>
-
-    <p>消息生产者将消息<strong>发布到指定主题的队列中</strong>，而消费者<strong>订阅指定主题的队列消息</strong>，当订阅的主题有新消息时，消费者可以通过拉取(Pull)或中间件的推送(Push)消费消息</p>
-  </li>
-</ol>
-
-<h2 id="kafka">Kafka</h2>
-<hr />
-
-<p>Kafka是LinkedIn开源的采用Pub-Sub模式的分布式消息系统，最初被设计作为Log收集工具，因其具有极高吞吐量、低延迟、可扩展、高可用以及能够对消息队列进行持久化保存（不是将全部消息保存在内存中传递），因此应用场景较多，比如作为通用的消息系统、消息实时收集等。</p>
-
-<h2 id="kafka01020">安装Kafka（版本0.10.2.0）</h2>
-<hr />
-
-<h4 id="section-1">准备工作</h4>
-<ol>
-  <li>
-    <p>下载Kafka二进制包，解压至/opt/:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ tar -zxvf ./kafka_2.11-0.10.2.0.tgz -C /opt/
- $ mv /opt/kafka_2.11-0.10.2.0 /opt/kafka-0.10.2.0
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>创建kafka日志目录:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ mkdir /opt/kafka-0.10.2.0/var/log
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ tar -zxvf ./scala-2.11.8.tgz -C /opt/
 </code></pre>
     </div>
   </li>
 </ol>
 
-<h4 id="kafka-1">配置Kafka</h4>
+<h2 id="spark210">安装Spark（版本2.1.0）</h2>
+<hr />
+
+<h4 id="section">准备工作</h4>
 <ol>
   <li>
-    <p>conf/server.properties</p>
+    <p>下载Spark二进制包（或源码自行编译），解压至/opt/:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> log.dirs=/opt/kafka-0.10.2.0/var/log
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ tar -zxvf ./spark-2.1.0-bin-hadoop2.7 -C /opt/
+ $ mv /opt/spark-2.1.0-bin-hadoop2.7 /opt/spark-2.1.0
 </code></pre>
     </div>
   </li>
 </ol>
+
+<h4 id="spark">配置Spark</h4>
+<ol>
+  <li>
+    <p>conf/spark-env.sh:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+ export HADOOP_HOME=/opt/hadoop-2.7.3
+ export SCALA_HOME=/opt/scala-2.11.8	
+ export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+ export HDFS_CONF_DIR=$HADOOP_HOME/etc/hadoop
+ export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>conf/slaves:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> localhost
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h4 id="spark-1">启动Spark</h4>
+<ol>
+  <li>
+    <p>启动Hadoop</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hadoop-daemon.sh start namenode
+ $ hadoop-daemon.sh start datanode
+ $ start-yarn.sh
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>启动Spark，用jps查看，启动的进程应包括Master、Worker:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ /opt/spark-2.1.0/sbin/start-all.sh
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>测试，运行SparkPi例子:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ cd /opt/spark-2.1.0
+ $ ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
+ --master yarn-cluster \
+ --num-executors 3 \
+ --driver-memory 2g \
+ --executor-memory 1g \
+ --executor-cores 1 \
+ --queue thequeue \
+ examples/jars/spark-examples_2.11-2.1.0.jar \
+ 10
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>查看结果:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ yarn logs -applicationId ${applicationId} | grep 'Pi'
+</code></pre>
+    </div>
+  </li>
+</ol>
+
 
 
     <div class="page_navigation">
     
-      <a class="prev" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(5)-Zookeeper/">&laquo; <font color='red'>[原创]</font> 大数据平台单机搭建笔记(5)-Zookeeper</a>
+      <a class="prev" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)-Hadoop/">&laquo; <font color='red'>[原创]</font> 大数据学习笔记(2)-Hadoop</a>
     
+    
+      <a class="next" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)-Hive/"><font color='red'>[原创]</font> 大数据学习笔记(4)-Hive &raquo;</a>
     
     </div>
 
@@ -257,9 +295,9 @@
      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
 
     var disqus_config = function () {
-        this.page.url = 'https://wuyinan0126.github.io/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%8D%95%E6%9C%BA%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0(6)-Kafka/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2017/大数据平台单机搭建笔记(6)-Kafka'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        this.page.title = '/2017/大数据平台单机搭建笔记(6)-Kafka';
+        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-Spark/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/大数据学习笔记(3)-Spark'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2016/大数据学习笔记(3)-Spark';
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE
