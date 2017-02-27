@@ -5,13 +5,13 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 27 Feb 2017 20:50:07 +0800</pubDate>
-    <lastBuildDate>Mon, 27 Feb 2017 20:50:07 +0800</lastBuildDate>
+    <pubDate>Mon, 27 Feb 2017 20:53:47 +0800</pubDate>
+    <lastBuildDate>Mon, 27 Feb 2017 20:53:47 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(3)-MapReduce</title>
-        <description>&lt;p&gt;&lt;em&gt;深入学习MapReduce计算模型的系统架构、计算模式等。简介请参看我的另一篇博文：&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(2)-Hadoop/&quot;&gt;大数据学习笔记(2)-Hadoop&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;深入学习MapReduce计算模型的系统架构、计算模式等&lt;/em&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;mapreduce&quot;&gt;MapReduce系统架构&lt;/h3&gt;
 &lt;hr /&gt;
@@ -34,7 +34,7 @@
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(2)-Hadoop</title>
-        <description>&lt;p&gt;&lt;em&gt;学习Hadoop相关知识，包括MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统，并单机搭建Hadoop平台&lt;/em&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;简单学习Hadoop相关知识，包括MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统，并搭建Hadoop单机平台&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;hadoop&quot;&gt;Hadoop&lt;/h2&gt;
 &lt;hr /&gt;
@@ -53,6 +53,8 @@
 &lt;/ul&gt;
 
 &lt;p&gt;以上为MapReduce简介，更为详细的MapReduce计算模型学习笔记请参看我的另一篇博文：&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(3)-MapReduce/&quot;&gt;大数据学习笔记(3)-MapReduce&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;hdfs&quot;&gt;HDFS&lt;/h3&gt;
 
 &lt;h3 id=&quot;yarn&quot;&gt;YARN&lt;/h3&gt;
 
@@ -300,7 +302,7 @@
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(1)-Overview</title>
-        <description>&lt;p&gt;&lt;em&gt;学习大数据生态圈中的理论知识和常用工具，并在MBP上搭建单机版的大数据平台，包括Hadoop、Spark、Hive、Zookeeper、Kafka等常用大数据工具和其理论知识&lt;/em&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;系统学习大数据生态圈中的理论知识和常用工具，并在MBP上搭建单机版的大数据平台，包括Hadoop、Spark、Hive、Zookeeper、Kafka等常用大数据工具及其涉及的理论知识&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;环境配置&lt;/h2&gt;
 &lt;hr /&gt;
