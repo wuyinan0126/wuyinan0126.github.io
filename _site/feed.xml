@@ -5,16 +5,113 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 27 Feb 2017 21:04:47 +0800</pubDate>
-    <lastBuildDate>Mon, 27 Feb 2017 21:04:47 +0800</lastBuildDate>
+    <pubDate>Thu, 02 Mar 2017 15:09:07 +0800</pubDate>
+    <lastBuildDate>Thu, 02 Mar 2017 15:09:07 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(3)-MapReduce</title>
-        <description>&lt;p&gt;&lt;em&gt;深入学习MapReduce计算模型的系统架构、计算模式等&lt;/em&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;深入学习MapReduce计算模型的运行机制、优点和不足、计算模式等&lt;/em&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;mapreduce&quot;&gt;MapReduce系统架构&lt;/h3&gt;
+&lt;h3 id=&quot;mapreduce&quot;&gt;MapReduce运行机制&lt;/h3&gt;
 &lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2016-12-04-1.png&quot; alt=&quot;Hadoop的MapReduce运行机制&quot; title=&quot;Hadoop的MapReduce运行机制&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;MapReduce计算框架将应用的输入数据分割成若干block（自Hadoop-2.2起，默认为128M），存入HDFS&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;集群中的Master负责为Worker分配Map或Reduce任务，并做一些全局管理；任务数可由开发者指定&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Map阶段：被分配到Map任务的Worker读取对应的block，从block中解析出Key/Value对，并传递给Map函数，执行业务逻辑，将中间结果Key/Value对缓存在内存中&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Patition阶段：缓存的中间结果会周期性地被Spill入&lt;strong&gt;本地磁盘&lt;/strong&gt;，写入磁盘前被Partitioner分割为R份，R为Reduce任务数，分割函数一般是用Key对R哈希取模。在分割后将R个临时文件位置通知给Master，Master将其转交给Reduce任务的Worker&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Sort&amp;amp;Combine阶段：在写入磁盘前，对中间结果进行&lt;strong&gt;局部&lt;/strong&gt;排序，然后运行Combiner对数据进行合并，即对中间数据中具有相同Key的Value值进行合并，合并的业务逻辑和Reduce阶段的逻辑是相似的，这样可以大大减少中间数据量，减少网络传输量&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Shuffle阶段：当某个Reduce任务的Worker接收到Master的通知后，其通过RPC(Remote Procedure Call)将Map任务产生的属于自己的M份临时文件&lt;strong&gt;Pull&lt;/strong&gt;到本地，M为Map任务数。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Reduce阶段：将M分临时文件中局部Key有序的数据进行Merge Sort进行全局排序，然后执行Reduce函数，并将结果追加到这个Reduce任务对应的结果文件结尾&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;mapreduce-1&quot;&gt;MapReduce优点和不足&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;优点：&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;极强的可扩展性、良好的容错性、简单性（即用户只要完成Map和Reduce函数即可）&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;数据的高吞吐量、支持海量数据处理的大规模并行处理、细粒度容错&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;不足：不适合对实效性要求高的应用场景（如交互式查询、流式计算）、不适合迭代运算类的机器学习及数据挖掘类的应用&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;不足的原因：&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;Map和Reduce任务启动时间较长。对于批处理任务来说，启动时间对于任务执行时间所占比例不大，但对于高实效性的应用来说，所占比例太高&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;在一次任务执行过程中，MapReduce计算模型存在多处的磁盘读写、网络传输的过程。如初始block读取、Map任务的中间结果保存入磁盘、Shuffle阶段的网络传输、Reduce阶段的磁盘读和HDFS写等。对于迭代式机器学习应用，往往需要一个任务反复迭代进行，此时磁盘读写、网络传输的开销造成效率低下&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;mapreduce-2&quot;&gt;MapReduce计算模式&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;实际应用中的大部分ETL任务都可以归结为MapReduce计算模式或其变体，如：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;求和模式：包括数值求和（Value为数值），记录求和（Value为非数值，累加形成队列）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;过滤模式：简单过滤（Map实现过滤函数，无Reduce阶段），Top K记录（Map实现统计局部Top K，Reduce实现全局Top K）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;组织数据模式：&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;数据分片：例如将所有记录按日期进行分类，需要将同一时间的数据放到一起，此时需要修改Partion策略，默认的Partition策略为hash取模&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;全局排序：MapReduce自带的排序特性，在Reduce阶段需要先将中间数据按Key进行Merge Sort，因此只需要修改Partion策略，保证不同的Reducer处理一个区间范围的记录，例如将Key为1-1000的数据给Reducer1处理，key为1001-2000点数据交给Reducer2处理，这样将所有Reducer的输出拼接在一起即可得到全局排序&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Join模式：&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;Reduce-Side Join：需要输入两个数据集，区分方式为：连表的外键作为Key，记录的其他内容作为Value，在Value中增加一个标志信息，表明记录属于哪个数据集。然后在Reduce阶段将相同Key，不同数据集的记录做Join。该方式较通用，但需要经过若干轮中间数据的磁盘读写、Shuffle阶段的网络传输、Reduce阶段的排序等耗时的操作，因此计算效率较低&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Map-Side Join：只需要输入一个大数据集，小数据集放入内存哈希表中，以外键作为哈希表的Key。此时只需要在Map阶段对大数据的每条记录查找哈希表进行Join操作。由于避免了Shuffle阶段的网络传输、Reduce阶段的排序等耗时的操作，因此该方式效率较高，但要求小数据集必须足够小到能放入内存&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
 
 </description>
         <pubDate>Sun, 04 Dec 2016 08:00:00 +0800</pubDate>
@@ -34,7 +131,7 @@
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(2)-Hadoop</title>
-        <description>&lt;p&gt;&lt;em&gt;简单学习Hadoop相关知识，包括MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统，并搭建Hadoop单机平台&lt;/em&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;简单学习Hadoop相关知识，包括MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统，并在OpenStack上搭建Hadoop平台(HA)&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;hadoop&quot;&gt;Hadoop&lt;/h2&gt;
 &lt;hr /&gt;
@@ -67,223 +164,6 @@
 &lt;h2 id=&quot;hadoop273&quot;&gt;安装Hadoop（版本2.7.3）&lt;/h2&gt;
 &lt;hr /&gt;
 
-&lt;h4 id=&quot;section&quot;&gt;准备工作&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;SSH免密码登录:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;生成密钥:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ssh-keygen -t dsa
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;生成authorized_keys，进入.ssh目录:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cat id_dsa.pub &amp;gt;&amp;gt; authorized_keys
- $ chmod 600 authorized_keys
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;测试:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ssh localhost
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载Hadoop二进制包（或源码自行编译），解压至/opt/:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ tar -zxvf ./hadoop-2.7.3.tar.gz -C /opt/
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;hadoop-1&quot;&gt;配置Hadoop&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/core-site.xml:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;configuration&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;fs.defaultFS&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;hdfs://localhost:9000&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;默认的HDFS路径，与hdfs-site.xml中的配置相关。当有多个HDFS集群存在时，用此名字指定集群&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;hadoop.tmp.dir&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;/opt/hadoop-2.7.3/var/tmp&amp;lt;/value&amp;gt; 
-     &amp;lt;description&amp;gt;NameNode、DataNode、JournalNode等存放数据的公共目录，也可以自己单独指定这三类节点的目录&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;hadoop.proxyuser.wuyinan.groups&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;*&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;hadoop.proxyuser.wuyinan.hosts&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;*&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
- &amp;lt;/configuration&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/hdfs-site.xml:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;configuration&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;dfs.namenode.name.dir&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;/opt/hadoop-2.7.3/var/name&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;NameNode存储命名空间和操作日志相关的元数据信息的本地文件系统路径&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;dfs.datanode.data.dir&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;/opt/hadoop-2.7.3/var/data&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;DataNode节点存储HDFS文件的本地文件系统路径&amp;lt;/description&amp;gt; 
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;dfs.replication&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;1&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;指定DataNode存储block的副本数量。默认值是3个，不大于DataNode个数即可&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
- &amp;lt;/configuration&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/mapred-site.xml:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;configuration&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;mapreduce.framework.name&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;yarn&amp;lt;/value&amp;gt; 
-     &amp;lt;description&amp;gt;指定运行mapreduce的环境是yarn&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;mapreduce.tasktracker.map.tasks.maximum&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;2&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;mapreduce.tasktracker.reduce.tasks.maximum&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;2&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
- &amp;lt;/configuration&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/yarn-site.xml:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;configuration&amp;gt;
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;yarn.resourcemanager.hostname&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;localhost&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;指定ResourceManager的地址&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;yarn.nodemanager.aux-services&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;mapreduce_shuffle&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;yarn.resourcemanager.scheduler.class&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.log-aggregation-enable&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;true&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.nodemanager.remote-app-log-dir&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;/tmp/logs&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;&amp;lt;/description&amp;gt;
-     &amp;lt;/property&amp;gt;
- &amp;lt;/configuration&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/mapred-env.sh:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
- export HADOOP_MAPRED_PID_DIR=/opt/hadoop-2.7.3/var/tmp
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/hadoop-env.sh:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
- export HADOOP_PID_DIR=/opt/hadoop-2.7.3/var/tmp
- export HADOOP_SECURE_DN_PID_DIR=/opt/hadoop-2.7.3/var/tmp
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/slaves:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; localhost
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;hadoop-2&quot;&gt;启动Hadoop&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;根据hadoop.tmp.dir, dfs.namenode.name.dir, dfs.datanode.name.dir在相应位置创建目录&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mkdir /opt/hadoop-2.7.3/var/
- $ mkdir /opt/hadoop-2.7.3/var/tmp
- $ mkdir /opt/hadoop-2.7.3/var/name
- $ mkdir /opt/hadoop-2.7.3/var/data
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;格式化namenode，如果Exiting with status 0，说明格式化成功:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hdfs namenode -format
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;启动namenode、datanode、yarn，每启动一个后都用jps查看是否启动成功，最后启动的进程应该包括NameNode、DataNode、ResorceManager、NodeManager:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hadoop-daemon.sh start namenode
- $ hadoop-daemon.sh start datanode
- $ start-yarn.sh
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在浏览器查看：&lt;a href=&quot;http://localhost:50070/&quot;&gt;http://localhost:50070/&lt;/a&gt;和&lt;a href=&quot;http://localhost:8088/&quot;&gt;http://localhost:8088/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;测试，运行wordcount例子:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hadoop fs -mkdir /test
- $ hadoop fs -mkdir /test/input
- $ hadoop fs -put ./words.txt /test/input
- $ hadoop jar /opt/hadoop-2.7.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /test/input/ /test/output
- $ hadoop fs -cat /test/output/part-r-00000
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
 </description>
         <pubDate>Thu, 01 Dec 2016 08:00:00 +0800</pubDate>
         <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)-Hadoop/</link>
@@ -302,17 +182,16 @@
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(1)-Overview</title>
-        <description>&lt;p&gt;&lt;em&gt;系统学习大数据生态圈中的理论知识和常用工具，并在MBP上搭建单机版的大数据平台，包括Hadoop、Spark、Hive、Zookeeper、Kafka等常用大数据工具及其涉及的理论知识&lt;/em&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;系统学习大数据生态圈中的理论知识和常用工具，并在OpenStack上搭建分布式的大数据平台，包括Hadoop、Spark、Hive、Zookeeper、Kafka等常用大数据工具及其涉及的理论知识&lt;/em&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;单机搭建环境配置&lt;/h2&gt;
+&lt;h2 id=&quot;section&quot;&gt;环境配置&lt;/h2&gt;
 &lt;hr /&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;机型：MacBook Pro (Retina, 13-inch, Early 2015)&lt;/li&gt;
-  &lt;li&gt;操作系统：MacOS Sierra&lt;/li&gt;
-  &lt;li&gt;内存：8 GB 1867 MHz DDR3&lt;/li&gt;
-  &lt;li&gt;处理器：2.7 GHz Intel Core i5&lt;/li&gt;
-  &lt;li&gt;存储：128G SSD&lt;/li&gt;
+  &lt;li&gt;Openstack版本: 9.0 for Mitaka on Ubuntu 14.04&lt;/li&gt;
+  &lt;li&gt;处理器(Cores): 304&lt;/li&gt;
+  &lt;li&gt;存储(HDD): 11.9TB&lt;/li&gt;
+  &lt;li&gt;内存: 0.6TB&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;section-1&quot;&gt;大数据平台架构&lt;/h2&gt;

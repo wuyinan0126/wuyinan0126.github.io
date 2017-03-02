@@ -175,10 +175,107 @@
   </header>
 
   <section class="post">
-    <p><em>深入学习MapReduce计算模型的系统架构、计算模式等</em></p>
+    <p><em>深入学习MapReduce计算模型的运行机制、优点和不足、计算模式等</em></p>
 
-<h3 id="mapreduce">MapReduce系统架构</h3>
+<h3 id="mapreduce">MapReduce运行机制</h3>
 <hr />
+
+<p><img src="/assets/2016-12-04-1.png" alt="Hadoop的MapReduce运行机制" title="Hadoop的MapReduce运行机制" /></p>
+
+<ol>
+  <li>
+    <p>MapReduce计算框架将应用的输入数据分割成若干block（自Hadoop-2.2起，默认为128M），存入HDFS</p>
+  </li>
+  <li>
+    <p>集群中的Master负责为Worker分配Map或Reduce任务，并做一些全局管理；任务数可由开发者指定</p>
+  </li>
+  <li>
+    <p>Map阶段：被分配到Map任务的Worker读取对应的block，从block中解析出Key/Value对，并传递给Map函数，执行业务逻辑，将中间结果Key/Value对缓存在内存中</p>
+  </li>
+  <li>
+    <p>Patition阶段：缓存的中间结果会周期性地被Spill入<strong>本地磁盘</strong>，写入磁盘前被Partitioner分割为R份，R为Reduce任务数，分割函数一般是用Key对R哈希取模。在分割后将R个临时文件位置通知给Master，Master将其转交给Reduce任务的Worker</p>
+  </li>
+  <li>
+    <p>Sort&amp;Combine阶段：在写入磁盘前，对中间结果进行<strong>局部</strong>排序，然后运行Combiner对数据进行合并，即对中间数据中具有相同Key的Value值进行合并，合并的业务逻辑和Reduce阶段的逻辑是相似的，这样可以大大减少中间数据量，减少网络传输量</p>
+  </li>
+  <li>
+    <p>Shuffle阶段：当某个Reduce任务的Worker接收到Master的通知后，其通过RPC(Remote Procedure Call)将Map任务产生的属于自己的M份临时文件<strong>Pull</strong>到本地，M为Map任务数。</p>
+  </li>
+  <li>
+    <p>Reduce阶段：将M分临时文件中局部Key有序的数据进行Merge Sort进行全局排序，然后执行Reduce函数，并将结果追加到这个Reduce任务对应的结果文件结尾</p>
+  </li>
+</ol>
+
+<h3 id="mapreduce-1">MapReduce优点和不足</h3>
+<hr />
+
+<ul>
+  <li>
+    <p>优点：</p>
+
+    <ol>
+      <li>
+        <p>极强的可扩展性、良好的容错性、简单性（即用户只要完成Map和Reduce函数即可）</p>
+      </li>
+      <li>
+        <p>数据的高吞吐量、支持海量数据处理的大规模并行处理、细粒度容错</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>不足：不适合对实效性要求高的应用场景（如交互式查询、流式计算）、不适合迭代运算类的机器学习及数据挖掘类的应用</p>
+  </li>
+  <li>
+    <p>不足的原因：</p>
+
+    <ol>
+      <li>
+        <p>Map和Reduce任务启动时间较长。对于批处理任务来说，启动时间对于任务执行时间所占比例不大，但对于高实效性的应用来说，所占比例太高</p>
+      </li>
+      <li>
+        <p>在一次任务执行过程中，MapReduce计算模型存在多处的磁盘读写、网络传输的过程。如初始block读取、Map任务的中间结果保存入磁盘、Shuffle阶段的网络传输、Reduce阶段的磁盘读和HDFS写等。对于迭代式机器学习应用，往往需要一个任务反复迭代进行，此时磁盘读写、网络传输的开销造成效率低下</p>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="mapreduce-2">MapReduce计算模式</h3>
+<hr />
+
+<p>实际应用中的大部分ETL任务都可以归结为MapReduce计算模式或其变体，如：</p>
+
+<ol>
+  <li>
+    <p>求和模式：包括数值求和（Value为数值），记录求和（Value为非数值，累加形成队列）</p>
+  </li>
+  <li>
+    <p>过滤模式：简单过滤（Map实现过滤函数，无Reduce阶段），Top K记录（Map实现统计局部Top K，Reduce实现全局Top K）</p>
+  </li>
+  <li>
+    <p>组织数据模式：</p>
+
+    <ol>
+      <li>
+        <p>数据分片：例如将所有记录按日期进行分类，需要将同一时间的数据放到一起，此时需要修改Partion策略，默认的Partition策略为hash取模</p>
+      </li>
+      <li>
+        <p>全局排序：MapReduce自带的排序特性，在Reduce阶段需要先将中间数据按Key进行Merge Sort，因此只需要修改Partion策略，保证不同的Reducer处理一个区间范围的记录，例如将Key为1-1000的数据给Reducer1处理，key为1001-2000点数据交给Reducer2处理，这样将所有Reducer的输出拼接在一起即可得到全局排序</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>Join模式：</p>
+
+    <ol>
+      <li>
+        <p>Reduce-Side Join：需要输入两个数据集，区分方式为：连表的外键作为Key，记录的其他内容作为Value，在Value中增加一个标志信息，表明记录属于哪个数据集。然后在Reduce阶段将相同Key，不同数据集的记录做Join。该方式较通用，但需要经过若干轮中间数据的磁盘读写、Shuffle阶段的网络传输、Reduce阶段的排序等耗时的操作，因此计算效率较低</p>
+      </li>
+      <li>
+        <p>Map-Side Join：只需要输入一个大数据集，小数据集放入内存哈希表中，以外键作为哈希表的Key。此时只需要在Map阶段对大数据的每条记录查找哈希表进行Join操作。由于避免了Shuffle阶段的网络传输、Reduce阶段的排序等耗时的操作，因此该方式效率较高，但要求小数据集必须足够小到能放入内存</p>
+      </li>
+    </ol>
+  </li>
+</ol>
 
 
 
