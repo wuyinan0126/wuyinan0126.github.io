@@ -169,7 +169,7 @@
         <article class="post-container post-container--single">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="22 Aug 2015" class="post-meta__date date">22 Aug 2015</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#GEEK">GEEK</a> <a href="/tags/#原创">原创</a> </span>
+      <time datetime="22 Aug 2015" class="post-meta__date date">22 Aug 2015</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#黑客">黑客</a> <a href="/tags/#原创">原创</a> </span>
     </div>
     <h1 class="post-title"><font color='red'>[原创]</font> Apache2+Django搭建钓鱼网站</h1>
   </header>
@@ -182,20 +182,22 @@
 
 <p>通过pip安装：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>	$ pip install django
+<div class="highlighter-rouge"><pre class="highlight"><code>$ pip install django
 </code></pre>
 </div>
+
+<hr />
 
 <h2 id="section">搭建钓鱼网站</h2>
 <hr />
 
 <h3 id="section-1">准备工作</h3>
 
-<ol>
+<ul>
   <li>
     <p>用PyCharm生成Django工程，工程名为phisher，在工程根目录创建一个app，app名为mail：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ django-admin.py startapp mail
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ django-admin.py startapp mail
 </code></pre>
     </div>
   </li>
@@ -205,11 +207,13 @@
   <li>
     <p>在mail/static和mail/templates中创建163文件夹，用于存放163邮箱网页相关静态文件和网页文件</p>
   </li>
-</ol>
+</ul>
+
+<hr />
 
 <h3 id="section-2">修改网页文件</h3>
 
-<ol>
+<ul>
   <li>
     <p>进入<a href="http://mail.163.com/">http://mail.163.com/</a>网页，右键，保存所有网页文件</p>
   </li>
@@ -219,43 +223,45 @@
   <li>
     <p>替换精简后的html文件中的链接为本地静态文件：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> <span class="cp">&lt;!DOCTYPE html&gt;</span>
- {% load static %}
- <span class="nt">&lt;html&gt;</span>
- <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"{% static '163/163logo.gif' %}"</span><span class="nt">&gt;&lt;/a&gt;</span>
- <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"{% static '163/loginpage.css' %}"</span><span class="nt">&gt;</span>
- ...
- <span class="nt">&lt;/html&gt;</span>
+    <div class="highlighter-rouge"><pre class="highlight"><code>  <span class="cp">&lt;!DOCTYPE html&gt;</span>
+  {% load static %}
+  <span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"{% static '163/163logo.gif' %}"</span><span class="nt">&gt;&lt;/a&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"{% static '163/loginpage.css' %}"</span><span class="nt">&gt;</span>
+  ...
+  <span class="nt">&lt;/html&gt;</span>
 </code></pre>
     </div>
   </li>
   <li>
     <p>修改表单响应：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;form action="/mail/163/login/" method="post"&gt;
- ...
-     &lt;input type="text" name="account"&gt;
-     &lt;input type="password" name="password"&gt;
-     &lt;input type="submit"&gt;
- ...
- &lt;/form&gt;
+    <div class="highlighter-rouge"><pre class="highlight"><code>  &lt;form action="/mail/163/login/" method="post"&gt;
+  ...
+      &lt;input type="text" name="account"&gt;
+      &lt;input type="password" name="password"&gt;
+      &lt;input type="submit"&gt;
+  ...
+  &lt;/form&gt;
 </code></pre>
     </div>
   </li>
   <li>
     <p>如碰到iframe：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;iframe rc="/mail/163/login/"&gt;&lt;/iframe&gt;
+    <div class="highlighter-rouge"><pre class="highlight"><code>  &lt;iframe rc="/mail/163/login/"&gt;&lt;/iframe&gt;
 </code></pre>
     </div>
   </li>
-</ol>
+</ul>
+
+<hr />
 
 <h3 id="section-3">编写逻辑文件</h3>
 
-<ol>
+<ul>
   <li>编写mail/models.py文件，定义数据库记录对象：</li>
-</ol>
+</ul>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># coding:utf-8</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
@@ -277,16 +283,16 @@
 </code></pre>
 </div>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>编写完后同步数据库
+<p>编写完后同步数据库</p>
 
-	$ python manage.py makemigrations
-	$ python manage.py migrate
+<div class="highlighter-rouge"><pre class="highlight"><code>$ python manage.py makemigrations
+$ python manage.py migrate
 </code></pre>
 </div>
 
-<ol>
+<ul>
   <li>编写mail/view.py文件：</li>
-</ol>
+</ul>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="c"># coding:utf-8</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render_to_response</span>
@@ -321,53 +327,57 @@
 </code></pre>
 </div>
 
+<hr />
+
 <h3 id="section-4">修改配置文件</h3>
 
-<ol>
+<ul>
   <li>
     <p>修改phisher/settings.py文件：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> ALLOWED_HOSTS = ['*']		# 允许所有IP地址访问
- INSTALLED_APPS = [
-     ...,
-     'mail',					# 注册app
- ]
- # 注释掉防止跨站请求伪造的中间件CsrfViewMiddleware
- MIDDLEWARE = [
-     ...,
-     #'django.middleware.csrf.CsrfViewMiddleware',
-     ...
- ]
- # 修改数据库
- DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.mysql',
-         'NAME': '??',
-         'USER': '??',
-         'PASSWORD': '??',
-         'HOST': '127.0.0.1',
-         'PORT': '3306',
-     }
- }
- TIME_ZONE = 'Asia/Shanghai'	# 修改时区
- USE_TZ = False
+    <div class="highlighter-rouge"><pre class="highlight"><code>  ALLOWED_HOSTS = ['*']		# 允许所有IP地址访问
+  INSTALLED_APPS = [
+      ...,
+      'mail',					# 注册app
+  ]
+  # 注释掉防止跨站请求伪造的中间件CsrfViewMiddleware
+  MIDDLEWARE = [
+      ...,
+      #'django.middleware.csrf.CsrfViewMiddleware',
+      ...
+  ]
+  # 修改数据库
+  DATABASES = {
+      'default': {
+          'ENGINE': 'django.db.backends.mysql',
+          'NAME': '??',
+          'USER': '??',
+          'PASSWORD': '??',
+          'HOST': '127.0.0.1',
+          'PORT': '3306',
+      }
+  }
+  TIME_ZONE = 'Asia/Shanghai'	# 修改时区
+  USE_TZ = False
 </code></pre>
     </div>
   </li>
   <li>
     <p>修改phisher/url.py文件：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> urlpatterns = [
-     url(r'^static/(?P&lt;path&gt;.*)$', static_views.serve),
-     url(r'^admin/', admin.site.urls),
-     url(r'^mail/163/index/$', views.index_163),
-     url(r'^mail/163/login/$', views.login_163),
-     url(r'^', views.index_163),
- ]
+    <div class="highlighter-rouge"><pre class="highlight"><code>  urlpatterns = [
+      url(r'^static/(?P&lt;path&gt;.*)$', static_views.serve),
+      url(r'^admin/', admin.site.urls),
+      url(r'^mail/163/index/$', views.index_163),
+      url(r'^mail/163/login/$', views.login_163),
+      url(r'^', views.index_163),
+  ]
 </code></pre>
     </div>
   </li>
-</ol>
+</ul>
+
+<hr />
 
 <h3 id="section-5">测试</h3>
 
@@ -377,40 +387,42 @@
 
 <p>用浏览器打开<a href="27.0.0.1:8000">127.0.0.1:8000</a></p>
 
+<hr />
+
 <h2 id="apache24cgi">使用Apache24运行CGI程序</h2>
 <hr />
 
-<ol>
+<ul>
   <li>
     <p>在/usr/local/etc/apache2/2.4/httpd.conf文件末尾添加：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> # 添加mod_wsgi.so模块
- LoadModule wsgi_module libexec/mod_wsgi-py27.so
+    <div class="highlighter-rouge"><pre class="highlight"><code>  # 添加mod_wsgi.so模块
+  LoadModule wsgi_module libexec/mod_wsgi-py27.so
 
- # 指定项目的wsgi.py配置文件路径  
- WSGIScriptAlias / /Users/wuyinan/Projects/python/phisher/phisher/wsgi.py
+  # 指定项目的wsgi.py配置文件路径  
+  WSGIScriptAlias / /Users/wuyinan/Projects/python/phisher/phisher/wsgi.py
 
- # 指定项目路径  
- WSGIPythonPath /Users/wuyinan/Projects/python/phisher
+  # 指定项目路径  
+  WSGIPythonPath /Users/wuyinan/Projects/python/phisher
 
- &lt;Directory "/Users/wuyinan/Projects/python/phisher"&gt;
-   &lt;Files wsgi.py&gt;
-     Order deny,allow
-     Allow from all  
-   &lt;/Files&gt;
- &lt;/Directory&gt;
+  &lt;Directory "/Users/wuyinan/Projects/python/phisher"&gt;
+    &lt;Files wsgi.py&gt;
+      Order deny,allow
+      Allow from all  
+    &lt;/Files&gt;
+  &lt;/Directory&gt;
 
- # 指定Log路径
- ErrorLog /Users/wuyinan/Projects/python/phisher/log/error.log
- LogLevel warn
- CustomLog /Users/wuyinan/Projects/python/phisher/log/access.log combined
+  # 指定Log路径
+  ErrorLog /Users/wuyinan/Projects/python/phisher/log/error.log
+  LogLevel warn
+  CustomLog /Users/wuyinan/Projects/python/phisher/log/access.log combined
 </code></pre>
     </div>
   </li>
   <li>
     <p>测试：</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ sudo apachectl start
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ sudo apachectl start
 </code></pre>
     </div>
 
@@ -418,7 +430,7 @@
 
     <p><img src="/assets/2015-08-22-1.jpeg" alt="测试界面" title="测试界面" /></p>
   </li>
-</ol>
+</ul>
 
 
     <div class="page_navigation">
