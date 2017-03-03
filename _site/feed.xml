@@ -5,8 +5,8 @@
     <description>Welcome to my blog!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 03 Mar 2017 15:28:19 +0800</pubDate>
-    <lastBuildDate>Fri, 03 Mar 2017 15:28:19 +0800</lastBuildDate>
+    <pubDate>Fri, 03 Mar 2017 15:42:19 +0800</pubDate>
+    <lastBuildDate>Fri, 03 Mar 2017 15:42:19 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -771,9 +771,9 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;编写完后同步数据库&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;编写完后同步数据库
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	$ python manage.py makemigrations
+	$ python manage.py makemigrations
 	$ python manage.py migrate
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
