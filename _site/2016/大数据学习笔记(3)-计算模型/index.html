@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title><font color='red'>[原创]</font> 大数据学习笔记(3)-MapReduce</title>
+  <title><font color='red'>[原创]</font> 大数据学习笔记(3)-计算模型</title>
   <meta name="description" content="Welcome to my blog!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-MapReduce/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9E%8B/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -171,14 +171,16 @@
     <div class="post-meta">
       <time datetime="4 Dec 2016" class="post-meta__date date">4 Dec 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
     </div>
-    <h1 class="post-title"><font color='red'>[原创]</font> 大数据学习笔记(3)-MapReduce</h1>
+    <h1 class="post-title"><font color='red'>[原创]</font> 大数据学习笔记(3)-计算模型</h1>
   </header>
 
   <section class="post">
-    <p><em>深入学习MapReduce计算模型的运行机制、优点和不足、计算模式等</em></p>
+    <p><em>深入学习MapReduce、DAG计算模型的运行机制、优点和不足、计算模式等</em></p>
 
-<h2 id="mapreduce">MapReduce运行机制</h2>
+<h2 id="mapreduce">MapReduce</h2>
 <hr />
+
+<h3 id="mapreduce-1">MapReduce运行机制</h3>
 
 <p><img src="/assets/2016-12-04-1.png" alt="Hadoop的MapReduce运行机制" title="Hadoop的MapReduce运行机制" /></p>
 
@@ -206,8 +208,9 @@
   </li>
 </ol>
 
-<h2 id="mapreduce-1">MapReduce优点和不足</h2>
 <hr />
+
+<h3 id="mapreduce-2">MapReduce优点和不足</h3>
 
 <ul>
   <li>
@@ -239,8 +242,9 @@
   </li>
 </ul>
 
-<h2 id="mapreduce-2">MapReduce计算模式</h2>
 <hr />
+
+<h3 id="mapreduce-3">MapReduce计算模式</h3>
 
 <p>实际应用中的大部分ETL任务都可以归结为MapReduce计算模式或其变体，如：</p>
 
@@ -277,12 +281,27 @@
   </li>
 </ol>
 
+<h2 id="dag">一种更高效的的计算框架——DAG</h2>
+<hr />
+
+<p>虽然MapReduce提供了简介的借口，用户只需完成Map和Reduce函数的业务逻辑就可以实现大规模数据批处理任务，但是其支持的运算符仅仅限定与Map和Reduce两类，所以在表达能力上不够丰富。</p>
+
+<p>另外，MapReduce计算模型的本质是由Map和Reduce序列两个阶段完成的，在Map任务阶段有个任务同步过程，只有在所有Map任务执行完成才能开始Reduce阶段的任务。</p>
+
+<p>从上可以看出MapReduce对于子任务之间复杂的交互和依赖关系缺乏表达能力，因此，一种更高效的的计算框架——DAG氤氲而生。DAG计算模型可以认为是对MapReduce计算模型的一种扩展（可以将MapReduce模型看作DAG模型的一种特例）。DAG模型可以表达复杂的并发任务之间的依赖关系，提供了丰富的运算符，使其表达能力和灵活性更加强大。</p>
+
+<hr />
+
+<h3 id="dag-1">DAG运行机制</h3>
+
 
 
     <div class="page_navigation">
     
       <a class="prev" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)-Hadoop/">&laquo; <font color='red'>[原创]</font> 大数据学习笔记(2)-Hadoop</a>
     
+    
+      <a class="next" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)-%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"><font color='red'>[原创]</font> 大数据学习笔记(4)-分布式文件系统 &raquo;</a>
     
     </div>
 
@@ -300,9 +319,9 @@
      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
 
     var disqus_config = function () {
-        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-MapReduce/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2016/大数据学习笔记(3)-MapReduce'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        this.page.title = '/2016/大数据学习笔记(3)-MapReduce';
+        this.page.url = 'https://wuyinan0126.github.io/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9E%8B/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2016/大数据学习笔记(3)-计算模型'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2016/大数据学习笔记(3)-计算模型';
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE
