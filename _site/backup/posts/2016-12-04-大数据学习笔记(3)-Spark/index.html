@@ -35,9 +35,13 @@
     <div class="highlighter-rouge"><pre class="highlight"><code> export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
  export HADOOP_HOME=/opt/hadoop-2.7.3
  export SCALA_HOME=/opt/scala-2.11.8	
+	
  export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
  export HDFS_CONF_DIR=$HADOOP_HOME/etc/hadoop
  export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+
+ # spark.history.retainedApplications仅显示最近50个应用
+ export SPARK_HISTORY_OPTS="-Dspark.history.ui.port=18080 -Dspark.history.retainedApplications=3 -Dspark.history.fs.logDirectory=file:/tmp/spark-events"
 </code></pre>
     </div>
   </li>
@@ -45,6 +49,16 @@
     <p>conf/slaves:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> localhost
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>conf/spark-defaults.conf:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # 对于Spark Job启用log event配置，是否记录Spark事件，用于应用程序在完成后重构webUI
+ spark.eventLog.enabled           true
+ spark.eventLog.dir               file:/tmp/spark-events
+ spark.eventLog.compress          true
 </code></pre>
     </div>
   </li>
@@ -65,6 +79,14 @@
     <p>启动Spark，用jps查看，启动的进程应包括Master、Worker:</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> $ /opt/spark-2.1.0/sbin/start-all.sh
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>先创建history默认存放位置，启动HistoryServer，启动的进程应包括HistoryServer：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ mkdir /tmp/spark-events/
+ $ /opt/spark-2.1.0/sbin/start-history-server.sh
 </code></pre>
     </div>
   </li>
@@ -90,6 +112,9 @@
     <div class="highlighter-rouge"><pre class="highlight"><code> $ yarn logs -applicationId ${applicationId} | grep 'Pi'
 </code></pre>
     </div>
+  </li>
+  <li>
+    <p>在界面<a href="http://127.0.0.1:18080/">http://127.0.0.1:18080/</a>查看历史</p>
   </li>
 </ol>
 
