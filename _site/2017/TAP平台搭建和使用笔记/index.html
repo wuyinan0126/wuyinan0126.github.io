@@ -299,7 +299,7 @@
 
     <div class="highlighter-rouge"><pre class="highlight"><code> options {
          directory "/var/cache/bind";
-         forwarders {					# 当本地解析不了时，转发给一下DNS服务器解析
+         forwarders {				# 当本地解析不了时，转发给一下DNS服务器解析
                  202.112.128.51;
                  114.114.114.114;
                  0.0.0.0;
@@ -324,14 +324,18 @@
       <li>
         <p>修改本机/etc/resolv.conf，在所有nameserver上加入：</p>
 
-        <p>nameserver 10.2.3.114					# 替换为你的本地dns服务器（即本机）地址</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  nameserver 10.2.3.114				# 替换为你的本地dns服务器（即本机）地址
+</code></pre>
+        </div>
       </li>
       <li>
         <p>测试：</p>
 
-        <p>$ host tap.wyn
+        <div class="highlighter-rouge"><pre class="highlight"><code>  $ host tap.wyn
   $ host a.tap.wyn
-  $ host baidu.com</p>
+  $ host baidu.com
+</code></pre>
+        </div>
       </li>
     </ul>
   </li>

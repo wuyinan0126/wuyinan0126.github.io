@@ -5,8 +5,8 @@
     <description>Welcome to geek&#39;s world!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 09 Mar 2017 15:39:46 +0800</pubDate>
-    <lastBuildDate>Thu, 09 Mar 2017 15:39:46 +0800</lastBuildDate>
+    <pubDate>Thu, 09 Mar 2017 15:51:27 +0800</pubDate>
+    <lastBuildDate>Thu, 09 Mar 2017 15:51:27 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -135,7 +135,7 @@
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; options {
          directory &quot;/var/cache/bind&quot;;
-         forwarders {					# 当本地解析不了时，转发给一下DNS服务器解析
+         forwarders {				# 当本地解析不了时，转发给一下DNS服务器解析
                  202.112.128.51;
                  114.114.114.114;
                  0.0.0.0;
@@ -160,14 +160,18 @@
       &lt;li&gt;
         &lt;p&gt;修改本机/etc/resolv.conf，在所有nameserver上加入：&lt;/p&gt;
 
-        &lt;p&gt;nameserver 10.2.3.114					# 替换为你的本地dns服务器（即本机）地址&lt;/p&gt;
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  nameserver 10.2.3.114				# 替换为你的本地dns服务器（即本机）地址
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
       &lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;测试：&lt;/p&gt;
 
-        &lt;p&gt;$ host tap.wyn
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ host tap.wyn
   $ host a.tap.wyn
-  $ host baidu.com&lt;/p&gt;
+  $ host baidu.com
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
