@@ -5,9 +5,287 @@
     <description>Welcome to geek&#39;s world!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 08 Mar 2017 14:37:18 +0800</pubDate>
-    <lastBuildDate>Wed, 08 Mar 2017 14:37:18 +0800</lastBuildDate>
+    <pubDate>Thu, 09 Mar 2017 15:39:46 +0800</pubDate>
+    <lastBuildDate>Thu, 09 Mar 2017 15:39:46 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
+    
+      <item>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; TAP平台搭建和使用笔记</title>
+        <description>&lt;p&gt;&lt;em&gt;在OpenStack上搭建和使用Trusted Analytics Platform，包括OpenStack的搭建、本地DNS服务的搭建、本地代理服务器的搭建、疑难问题的筛查和解决&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;tap&quot;&gt;TAP平台&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;TAP是由Intel开发的一款开源软件，它可以加速创建以大数据分析为驱动的本地云应用。它通过在公有云和私有云提供一个分享的、灵活的数据分析环境，使得企业的开发者、数据科学家、云服务提供商和系统集成商更容易地合作&lt;/p&gt;
+
+&lt;p&gt;TAP是一个多租户的平台，旨在简化和加速端到端的分析应用程序的交付。它采用松耦合的分层架构，使得在定制解决方式时具有较大的灵活性。它由数据层(Data Layer)、分析层(Analytics Layer)和应用层(Application Layer)构成，如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2017-03-09-1.png&quot; alt=&quot;TAP架构图&quot; title=&quot;TAP架构图&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;openstack&quot;&gt;OpenStack搭建&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;TAP的OpenStack版本要求：Mirantis Opentack 7.0 for Kilo 2015.1.0&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;TAP的硬件要求：
+    &lt;ul&gt;
+      &lt;li&gt;1个fuel server: 4核CPU，4GB内存，1 Gbps以太网，128GB SAS硬盘&lt;/li&gt;
+      &lt;li&gt;1个Controller节点: 2个6核CPU，24GB内存，1TB RAID1&lt;/li&gt;
+      &lt;li&gt;1个Storage节点: 1个4核CPU，12GB内存，500GB RAID1&lt;/li&gt;
+      &lt;li&gt;6个Compute节点（每个）:双socket CPU，每个socket至少4核，64GB内存，256GB SSD&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;实际硬件：
+    &lt;ul&gt;
+      &lt;li&gt;1个fuel server: 双网口，网口1配置VLAN&lt;/li&gt;
+      &lt;li&gt;1个Controller + Cinder Storage节点：双网口，网口1配置VLAN，2个8核CPU，48GB内存，900GB？？？&lt;/li&gt;
+      &lt;li&gt;4个Compute + Cinder Storage节点（每个）：双网口，网口1配置VLAN，4个16核CPU，128G内存，0.8~3.6TB？？？&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;网络配置：
+    &lt;ul&gt;
+      &lt;li&gt;公开：
+        &lt;ul&gt;
+          &lt;li&gt;IP范围：10.2.14.3～10.2.14.21&lt;/li&gt;
+          &lt;li&gt;CIDR：10.2.14.0/24&lt;/li&gt;
+          &lt;li&gt;不使用VLAN标记&lt;/li&gt;
+          &lt;li&gt;网关：10.2.14.1&lt;/li&gt;
+          &lt;li&gt;Floating IP范围：10.2.14.22～10.2.14.79&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;存储：
+        &lt;ul&gt;
+          &lt;li&gt;VLAN：991&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;管理：
+        &lt;ul&gt;
+          &lt;li&gt;VLAN：992&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Neutron L2配置：
+        &lt;ul&gt;
+          &lt;li&gt;VLAN ID 范围：993～999&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;OpenStack配置：
+    &lt;ul&gt;
+      &lt;li&gt;Repositories：修改ubuntu的软件源（如阿里云的源）：http://mirrors.aliyun.com/ubuntu/&lt;/li&gt;
+      &lt;li&gt;Public network assignment：给所有节点分配所有public网络&lt;/li&gt;
+      &lt;li&gt;Storage：Cinder LVM over iSCSI for volumes&lt;/li&gt;
+      &lt;li&gt;Public TLS：不使用HTTPS和TLS&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;dns&quot;&gt;本地DNS服务的搭建&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;由于TAP平台需要TAP Domain，之前使用xip.io不稳定且解析速度慢，因此搭建本地DNS服务器（IP为10.2.3.114）。我的TAP Domain为tap.wyn，需要将所有子域名解析为10.2.14.28&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;建立Ubuntu Server虚拟机&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装bind9：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo apt-get install bind9
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;添加一个zone：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo cp /etc/bind/db.local /etc/bind/db.tap.wyn
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改/etc/bind/named.conf.local：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; zone &quot;tap.wyn&quot; {
+   type master;
+   file &quot;/etc/bind/db.tap.wyn&quot;;
+ };
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改/etc/bind/db.tap.wyn：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $TTL    604800
+ @       IN      SOA     tap.wyn. root.tap.wyn. (
+                               2         ; Serial
+                          604800         ; Refresh
+                           86400         ; Retry
+                         2419200         ; Expire
+                          604800 )       ; Negative Cache TTL
+ ;
+ @       IN      NS      10.2.3.114.		# 替换为你的本地dns服务器（即本机）地址
+ @       IN      A       10.2.14.28		# 使其能解析tap.wyn为10.2.14.28
+ *       IN      A       10.2.14.28		# 使其能解析*.tap.wyn为10.2.14.28
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改/etc/bind/named.conf.options：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; options {
+         directory &quot;/var/cache/bind&quot;;
+         forwarders {					# 当本地解析不了时，转发给一下DNS服务器解析
+                 202.112.128.51;
+                 114.114.114.114;
+                 0.0.0.0;
+         };
+         dnssec-validation auto;
+         auth-nxdomain no;    
+         listen-on-v6 { any; };
+         allow-query { any; };			# 允许任何主机用该DNS服务器查询
+ };
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编写开机启动脚本：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; sudo /etc/init.d/bind9 restart
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;测试：
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;修改本机/etc/resolv.conf，在所有nameserver上加入：&lt;/p&gt;
+
+        &lt;p&gt;nameserver 10.2.3.114					# 替换为你的本地dns服务器（即本机）地址&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;测试：&lt;/p&gt;
+
+        &lt;p&gt;$ host tap.wyn
+  $ host a.tap.wyn
+  $ host baidu.com&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;本地代理服务的搭建&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;由于TAP平台需要从国外软件源下载依赖包，并且TAP平台只支持HTTP和HTTPS代理。目前国内的代理提供商已经不提供HTTP代理，因为其流量能被监视，因此需要将其他代理协议，如ShadowSocks，转为HTTP代理，因此搭建本地代理服务器（IP为10.2.3.111）&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;建立Ubuntu Server虚拟机&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装shadowsocks：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo pip install shadowsocks
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;新建配置文件/etc/shadowsocks.json，配置参数可以从&lt;a href=&quot;https://portal.shadowsocks.com.hk/&quot;&gt;https://portal.shadowsocks.com.hk/&lt;/a&gt;网站购买：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;		
+   &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;server&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{your-server}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+   &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;server_port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;your-port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+   &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;local_port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1080&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+   &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{your-password}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+   &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;method&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;aes-256-cfb&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+ &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;配置全局代理。安装polipo：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo apt-get install polipo
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改配置文件/etc/polipo/config：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; logSyslog = true
+ logFile = /var/log/polipo/polipo.log
+ proxyAddress = &quot;0.0.0.0&quot;
+ socksParentProxy = &quot;127.0.0.1:1080&quot;
+ socksProxyType = socks5
+ allowedPorts = 1-65535
+ tunnelAllowedPorts = 1-65535
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编写开机启动脚本：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; sudo sslocal -c /etc/shadowsocks.json -d restart
+ sudo /etc/init.d/polipo restart
+ export http_proxy=http://127.0.0.1:8123/
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;测试：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo http_proxy=http://127.0.0.1:8123 curl www.t66y.com # 小孩子不要打开这个网址
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;tap-1&quot;&gt;TAP平台搭建&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;按照&lt;a href=&quot;https://github.com/trustedanalytics/platform-wiki-0.7/wiki/0.7-Openstack-Platform-Deployment&quot;&gt;https://github.com/trustedanalytics/platform-wiki-0.7/wiki/0.7-Openstack-Platform-Deployment&lt;/a&gt;步骤搭建，我选择的配置文件是TAP-FullVM.yaml&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;查看安装日志&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用Key Pair登录JumpBox，在本机：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ ssh ubuntu@&amp;lt;jumpbox_server_ip&amp;gt; -i &amp;lt;你配置文件中选择的key pair&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;从JumpBox登录Nignx，在JumpBox中：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ sudo -i
+  # ssh ubuntu@&amp;lt;nignx_server_ip&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;查看安装日志/var/log/cloud-init-output.log、/var/log/ansible.log&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+</description>
+        <pubDate>Thu, 09 Mar 2017 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2017/TAP%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2017/TAP%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+      </item>
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(4)-分布式文件系统</title>
