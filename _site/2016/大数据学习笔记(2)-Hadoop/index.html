@@ -175,7 +175,7 @@
   </header>
 
   <section class="post">
-    <p><em>简单学习Hadoop相关知识，包括MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统</em></p>
+    <p><em>简单学习Hadoop相关知识，并在集群上搭建Hadoop HA平台。包括介绍MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统</em></p>
 
 <h2 id="hadoop">Hadoop</h2>
 <hr />
@@ -221,7 +221,452 @@
 
 <hr />
 
-<p><strong>未完待续</strong></p>
+<h2 id="hadoop-ha273">安装Hadoop HA（版本2.7.3）</h2>
+<hr />
+
+<h3 id="section">准备工作</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>按照<a href="https://wuyinan0126.github.io/2016/大数据学习笔记(1)-Overview/">大数据学习笔记(1)-Overview</a>做好部署前提准备</p>
+  </li>
+  <li>
+    <p>下载Hadoop二进制包，并分发到所有节点，并解压至/opt/:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible all -m copy -a 'src=/home/cat/cat/hadoop-2.7.3.tar.gz dest=/home/cat/cat/'
+ $ ansible all -a 'tar -zxvf /home/cat/cat/hadoop-2.7.3.tar.gz -C /opt/'
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>创建数据文件夹、日志文件夹和myid文件:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible all -a 'mkdir -p /opt/hadoop-2.7.3/var/name'
+ $ ansible all -a 'mkdir -p /opt/hadoop-2.7.3/var/data'
+ $ ansible all -a 'mkdir -p /opt/hadoop-2.7.3/var/tmp'
+ $ ansible all -a 'mkdir -p /opt/hadoop-2.7.3/var/journal'
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="hadoop-1">配置Hadoop</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>etc/hadoop/core-site.xml</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;configuration&gt;
+   &lt;property&gt;      
+     &lt;name&gt;fs.defaultFS&lt;/name&gt;      
+     &lt;value&gt;hdfs://cats&lt;/value&gt; 
+     &lt;description&gt;默认的HDFS路径，与hdfs-site.xml中的配置相关。当有多个HDFS集群存在时，用此名字指定集群&lt;/description&gt; 
+   &lt;/property&gt;  
+   &lt;property&gt;      
+     &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;     
+     &lt;value&gt;file:///opt/hadoop-2.7.3/var/tmp&lt;/value&gt; 
+     &lt;description&gt;NameNode、DataNode、JournalNode等存放数据的公共目录，也可以自己单独指定这三类节点的目录&lt;/description&gt;
+   &lt;/property&gt;  
+   &lt;property&gt;      
+     &lt;name&gt;ha.zookeeper.quorum&lt;/name&gt;      
+     &lt;value&gt;10.2.2.141:2181,10.2.2.142:2181,10.2.2.143:2181&lt;/value&gt;
+     &lt;description&gt;这里是ZooKeeper集群的地址和端口。注意，数量一定是奇数，且不少于三个节点&lt;/description&gt;
+   &lt;/property&gt;
+ &lt;/configuration&gt;    
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>etc/hadoop/hadoop-env.sh</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> export JAVA_HOME=/opt/jdk1.8.0_121
+ export HADOOP_PID_DIR=/opt/hadoop-2.7.3/var/tmp
+ export HADOOP_SECURE_DN_PID_DIR=/opt/hadoop-2.7.3/var/tmp
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>etc/hadoop/hdfs-site.xml</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;configuration&gt;
+   &lt;property&gt;
+     &lt;name&gt;dfs.name.dir&lt;/name&gt;
+     &lt;value&gt;file:///opt/hadoop-2.7.3/var/name&lt;/value&gt;
+     &lt;description&gt;NameNode存储命名空间和操作日志相关的元数据信息的本地文件系统路径&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;dfs.data.dir&lt;/name&gt;
+     &lt;value&gt;file:///opt/hadoop-2.7.3/var/data&lt;/value&gt;
+     &lt;description&gt;DataNode节点存储HDFS文件的本地文件系统路径&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;dfs.replication&lt;/name&gt;  
+     &lt;value&gt;3&lt;/value&gt;
+     &lt;description&gt;指定DataNode存储block的副本数量。默认值是3个，不大于DataNode个数即可&lt;/description&gt;
+   &lt;/property&gt;  
+   &lt;property&gt;  
+     &lt;name&gt;dfs.permissions.enabled&lt;/name&gt;  
+     &lt;value&gt;false&lt;/value&gt;
+     &lt;description&gt;默认为true，但是还不知道具体功能，设为false&lt;/description&gt;
+   &lt;/property&gt;  
+   &lt;property&gt;
+     &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;
+     &lt;value&gt;true&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;      
+     &lt;name&gt;dfs.nameservices&lt;/name&gt;    
+     &lt;value&gt;cats&lt;/value&gt; 
+     &lt;description&gt;集群的逻辑名称，自己任意取&lt;/description&gt;     
+   &lt;/property&gt;  
+   &lt;property&gt;  
+     &lt;name&gt;dfs.ha.namenodes.cats&lt;/name&gt;  
+     &lt;value&gt;catk,catq&lt;/value&gt;
+     &lt;description&gt;两个namenode的逻辑名称，自己任意取&lt;/description&gt; 
+   &lt;/property&gt;  
+   &lt;property&gt;  
+     &lt;name&gt;dfs.namenode.rpc-address.cats.catk&lt;/name&gt;  
+     &lt;value&gt;10.2.2.141:8020&lt;/value&gt;  
+   &lt;/property&gt;  
+   &lt;property&gt;      
+     &lt;name&gt;dfs.namenode.http-address.cats.catk&lt;/name&gt;      
+     &lt;value&gt;10.2.2.141:50070&lt;/value&gt;      
+   &lt;/property&gt;      
+   &lt;property&gt;      
+     &lt;name&gt;dfs.namenode.rpc-address.cats.catq&lt;/name&gt;      
+     &lt;value&gt;10.2.2.142:8020&lt;/value&gt;      
+   &lt;/property&gt;  
+   &lt;property&gt;      
+     &lt;name&gt;dfs.namenode.http-address.cats.catq&lt;/name&gt;      
+     &lt;value&gt;10.2.2.142:50070&lt;/value&gt;     
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;dfs.namenode.servicerpc-address.cats.catk&lt;/name&gt;  
+     &lt;value&gt;10.2.2.141:53310&lt;/value&gt;  
+   &lt;/property&gt;    
+   &lt;property&gt;  
+     &lt;name&gt;dfs.namenode.servicerpc-address.cats.catq&lt;/name&gt;  
+     &lt;value&gt;10.2.2.142:53310&lt;/value&gt;  
+   &lt;/property&gt;
+   &lt;property&gt;    
+     &lt;name&gt;dfs.ha.automatic-failover.enabled&lt;/name&gt;    
+     &lt;value&gt;true&lt;/value&gt; 
+     &lt;description&gt;指定cats是否自动故障恢复，当NameNode出故障时，是否自动切换到另一台NameNode&lt;/description&gt;
+   &lt;/property&gt;     
+   &lt;!--指定JournalNode --&gt;  
+   &lt;property&gt;  
+     &lt;name&gt;dfs.namenode.shared.edits.dir&lt;/name&gt;       
+     &lt;value&gt;qjournal://10.2.2.143:8485;10.2.2.144:8485;10.2.2.145:8485;10.2.2.146:8485;10.2.2.147:8485;10.2.2.148:8485;10.2.2.149:8485;10.2.2.150:8485;10.2.2.151:8485/cats&lt;/value&gt; 
+     &lt;description&gt;两个NameNode为了数据同步，会通过一组称作JournalNodes的独立进程进行相互通信。当active状态的NameNode的命名空间有任何修改时，会告知大部分的JournalNodes进程。standby状态的NameNode有能力读取JNs中的变更信息，并且一直监控editl og的变化，把变化应用于自己的命名空间。standby可以确保在集群出错时，命名空间状态已经完全同步了。指定cats的两个NameNode共享edits文件目录时，使用的JournalNode集群信息，必须是奇数个，至少3个。&lt;/description&gt;  
+   &lt;/property&gt;  
+   &lt;property&gt;  
+     &lt;name&gt;dfs.client.failover.proxy.provider.cats&lt;/name&gt;       
+     &lt;value&gt;org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider&lt;/value&gt;
+     &lt;description&gt;指定active出故障时，哪个实现类负责执行故障切换&lt;/description&gt;  
+   &lt;/property&gt;  
+   &lt;property&gt;      
+     &lt;name&gt;dfs.journalnode.edits.dir&lt;/name&gt;      
+     &lt;value&gt;/opt/hadoop-2.7.3/var/journal&lt;/value&gt;      
+   &lt;/property&gt;
+   &lt;property&gt;      
+     &lt;name&gt;dfs.ha.fencing.methods&lt;/name&gt;      
+     &lt;value&gt;sshfence&lt;/value&gt;  
+     &lt;description&gt;主备架构解决单点故障问题时，必须要认真解决的是脑裂问题，即出现两个master同时对外提供服务，导致系统处于不一致状态，可能导致数据丢失等潜在问题。在HDFS HA中，JournalNode只允许一个NameNode写数据，不会出现两个Active NameNode的问题，但是，当主备切换时，之前的Active NameNode可能仍在处理客户端的RPC请求，为此，需要增加隔离机制（ fencing）将之前的Active NameNode杀死。HDFS允许用户配置多个隔离机制，当发生主备切换时，将顺次执行这些隔离机制，直到一个返回成功。隔离机制包括shell和sshfence，sshfence通过ssh登录到前一个ActiveNameNode并将其杀死。为了让该机制成功执行，需配置免密码ssh登陆&lt;/description&gt;
+   &lt;/property&gt;  
+   &lt;property&gt;      
+     &lt;name&gt;dfs.ha.fencing.ssh.private-key-files&lt;/name&gt;      
+     &lt;value&gt;/home/cat/.ssh/id_rsa&lt;/value&gt;   
+   &lt;/property&gt;  
+   &lt;property&gt;  
+     &lt;name&gt;dfs.ha.fencing.ssh.connect-timeout&lt;/name&gt;  
+     &lt;value&gt;5000&lt;/value&gt;  
+     &lt;description&gt;设置一个超时时间，一旦ssh超过该时间，则认为执行失败&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;  
+     &lt;name&gt;dfs.namenode.handler.count&lt;/name&gt;  
+     &lt;value&gt;20&lt;/value&gt; 
+     &lt;description&gt;设定namenode server threads的数量，这些threads會用RPC跟其他的datanodes沟通。当datanodes数量太多时会发現很容易出現RPC timeout，解決方法是提升网络速度或提高这个值，但要注意的是thread数量多也表示namenode消耗的内存也随着增加&lt;/description&gt; 
+   &lt;/property&gt; 
+ &lt;/configuration&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>etc/hadoop/mapred-env.sh</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> export JAVA_HOME=/opt/jdk1.8.0_121
+ export HADOOP_MAPRED_PID_DIR=/opt/hadoop-2.7.3/var/tmp
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>etc/hadoop/mapred-site.xml</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;configuration&gt;
+   &lt;property&gt;  
+     &lt;name&gt;mapreduce.framework.name&lt;/name&gt;  
+     &lt;value&gt;yarn&lt;/value&gt;  
+   &lt;/property&gt;
+   &lt;property&gt;  
+     &lt;name&gt;mapreduce.map.memory.mb&lt;/name&gt;  
+     &lt;value&gt;1536&lt;/value&gt;  
+     &lt;description&gt;每个Map Task需要的物理内存限制，例如需要1536MB内存时，yarn将分配一个2048MB内存(2*最小容器内存单位)的容器，这个值可以在程序中设定被覆盖&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;  
+     &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;  
+     &lt;value&gt;3072&lt;/value&gt;  
+     &lt;description&gt;每个Reduce Task需要的物理内存限制，一般为Map的两倍，这个值可以在程序中设定被覆盖&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;  
+     &lt;name&gt;mapreduce.map.java.opts&lt;/name&gt;  
+     &lt;value&gt;-Xmx1024m&lt;/value&gt;  
+     &lt;description&gt;设置Map Task的JVM的堆空间大小，因为Map Task分配了1536MB内存，其中1024MB内存给了java、scala等程序，这个值可以在程序中设定被覆盖&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;  
+     &lt;name&gt;mapreduce.reduce.java.opts&lt;/name&gt;  
+     &lt;value&gt;-Xmx2560m&lt;/value&gt;  
+     &lt;description&gt;设置Reduce Task的JVM的堆空间大小，这个值可以在程序中设定被覆盖&lt;/description&gt;
+   &lt;/property&gt;
+ &lt;/configuration&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>etc/hadoop/slaves</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # datanode的ip地址
+ 10.2.2.143...152
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>etc/hadoop/yarn-env.sh</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> export JAVA_HOME=/opt/jdk1.8.0_121
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>etc/hadoop/yarn-site.xml</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;configuration&gt;
+   &lt;!-- ResourceManager相关配置参数 --&gt;
+   &lt;property&gt;
+   	&lt;name&gt;yarn.scheduler.minimum-allocation-mb&lt;/name&gt;
+   	&lt;value&gt;1024&lt;/value&gt;
+   	&lt;description&gt;每个Task申请容器的最小内存单位，默认1024MB，例如Task需要1025M内存时会分配2*1024M内存的容器&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.scheduler.maximum-allocation-mb&lt;/name&gt;
+     &lt;value&gt;12000&lt;/value&gt;
+     &lt;discription&gt;单个任务可申请容器的最大内存，默认8192MB。由于Yarn集群还需要跑Spark的任务，而Spark的Worker内存相对需要大些，所以需要调大单个任务的最大内存&lt;/discription&gt;
+   &lt;/property&gt;
+   &lt;property&gt;      
+     &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;      
+     &lt;value&gt;10.2.2.141&lt;/value&gt;  
+     &lt;description&gt;resourcemanager只有一个，设置它的主机位置&lt;/description&gt;
+   &lt;/property&gt;  
+   &lt;property&gt;
+     &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;
+     &lt;value&gt;10.2.2.141:8032&lt;/value&gt;
+     &lt;description&gt;ResourceManager对客户端暴露的地址。客户端通过该地址向RM提交应用程序，杀死应用程序等&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;
+     &lt;value&gt;10.2.2.141:8030&lt;/value&gt;
+     &lt;description&gt;ResourceManager对ApplicationMaster暴露的访问地址。ApplicationMaster通过该地址向RM申请资源、释放资源等&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;
+     &lt;value&gt;10.2.2.141:8031&lt;/value&gt;
+     &lt;description&gt;ResourceManager对NodeManager暴露的地址。NodeManager通过该地址向ResourceManager汇报心跳，领取任务等&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;
+     &lt;value&gt;10.2.2.141:8033&lt;/value&gt;
+     &lt;description&gt;ResourceManager对管理员暴露的访问地址。管理员通过该地址向RM发送管理命令等&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;
+     &lt;value&gt;10.2.2.141:8088&lt;/value&gt;
+     &lt;description&gt;ResourceManager对外web ui地址。用户可通过该地址在浏览器中查看集群各类信息&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;!-- NodeManager相关配置参数 --&gt;
+   &lt;property&gt;
+   	&lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;
+   	&lt;value&gt;16384&lt;/value&gt;
+   	&lt;description&gt;NodeManager总的可用物理内存&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+   	&lt;name&gt;yarn.nodemanager.vmem-pmem-ratio&lt;/name&gt;
+   	&lt;value&gt;2.1&lt;/value&gt;
+   	&lt;description&gt;当map或reduce任务使用内存超过mapreduce.map.memory.mb或mapreduce.reduce.memory.mb时，将增加内存至2.1倍的mapreduce.reduce.memory.mb或者mapreduce.map.memory.mb&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;  
+     &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;  
+     &lt;value&gt;mapreduce_shuffle&lt;/value&gt;  
+   &lt;/property&gt;
+   &lt;property&gt;  
+     &lt;name&gt;yarn.resourcemanager.scheduler.class&lt;/name&gt;
+     &lt;value&gt;org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler&lt;/value&gt;
+     &lt;description&gt;启用的资源调度器主类。目前可用的有FIFO、Capacity Scheduler和Fair Scheduler&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.nodemanager.remote-app-log-dir&lt;/name&gt;
+     &lt;value&gt;/tmp/logs&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;!-- historyserver configue start --&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt;
+     &lt;value&gt;true&lt;/value&gt;
+     &lt;description&gt;&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;!-- historyserver configue end --&gt;
+ &lt;/configuration&gt;
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h4 id="hadoop-2">分发Hadoop配置文件</h4>
+<hr />
+
+<ol>
+  <li>
+    <p>分发Hadoop配置文件</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible slave -m copy -a 'src=/opt/hadoop-2.7.3/etc/hadoop/ dest=/opt/hadoop-2.7.3/etc/hadoop/'
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="hadoop-3">启动Hadoop</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>(在主节点)格式化集群</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hdfs zkfc -formatZK
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>(在主节点)检验集群是否格式化，ls /是否出现了hadoop-ha</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ zkCli.sh
+ [zk: localhost:2181(CONNECTED) 0] ls /
+ [zookeeper, hadoop-ha]
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>(在主节点)启动hadoop集群</p>
+
+    <ol>
+      <li>
+        <p>启动所有journalnode</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ hadoop-daemons.sh start journalnode
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>在cat1格式化namenode，输出日志中是否出现successfully formatted</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> cat@cat1:~$ hdfs namenode -format
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>启动cat1中的namenode</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> cat@cat1:~$ hadoop-daemon.sh start namenode
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>在cat2中同步namenode数据</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> cat@cat2:~$ hdfs namenode -bootstrapStandby
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>启动cat2中的namenode</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> cat@cat2:~$ hadoop-daemon.sh start namenode
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>启动所有datanode</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ hadoop-daemons.sh start datanode
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>启动yarn</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ start-yarn.sh
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>在cat1和cat2中都启动ZooKeeperFailoverController（此时cat1变为active，cat2为standby）</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible namenode -a '/opt/hadoop-2.7.3/sbin/hadoop-daemon.sh start zkfc'
+</code></pre>
+        </div>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="hadoop-4">测试Hadoop</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>使用jps查看各节点起的进程</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible all -a '/opt/jdk1.8.0_121/bin/jps'
+
+ cat1: QuorumPeerMain, DFSZKFailoverController, NameNode, ResourceManager
+ cat2: QuorumPeerMain, DFSZKFailoverController, NameNode
+ cat3: QuorumPeerMain, JournalNode, DataNode, NodeManager
+ cat4-12: JournalNode, DataNode, NodeManager
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>查看<a href="http://10.2.2.141:50070/">http://10.2.2.141:50070/</a>中cat1是否为active，查看<a href="http://10.2.2.142:50070/">http://10.2.2.142:50070/</a>中cat2是否为standby</p>
+  </li>
+  <li>
+    <p>(在主节点)运行wordcount例子:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hadoop fs -mkdir /test
+ $ hadoop fs -mkdir /test/input
+ $ hadoop fs -put ./words.txt /test/input
+ $ hadoop jar /opt/hadoop-2.7.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /test/input/ /test/output
+ $ hadoop fs -cat /test/output/part-r-00000
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
 
 
     <div class="page_navigation">

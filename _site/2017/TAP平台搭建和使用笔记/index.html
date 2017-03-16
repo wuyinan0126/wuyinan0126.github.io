@@ -204,8 +204,8 @@
   <li>实际硬件：
     <ul>
       <li>1个fuel server: 双网口，网口1配置VLAN</li>
-      <li>1个Controller + Cinder Storage节点：双网口，网口1配置VLAN，2个8核CPU，48GB内存，900GB？？？</li>
-      <li>4个Compute + Cinder Storage节点（每个）：双网口，网口1配置VLAN，4个16核CPU，128G内存，0.8~3.6TB？？？</li>
+      <li>1个Controller + Cinder Storage节点：双网口，网口1配置VLAN，2个8核CPU，48GB内存，900GB SATA</li>
+      <li>4个Compute + Cinder Storage节点（每个）：双网口，网口1配置VLAN，4个16核CPU，128G内存，0.8~3.6TB RAID5</li>
     </ul>
   </li>
   <li>网络配置：
@@ -299,7 +299,7 @@
 
     <div class="highlighter-rouge"><pre class="highlight"><code> options {
          directory "/var/cache/bind";
-         forwarders {				# 当本地解析不了时，转发给一下DNS服务器解析
+         forwarders {				# 本地解析不了时，给以下DNS服务器解析
                  202.112.128.51;
                  114.114.114.114;
                  0.0.0.0;
@@ -324,7 +324,7 @@
       <li>
         <p>修改本机/etc/resolv.conf，在所有nameserver上加入：</p>
 
-        <div class="highlighter-rouge"><pre class="highlight"><code>  nameserver 10.2.3.114				# 替换为你的本地dns服务器（即本机）地址
+        <div class="highlighter-rouge"><pre class="highlight"><code>  nameserver 10.2.3.114			# 替换为你的本地dns服务器（即本机）地址
 </code></pre>
         </div>
       </li>
@@ -439,11 +439,98 @@
 
 <hr />
 
+<h3 id="section-2">登录其他主机</h3>
+<hr />
+
+<ul>
+  <li>
+    <p>nignx主机从root@jump-box中用密钥登录，用户名为ubuntu</p>
+  </li>
+  <li>
+    <p>cdh-master和cdh-worker主机从root@jump-box中用密钥登录，用户名为ec2-user</p>
+  </li>
+  <li>
+    <p>docker-broker主机在OpenStack中名为broker/0，登录用户名和密码为vcap:c1oudc0w</p>
+  </li>
+</ul>
+
+<hr />
+
+<h3 id="section-3">失败后重新搭建</h3>
+<hr />
+
+<ol>
+  <li>在FUEL UI重置OpenStack环境并重新部署</li>
+  <li>
+    <p>按正常流程运行，其中在运行/opt/tap.sh阶段，可能出现的失败情况：</p>
+
+    <ol>
+      <li>
+        <p>创建docker-broker时，not running after update错误。在jump-box执行：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ bosh locks			# 查看未释放锁的进程
+ $ bosh delete deployment docker-broker
+ $ bosh deployment docker-broker.yml
+ $ bosh -n deploy 
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>执行以下命令时，由于找不到${port_id}，导致错误Unable to find port with name or id ‘type=dict’：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> neutron --insecure --os-cloud TAP port-update ${port_id} --allowed-address-pairs type=dict list=true ip_address=10.0.4.0/24 ip_address=172.17.0.0/16
+</code></pre>
+        </div>
+
+        <p>手动将文件.ansible/pull/jump-box.novalocal/roles/tap/tasks/main.yml中的${port_id}修改为DockerSubnet中IP为10.0.4.4的portId</p>
+      </li>
+      <li>
+        <p>连接http://archive.apache.org时出现Connection reset by peer错误：</p>
+
+        <p>修改文件h2o-provisioner/src/main/docker/Dockerfile，</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> - wget http://archive.apache.org/dist/hadoop/core/hadoop-2.6.0/hadoop-2.6.0.tar.gz
+ + wget http://apache.mirrors.lucidnetworks.net/hadoop/core/hadoop-2.6.0/hadoop-2.6.0.tar.gz
+</code></pre>
+        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>在运行~/tqd.sh阶段，可能出现的失败情况：</p>
+
+    <ol>
+      <li>
+        <p>遇到parcel.state错误时（一般是在下载parcel时强制ctrl+c，导致parcel.stage一直处于DOWNLOADING状态中），在jump-box主机中修改文件./platform-ansible/library/cdh.py：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> elif action_a == 'deploy_parcel':
+     ...
+     if parcel.stage == 'DOWNLOADING':
+         cluster.stop().wait()
+         cluster.start().wait()
+     ...
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>在分发parcels是遇到No such torrent错误：</p>
+
+        <p>从cdh-master-2.node.envname.consul主机中删除文件/opt/cloudera/parcel-cache/<parcel_name>.torrent</parcel_name></p>
+      </li>
+      <li></li>
+    </ol>
+  </li>
+</ol>
+
+<h2 id="tap-2">TAP平台使用</h2>
+<hr />
+
+<p><strong>未完待续</strong></p>
 
 
     <div class="page_navigation">
     
-      <a class="prev" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)-%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">&laquo; <font color='red'>[原创]</font> 大数据学习笔记(4)-分布式文件系统</a>
+      <a class="prev" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(6)-Spark/">&laquo; <font color='red'>[原创]</font> 大数据学习笔记(6)-Spark</a>
     
     
     </div>

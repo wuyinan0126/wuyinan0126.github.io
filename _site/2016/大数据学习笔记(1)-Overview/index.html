@@ -175,24 +175,228 @@
   </header>
 
   <section class="post">
-    <p><em>系统学习大数据生态圈中的理论知识和常用工具，并搭建分布式的大数据平台，包括Hadoop、Spark、Hive、Zookeeper、Kafka等常用大数据工具及其涉及的理论知识</em></p>
+    <p><em>系统学习大数据生态圈中的理论知识和常用工具，并通过ansible集群管理工具在12台物理机上搭建分布式的大数据平台，包括Hadoop、Spark、Hive、Zookeeper、Kafka等常用大数据工具及其涉及的理论知识</em></p>
 
 <h2 id="section">环境配置</h2>
 <hr />
 
-<p>*</p>
+<ul>
+  <li>
+    <p>12台DELL T1700图形工作站，每台配置：</p>
+
+    <ul>
+      <li>CPU：1颗4核8线程</li>
+      <li>内存：16GB DDR3</li>
+      <li>存储：1TB TOSHIBA DT01ACA100</li>
+    </ul>
+  </li>
+</ul>
 
 <h2 id="section-1">大数据平台架构</h2>
 <hr />
 
 <p><img src="/assets/2016-11-16-1.jpeg" alt="大数据平台架构" title="大数据平台架构" /></p>
 
-<h2 id="section-2">环境变量</h2>
+<h2 id="section-2">准备工作</h2>
 <hr />
+
+<ol>
+  <li>
+    <p>在所有节点配置sudo免密码：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ sudo visudo -f /etc/sudoers
+ ...
+ %sudo   ALL=(ALL:ALL) ALL
+ cat     ALL=(ALL) NOPASSWD:NOPASSWD:ALL
+ ...
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>(在主节点)使用集群管理工具ansible：</p>
+
+    <ol>
+      <li>
+        <p>在cat1中生成密钥对，并将公钥加入各节点authorized_keys中：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ ssh-keygen -t rsa
+ $ cat id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+ $ scp ~/.ssh/authorized_keys cat@cat[2:12]:/home/cat/.ssh/authorized_keys
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>安装ansible：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ sudo apt-get install ansible
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>修改配置文件/etc/ansible/hosts，加入：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> [all]
+ cat[1:12]
+
+ [master]
+ cat1
+
+ [slave]
+ cat[2:12]
+
+ [zookeeper]
+ cat[1:3]
+
+ [namenode]
+ cat[1:2]
+
+ [datanode]
+ cat[3:12]
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>测试：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible master -m ping 
+ $ ansible slave -m ping 
+</code></pre>
+        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>修改/etc/hosts文件，加入：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # 【坑】注释掉127.0.1.1	{主机名}
+ 10.2.2.141      cat1
+ 10.2.2.142      cat2
+ 10.2.2.143      cat3
+ 10.2.2.144      cat4
+ 10.2.2.145      cat5
+ 10.2.2.146      cat6
+ 10.2.2.147      cat7
+ 10.2.2.148      cat8
+ 10.2.2.149      cat9
+ 10.2.2.150      cat10
+ 10.2.2.151      cat11
+ 10.2.2.152      cat12
+
+ $ ansible slave -s -m copy -a 'src=/etc/hosts dest=/etc/'
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>编写ansible-playbook文件init.yml：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> ---
+
+ - hosts: all
+   tasks:
+
+   - name: turn off ufw			# 关闭防火墙
+     shell: iptables -F
+     sudo: yes
+
+   - name: create workspace		# 创建工作目录和.ssh
+     shell: mkdir -p /home/cat/cat
+
+   - name: chown -R cat:cat /opt # 修改/opt文件夹拥有者
+     shell: chown -R cat:cat /opt
+     sudo: yes
+
+   - name: install ntp 			# 安装ntp，同步各节点时间
+     shell: apt-get -y install ntp
+     sudo: yes
+   - name: config ntp 			# 配置/etc/ntp.conf文件, 注释原来的ntp server, 使用aliyun时间服务器
+     shell: sed -i "s/pool 0.u.*/pool time1.aliyun.com iburst/g" /etc/ntp.conf
+     shell: sed -i "s/pool 1.u.*/pool time2.aliyun.com iburst/g" /etc/ntp.conf 
+     shell: sed -i "s/pool 2.u.*/pool time3.aliyun.com iburst/g" /etc/ntp.conf 
+     shell: sed -i "s/pool 3.u.*/pool time4.aliyun.com iburst/g" /etc/ntp.conf 
+     shell: sed -i "s/pool ntp.ubuntu.com/# pool ntp.ubuntu.com/g" /etc/ntp.conf
+     sudo: yes
+   - name: restart ntp 			# 重启ntp服务
+     shell: service ntp restart
+     sudo: yes
+   - name: check ntp 			# 验证时间是否同步，检查condition列是否有至少一个sys.peer
+     shell: ntpq -c assoc
+
+   - name: check ssh keys 		# 检查是否已生成密钥对
+     stat: path=/home/cat/.ssh/id_rsa
+     register: keys
+   - name: generate ssh keys 	# 在各节点生成密钥对
+     shell: ssh-keygen -t rsa -f /home/cat/.ssh/id_rsa -q -N ""
+     when: not keys.stat.exists
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>(在所有节点)将每个节点的公钥写入同一份.ssh/authorized_keys中，并分发给所有节点：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible slave -m copy -a 'src=/home/cat/.ssh/authorized_keys dest=/home/cat/.ssh/'
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>(在所有节点)安装JDK：</p>
+
+    <ol>
+      <li>
+        <p>(在cat1)下载jdk，并分发到各从节点:</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible slave -m copy -a 'src=/home/cat/cat/jdk-8u121-linux-x64.tar.gz dest=/home/cat/cat/'
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>(在所有节点)安装jdk:</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible slave -a 'tar -zxvf /home/cat/cat/jdk-8u121-linux-x64.tar.gz -C /opt/'
+</code></pre>
+        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>(在所有节点)修改/etc/profile:</p>
+
+    <ol>
+      <li>
+        <p>(在主节点)修改/etc/profile，在末尾添加：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> export JAVA_HOME=/opt/jdk1.8.0_121
+ export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+ export HADOOP_HOME=/opt/hadoop-2.7.3
+ export SCALA_HOME=/opt/scala-2.11.8
+ export SPARK_HOME=/opt/spark-2.1.0
+ export HIVE_HOME=/opt/hive-2.1.0
+ export ZOOKEEPER_HOME=/opt/zookeeper-3.4.9
+ export HUE_HOME=/opt/hue-3.12.0
+
+ export PATH=$PATH:$JAVA_HOME/bin
+ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+ export PATH=$PATH:$HIVE_HOME/bin
+ export PATH=$PATH:$SCALA_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin
+ export PATH=$PATH:$ZOOKEEPER_HOME/bin
+ export PATH=$PATH:$HUE_HOME/build/env/bin
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>(在所有节点)分发/etc/profile，需要加上-s参数，使其使用sudo权限copy：</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible slave -s -m copy -a 'src=/etc/profile dest=/etc/'
+</code></pre>
+        </div>
+      </li>
+    </ol>
+  </li>
+</ol>
 
 <hr />
 
-<p><strong>未完待续</strong></p>
+<h2 id="zookeeperhttpswuyinan0126githubio20175-">下一步：<a href="https://wuyinan0126.github.io/2017/大数据学习笔记(5)-分布式协调系统/">安装分布式协调系统——Zookeeper</a></h2>
+<hr />
 
 
     <div class="page_navigation">
