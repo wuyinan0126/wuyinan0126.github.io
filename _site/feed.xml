@@ -5,8 +5,8 @@
     <description>Welcome to geek&#39;s world!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 20 Mar 2017 20:57:29 +0800</pubDate>
-    <lastBuildDate>Mon, 20 Mar 2017 20:57:29 +0800</lastBuildDate>
+    <pubDate>Mon, 20 Mar 2017 21:08:33 +0800</pubDate>
+    <lastBuildDate>Mon, 20 Mar 2017 21:08:33 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -2615,6 +2615,43 @@ $ python yarn-utils.py -c 4 -m 16 -d 1 -k True
      padding: 6px 13px
  }
  &amp;lt;/style&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改blog页面中左边封面和右边博文列表比例&lt;/p&gt;
+
+    &lt;p&gt;css/uno.css:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; .content-wrapper {
+     z-index: 800;
+ -	width: 60%;
+ +	width: 80%;
+ -	max-width: 800px;
+ +	max-width: 1200px;
+     margin-left: 40%; }
+
+ .panel-cover--collapsed {
+     width: 40%;
+ - 	max-width: 530px; }
+ +	max-width: 400px; }
+
+ .no-js .panel-main {
+     width: 40%;
+ - 	max-width: 530px; }
+ +	max-width: 400px; }
+
+ @media all and (min-width: 1300px) {
+     .content-wrapper {
+ -		margin-left: 530px; } }
+ +		margin-left: 400px; } }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;js/main.js:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; - $(&#39;.panel-cover&#39;).animate({&#39;max-width&#39;: &#39;530px&#39;, &#39;width&#39;: &#39;40%&#39;}
+ + $(&#39;.panel-cover&#39;).animate({&#39;max-width&#39;: &#39;400px&#39;, &#39;width&#39;: &#39;40%&#39;}
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;

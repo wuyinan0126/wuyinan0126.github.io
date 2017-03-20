@@ -485,6 +485,43 @@
 </code></pre>
     </div>
   </li>
+  <li>
+    <p>修改blog页面中左边封面和右边博文列表比例</p>
+
+    <p>css/uno.css:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> .content-wrapper {
+     z-index: 800;
+ -	width: 60%;
+ +	width: 80%;
+ -	max-width: 800px;
+ +	max-width: 1200px;
+     margin-left: 40%; }
+
+ .panel-cover--collapsed {
+     width: 40%;
+ - 	max-width: 530px; }
+ +	max-width: 400px; }
+
+ .no-js .panel-main {
+     width: 40%;
+ - 	max-width: 530px; }
+ +	max-width: 400px; }
+
+ @media all and (min-width: 1300px) {
+     .content-wrapper {
+ -		margin-left: 530px; } }
+ +		margin-left: 400px; } }
+</code></pre>
+    </div>
+
+    <p>js/main.js:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> - $('.panel-cover').animate({'max-width': '530px', 'width': '40%'}
+ + $('.panel-cover').animate({'max-width': '400px', 'width': '40%'}
+</code></pre>
+    </div>
+  </li>
 </ol>
 
 <h2 id="section-2">其它实用工具</h2>
