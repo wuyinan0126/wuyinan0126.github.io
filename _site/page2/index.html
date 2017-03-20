@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title><font color='red'>[原创]</font> 大数据学习笔记(5)-分布式协调系统</title>
+  <title>Yinan's Blog</title>
   <meta name="description" content="Welcome to geek's world!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(5)-%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83%E7%B3%BB%E7%BB%9F/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//page2/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -166,205 +166,38 @@
 
     <div class="content-wrapper">
       <div class="content-wrapper__inner">
-        <article class="post-container post-container--single">
-  <header class="post-header">
-    <div class="post-meta">
-      <time datetime="2 Jan 2017" class="post-meta__date date">2 Jan 2017</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
-    </div>
-    <h1 class="post-title"><font color='red'>[原创]</font> 大数据学习笔记(5)-分布式协调系统</h1>
-  </header>
+        <div class="main-post-list">
 
-  <section class="post">
-    <p>**</p>
-
-<h2 id="section">分布式协调系统</h2>
-<hr />
-
-<h2 id="zookeeper349">安装Zookeeper（版本3.4.9）</h2>
-<hr />
-
-<h3 id="section-1">准备工作</h3>
-<hr />
-
-<ol>
-  <li>
-    <p>下载Zookeeper二进制包，并分发到所有zookeeper节点，并解压至/opt/:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible zookeeper -m copy -a 'src=/home/cat/cat/zookeeper-3.4.9.tar.gz dest=/home/cat/cat/'
- $ ansible zookeeper -a 'tar -zxvf /home/cat/cat/zookeeper-3.4.9.tar.gz -C /opt/'
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>创建数据文件夹、日志文件夹和myid文件:</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible zookeeper -a 'mkdir -p /opt/zookeeper-3.4.9/var/data'
- $ ansible zookeeper -a 'mkdir -p /opt/zookeeper-3.4.9/var/log'
- $ ansible zookeeper -a 'touch /opt/zookeeper-3.4.9/var/data/myid'
-</code></pre>
-    </div>
-  </li>
-</ol>
-
-<hr />
-
-<h3 id="zookeeper">配置Zookeeper</h3>
-<hr />
-
-<ol>
-  <li>
-    <p>conf/zoo.cfg</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> # 这个时间(ms)是作为Zookeeper服务器之间或客户端与服务器之间维持心跳的时间间隔
- tickTime=2000
-
- # Zookeeper服务器集群中的Follower服务器初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过10个tickTime的时间长度后 Leader服务器还没有收到Follower的返回信息，表明这个Follower连接失败
- initLimit=10
-
- # 标识Leader与Follower之间发送消息，请求和应答时间长度最长不能超过多少个tickTime的时间长度
- syncLimit=5
-
- # 客户端连接Zookeeper服务器的端口，Zookeeper会监听这个端口，接受客户端的访问请求。
- clientPort=2181
-
- # Zookeeper存放数据
- dataDir=/opt/zookeeper-3.4.9/var/data
- # 数据的log日志
- dataLogDir=/opt/zookeeper-3.4.9/var/log
-
- # 所有安装Zookeeper的主机，必须是奇数台，不用使用全部。server.ID，ID写入每台主机的{dataDir}/myid中
- server.1=cat1:2888:3888 
- server.2=cat2:2888:3888
- server.3=cat3:2888:3888
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>bin/zkEnv.sh</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> # Zookeeper的Log日志
- export ZOO_LOG_DIR="/opt/zookeeper-3.4.9/var/log" 
- export JAVA_HOME="/opt/jdk1.8.0_121"
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>var/data/myid</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> # 根据conf/zoo.cfg内容，例如本机为cat1，则myid文件内容为：
- 1
-</code></pre>
-    </div>
-  </li>
-</ol>
-
-<hr />
-
-<h3 id="zookeeper-1">分发Zookeeper配置文件</h3>
-<hr />
-
-<ol>
-  <li>
-    <p>分发Zookeeper配置文件conf/zoo.cfg和bin/zkEnv.sh</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible zookeeper -m copy -a 'src=/opt/zookeeper-3.4.9/conf/zoo.cfg dest=/opt/zookeeper-3.4.9/conf/'
- $ ansible zookeeper -m copy -a 'src=/opt/zookeeper-3.4.9/bin/zkEnv.sh dest=/opt/zookeeper-3.4.9/bin/'
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>登录到每台zookeeper主机中修改{dataDir}/myid</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> cat@cat1:~$ echo "1" &gt; /opt/zookeeper-3.4.9/var/data/myid 
- cat@cat2:~$ echo "2" &gt; /opt/zookeeper-3.4.9/var/data/myid 
- cat@cat3:~$ echo "3" &gt; /opt/zookeeper-3.4.9/var/data/myid 
-</code></pre>
-    </div>
-  </li>
-</ol>
-
-<hr />
-
-<h3 id="zookeeper-2">启动Zookeeper</h3>
-<hr />
-
-<ol>
-  <li>
-    <p>在所有zookeeper节点启动Zookeeper服务器</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ zkServer.sh start
-</code></pre>
-    </div>
-  </li>
-</ol>
-
-<hr />
-
-<h3 id="zookeeper-3">测试Zookeeper</h3>
-<hr />
-
-<ol>
-  <li>
-    <p>在所有zookeeper节点查看zookeeper状态。如果启动失败，查看/opt/zookeeper-3.4.9/var/log/zookeeper.out日志</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code> $ zkServer.sh status
-</code></pre>
-    </div>
-  </li>
-</ol>
-
-<hr />
-
-<h2 id="hadoop-hahttpswuyinan0126githubio20162-hadoop">下一步：<a href="(https://wuyinan0126.github.io/2016/大数据学习笔记(2)-Hadoop/)">安装Hadoop HA</a></h2>
-<hr />
-
-
-    <div class="page_navigation">
+  <ol class="post-list">
     
-      <a class="prev" href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)-%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">&laquo; <font color='red'>[原创]</font> 大数据学习笔记(4)-分布式文件系统</a>
+      <li>
+        <h2 class="post-list__post-title post-title"><a href="/2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/" title="<font color='red'>[原创]</font> 树莓派2创建钓鱼热点"><font color='red'>[原创]</font> 树莓派2创建钓鱼热点</a></h2>
+        <p class="excerpt"><em>使用树莓派2和无线网卡创建钓鱼热点，使其能发射无线信号、分配IP地址、DNS解析、导入流量到钓鱼网站、保存用户信息等</em>
+
+&hellip;</p>
+        <div class="post-list__meta"><time datetime="27 Jun 2015" class="post-list__meta--date date">27 Jun 2015</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#技术宅">技术宅</a> <a href="/tags/#树莓派">树莓派</a> </span> </div>
+        <hr class="post-list__divider">
+      </li>
     
-    
-      <a class="next" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(6)-Spark/"><font color='red'>[原创]</font> 大数据学习笔记(6)-Spark &raquo;</a>
-    
-    </div>
+  </ol>
 
-  </section>
-  <section id="disqus_thread"></section><!-- /#disqus_thread -->
-</article>
-
-    <div id="disqus_thread"></div>
-    <script>
-
-    var disqus_shortname = 'wuyinan0126';
-
-    /**
-     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
-
-    var disqus_config = function () {
-        this.page.url = 'https://wuyinan0126.github.io/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(5)-%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83%E7%B3%BB%E7%BB%9F/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2017/大数据学习笔记(5)-分布式协调系统'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        this.page.title = '/2017/大数据学习笔记(5)-分布式协调系统';
-    };
-
-    (function() { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        s.src = '//wuyinan0126.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function () {
-            var s = document.createElement('script'); s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <hr class="post-list__divider ">
 
   
+      <nav class="pagination" role="navigation">
+  
+    
+      <a rel="prev" class="posts newer btn small" href="/#blog" title="Previous Page">← Newer Posts</a>
+    
+  
 
+  <span class="pagination__page-number">Page 2 of 2</span>
+
+  
+</nav>
+  
+
+</div>
       </div>
 
       <footer class="footer">

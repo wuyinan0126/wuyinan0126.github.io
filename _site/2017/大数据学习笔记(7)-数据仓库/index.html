@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title><font color='red'>[原创]</font> 大数据学习笔记(7)-数据仓库</title>
+  <meta name="description" content="Welcome to geek's world!">
+  <meta name="author" content="Yinan Wu">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Yinan's Blog">
+  <meta name="twitter:description" content="Welcome to geek's world!">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Yinan's Blog">
+  <meta property="og:description" content="Welcome to geek's world!">
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(7)-%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/">
+  <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
+
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+  
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <a href="/" title="link to home of Yinan's Blog">
+          <img src="/images/profile.jpg" class="user-image" alt="My Profile Photo">
+          <h1 class="panel-cover__title panel-title">Yinan's Blog</h1>
+        </a>
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">Welcome to geek's world!</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/me/" title="link to Yinan's Blog about me" class="blog-button">Me</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="link to Yinan's Blog blog" class="blog-button">Blog</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/tags/" title="link to Yinan's Blog tags" class="blog-button">Tags</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation navigation--social">
+            <ul class="navigation">
+          
+            
+              <!-- Twitter -->
+              <li class="navigation__item">
+                <a href="http://twitter.com/wuyinan0126" title="@wuyinan0126 on Twitter" target="_blank">
+                  <i class="icon icon-social-twitter"></i>
+                  <span class="label">Twitter</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Facebook -->
+              <li class="navigation__item">
+                <a href="http://fb.me/wuyinan0126" title="wuyinan0126 on Facebook" target="_blank">
+                  <i class="icon icon-social-facebook"></i>
+                  <span class="label">Facebook</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- LinkedIn -->
+              <li class="navigation__item">
+                <a href="https://www.linkedin.com/in/wuyinan0126" title="wuyinan0126 on LinkedIn" target="_blank">
+                  <i class="icon icon-social-linkedin"></i>
+                  <span class="label">LinkedIn</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- GitHub -->
+              <li class="navigation__item">
+                <a href="https://www.github.com/wuyinan0126" title="wuyinan0126 on GitHub" target="_blank">
+                  <i class="icon icon-social-github"></i>
+                  <span class="label">GitHub</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Email -->
+              <li class="navigation__item">
+                <a href="mailto:wuyinan0126@gmail.com" title="Email wuyinan0126@gmail.com" target="_blank">
+                  <i class="icon icon-mail"></i>
+                  <span class="label">Email</span>
+                </a>
+              </li>
+            
+
+            <!-- RSS -->
+            <!-- <li class="navigation__item">
+              <a href="/feed.xml" title="Subscribe" target="_blank">
+                <i class="icon icon-rss"></i>
+                <span class="label">RSS</span>
+              </a>
+            </li> -->
+          
+            </ul>
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="26 Jan 2017" class="post-meta__date date">26 Jan 2017</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span>
+    </div>
+    <h1 class="post-title"><font color='red'>[原创]</font> 大数据学习笔记(7)-数据仓库</h1>
+  </header>
+
+  <section class="post">
+    <p>**</p>
+
+<h2 id="hive210on-tez085">安装Hive（版本2.1.0）on Tez（版本0.8.5）</h2>
+<hr />
+
+<h3 id="section">准备工作</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>下载Hive二进制包，解压至/opt/:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible all -m copy -a 'src=/home/cat/cat/apache-hive-2.1.0-bin.tar.gz dest=/home/cat/cat/'
+ $ ansible all -a 'tar -zxvf /home/cat/cat/apache-hive-2.1.0-bin.tar.gz -C /opt/'
+ $ ansible all -a 'mv /opt/apache-hive-2.1.0-bin /opt/hive-2.1.0'
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>下载Mysql驱动包<a href="https://dev.mysql.com/downloads/connector/j/">https://dev.mysql.com/downloads/connector/j/</a>，并放入/opt/hive-2.1.0/lib中</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible slave -m copy -a 'src=/opt/hive-2.1.0/lib/ dest=/opt/hive-2.1.0/lib/'
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>(在主节点)安装MySQL用于存储元数据</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ sudo apt-get install mysql-server
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>为Hive建立相应的MySQL账户,并赋予足够的权限:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ mysql -uroot -p
+ mysql&gt; CREATE USER 'hive' IDENTIFIED BY 'yourpassword';
+ mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'hive'@'%' WITH GRANT OPTION;
+ mysql&gt; flush privileges;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>[可选] 解除Mysql只允许本地登录，/etc/mysql/mysql.conf.d/mysqld.cnf :</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> #bind-address           = 127.0.0.1
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>重新加载配置文件</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ sudo service mysql restart
+ #在MacOS中
+ $ launchctl unload /Users/wuyinan/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+ $ launchctl load /Users/wuyinan/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>建立Hive专用的元数据库:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ mysql -uhive -p
+ mysql&gt; create database metastore;
+ mysql&gt; USE metastore;
+ mysql&gt; SOURCE /opt/hive-2.1.0/scripts/metastore/upgrade/mysql/hive-schema-2.1.0.mysql.sql;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>在HDFS创建数据存储仓库</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hadoop fs -mkdir -p /user/hive/warehouse
+ $ hadoop fs -chmod -R 777 /user/hive
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>创建hive的log文件存储目录</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ mkdir /opt/hive-2.1.0/logs
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="hive">配置Hive</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>增加conf/hive-site.xml文件::</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+ &lt;?xml-stylesheet type="text/xsl" href="configuration.xsl"?&gt;
+ &lt;configuration&gt;
+   &lt;property&gt;
+     &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;
+     &lt;value&gt;jdbc:mysql://10.2.2.141:3306/metastore?characterEncoding=UTF-8&amp;amp;useSSL=false&lt;/value&gt;
+     &lt;description&gt;元数据存储的Mysql路径&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;
+     &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;
+     &lt;value&gt;hive&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;
+     &lt;value&gt;yourpassword&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+      &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;
+      &lt;value&gt;/hive/warehouse&lt;/value&gt;
+      &lt;description&gt;数据存储的HDFS路径&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;hive.metastore.uris&lt;/name&gt;
+     &lt;value&gt;thrift://10.2.2.141:9083&lt;/value&gt;
+     &lt;description&gt;spark-shell默认将启动一个SqlContext，因此在{SPARK_HOME}/conf目录下需要有该hive-site.xml文件，并且文件中需要指定hive.metastore.uris&lt;/description&gt;
+   &lt;/property&gt;
+ &lt;/configuration&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>增加conf/hive-env.sh文件:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> export HADOOP_HOME=/opt/hadoop-2.7.3
+ export HIVE_CONF_DIR=/opt/hive-2.1.0/conf	
+ # tez相关
+ export TEZ_HOME=/opt/tez-0.8.5
+ export TEZ_CONF_DIR=/opt/tez-0.8.5/conf
+ export TEZ_JARS=/opt/tez-0.8.5
+ export HADOOP_CLASSPATH=${TEZ_CONF_DIR}:${TEZ_JARS}/*:${TEZ_JARS}/lib/*
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>增加conf/hive-log4j2.properties文件</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> property.hive.log.dir = /opt/hive-2.1.0/logs
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>将/opt/hive-2.1.0/conf/hive-site.xml文件和/opt/hadoop-2.7.3/etc/hadoop/hdfs-site.xml文件复制到/opt/spark-2.1.0/conf下</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ cp /opt/hive-2.1.0/conf/hive-site.xml /opt/spark-2.1.0/conf/
+ $ cp /opt/hadoop-2.7.3/etc/hadoop/hdfs-site.xml /opt/spark-2.1.0/conf/
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>分发Hive配置文件</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible slave -m copy -a 'src=/opt/hive-2.1.0/conf/ dest=/opt/hive-2.1.0/conf/'
+ $ ansible slave -m copy -a 'src=/opt/spark-2.1.0/conf/ dest=/opt/spark-2.1.0/conf/'
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="hive-1">启动Hive</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>启动Hadoop</p>
+  </li>
+  <li>
+    <p>(在主节点)启动Hive服务器</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hive --service metastore &amp;
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="hive-2">测试Hive</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>(在任一节点)启动Hive，进入Hive交互界面:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hive
+ hive&gt;
+ hive&gt; show databases;
+ hive&gt; use default;
+ hive&gt; create table test(id INT);
+ hive&gt; insert into test VALUES(0);
+ hive&gt; select count(*) from test;
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="tez085">安装Tez（版本0.8.5）</h2>
+<hr />
+
+<h3 id="section-1">准备工作</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>下载Tez源码包，修改pom.xml：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;hadoop.version&gt;2.7.3&lt;/hadoop.version&gt;
+ &lt;javac.version&gt;1.8&lt;/javac.version&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>根据pom.xml中protobuf.version，安装protobuf：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ wget https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
+ $ tar -zxvf protobuf-2.5.0.tar.gz -C .
+ $ cd protobuf-2.5.0/
+ $ ./configure
+ $ make
+ $ make check
+ $ sudo make install
+ $ sudo vi /etc/ld.so.conf.d/bprotobuf.conf
+ /usr/local/lib
+ $ sudo ldconfig
+ $ protoc --version
+ libprotoc 2.5.0
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>修改Maven镜像源/etc/maven/settings.xml，在mirros下添加子节点</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;mirror&gt;
+     &lt;id&gt;nexus-aliyun&lt;/id&gt;
+     &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+     &lt;name&gt;Nexus aliyun&lt;/name&gt;
+     &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
+ &lt;/mirror&gt; 
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>开代理，编译：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ export http_proxy=http://127.0.0.1:8123/
+ $ export https_proxy=http://127.0.0.1:8123/
+ $ mvn package -DskipTests=true -Dmaven.javadoc.skip=true
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>服务端使用完整包。将编译好的tez-dist/target/tez-0.8.5.tar.gz上传到hdfs上(/user/tez/)</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hadoop fs -mkdir /user/tez/
+ $ hadoop fs -put ./tez-dist/target/tez-0.8.5.tar.gz
+ $ hadoop fs -chmod -R 777 /user/tez
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>客户端使用minimal包。将编译好的tez-dist/target/tez-0.8.5-minimal.tar.gz分发到各节点，解压</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible all -m copy -a "src=./tez-dist/target/tez-0.8.5-minimal.tar.gz dest=/home/cat/cat/"
+ $ ansible all -a "mkdir /opt/tez-0.8.5"
+ $ ansible all -a "tar -zxvf /home/cat/cat/tez-0.8.5-minimal.tar.gz -C /opt/tez-0.8.5/"
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="tez">配置Tez</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>conf/tez-site.xml</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;configuration&gt;
+   &lt;property&gt;
+     &lt;name&gt;tez.lib.uris&lt;/name&gt;
+     &lt;value&gt;${fs.defaultFS}/user/tez/tez-0.8.5-minimal.tar.gz&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;tez.use.cluster.hadoop-libs&lt;/name&gt;
+     &lt;value&gt;true&lt;/value&gt;
+   &lt;/property&gt;
+ &lt;/configuration&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>分发配置</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> ansible all -m copy -a "src=/opt/tez-0.8.5/conf/ dest=/opt/tez-0.8.5/conf/"
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="tez-1">测试Tez</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>(在任一节点)启动Hive，进入Hive交互界面:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ hive
+ hive&gt;
+ hive&gt; set hive.execution.engine=tez;
+ hive&gt; use default;
+ hive&gt; select count(*) from test;
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="sqoop146">安装Sqoop（版本1.4.6）</h2>
+<hr />
+
+<h3 id="section-2">准备工作</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>下载Sqoop二进制包，解压至/opt/:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible all -m copy -a 'src=/home/cat/cat/sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz dest=/home/cat/cat/'
+ $ ansible all -a 'tar -zxvf /home/cat/cat/sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz -C /opt/'
+ $ ansible all -a 'mv /opt/sqoop-1.4.6.bin__hadoop-2.0.4-alpha /opt/sqoop-1.4.6'
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>将pg-jdbc和mysql的jar包放入$SQOOP_HOME/lib</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> [https://jdbc.postgresql.org/download.html](https://jdbc.postgresql.org/download.html)		
+ [https://dev.mysql.com/downloads/connector/j/](https://dev.mysql.com/downloads/connector/j/)
+
+ $ ansible slave -m copy -a 'src=/opt/sqoop-1.4.6/lib/ dest=/opt/sqoop-1.4.6/lib/' ---
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h3 id="sqoop">配置Sqoop</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>conf/sqoop-env.sh</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> export HADOOP_COMMON_HOME=/opt/hadoop-2.7.3
+ export HIVE_HOME=/opt/hive-2.1.0
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>分发Sqoop配置文件</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible slave -m copy -a 'src=/opt/sqoop-1.4.6/conf/ dest=/opt/sqoop-1.4.6/conf/'
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="sqoop-1">测试Sqoop</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>(在任一节点):</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ sqoop list-databases --connect jdbc:postgresql://10.2.26.96:5432/lrs --username lrs_owner --password pass
+ $ sqoop list-databases --connect jdbc:mysql://10.2.2.141:3306/metastore --username hive --password pass
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>psql向hdfs的导入，HDFS中的路径文件夹必需不存在:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ sqoop import --connect jdbc:postgresql://{psql的IP地址}:5432/{数据库名} --username {用户名} --password {密码} --table {表名} --target-dir {HDFS中的路径} -m 5
+	
+ $ sqoop import --connect jdbc:postgresql://10.2.3.100:5432/cat --username postgres --password ada --table kitty --target-dir /test/kitty -m 5
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>psql向hive的导入:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ sqoop import --connect jdbc:postgresql://{psql的IP地址}:5432/{数据库名} --username {用户名} --password {密码} --table {表名} --hive-import -m 5
+	
+ $ sqoop import --connect jdbc:postgresql://10.2.3.100:5432/cat --username postgres --password ada --table kitty --hive-import -m 5
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+
+    <div class="page_navigation">
+    
+      <a class="prev" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(6)-Spark/">&laquo; <font color='red'>[原创]</font> 大数据学习笔记(6)-Spark</a>
+    
+    
+      <a class="next" href="/2017/TAP%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/"><font color='red'>[原创]</font> TAP平台搭建和使用笔记 &raquo;</a>
+    
+    </div>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <div id="disqus_thread"></div>
+    <script>
+
+    var disqus_shortname = 'wuyinan0126';
+
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+
+    var disqus_config = function () {
+        this.page.url = 'https://wuyinan0126.github.io/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(7)-%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2017/大数据学习笔记(7)-数据仓库'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2017/大数据学习笔记(7)-数据仓库';
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//wuyinan0126.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2017 Yinan Wu. All rights reserved.</span>
+</footer> 
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84272870-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    </div>
+  </body>
+</html>

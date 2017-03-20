@@ -175,12 +175,13 @@
   </header>
 
   <section class="post">
-    <p><em>简单学习Hadoop相关知识，并在集群上搭建Hadoop HA平台。包括介绍MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统</em></p>
+    <p><em>简单学习Hadoop相关知识，并在集群上搭建Hadoop HA平台。包括介绍MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统、MapReduce和Yarn的参数配置等</em></p>
 
 <h2 id="hadoop">Hadoop</h2>
 <hr />
 
 <h3 id="mapreduce">MapReduce</h3>
+<hr />
 
 <p>大数据计算中最常见的一种计算方式是<strong>批处理</strong>。2004年Google发表了MapReduce计算范型和框架论文，这是一种构建在大规模PC之上的批处理计算框架，也是一种分布式计算模型，获得了极为广泛的应用。</p>
 
@@ -198,6 +199,7 @@
 <hr />
 
 <h3 id="hdfs">HDFS</h3>
+<hr />
 
 <p>HDFS的全称是”Hadoop Distributed File System”，是Hadoop中的大规模分布式文件系统。它最初是Yahoo模仿Goole的GFS(Google File System)开发的开源系统，因此在整体架构上和GFS大致相同。与GFS一样，HDFS适合存储<strong>大文件</strong>并为之提供高吞吐量的<strong>顺序读写</strong>访问，不太适合大量随机读的应用场景，也不适合储存大量的小文件的应用场景。</p>
 
@@ -210,6 +212,7 @@
 <hr />
 
 <h3 id="yarn">YARN</h3>
+<hr />
 
 <p>YARN的全称是”Yet Another Resource Negotiator”，是一个独立的<strong>资源调度与管理系统</strong>。</p>
 
@@ -221,10 +224,120 @@
 
 <hr />
 
+<h3 id="mapreduceyarn">MapReduce和Yarn的参数配置</h3>
+<hr />
+
+<p>Yarn中资源的最小单位是容器（Container）。容器是一个Yarn的JVM进程，在MapReduce中，AM服务、map和reduce任务都是运行在一个容器中。可以通过<a href="http://{RM_IP}:8088/cluster/scheduler">http://{RM_IP}:8088/cluster/scheduler</a>来查看正在运行的容器的状态</p>
+
+<ul>
+  <li>
+    <p>在NM中，可以优化的参数有：</p>
+
+    <ul>
+      <li>yarn.node-manager.resource.memory-mb</li>
+    </ul>
+
+    <p>此参数为物理机可用于分配给容器的<strong>物理内存</strong>量，注意需要给物理机留出部分资源给操作系统使用，建议为总物理内存的80%~90%，默认为8192。在不同硬件配置的节点中，该值需要根据物理机实际配置来写</p>
+
+    <ul>
+      <li>yarn.node-manager.resource.vcore</li>
+    </ul>
+
+    <p>同理，为物理机可用于分配给容器的虚拟CPU数（我理解为线程数），建议为物理CPU核数。默认为8，如果节点CPU核数不够8个，则需要调减小这个值，YARN不会智能的探测节点的物理CPU总数。在不同硬件配置的节点中，该值需要根据物理机实际配置来写</p>
+
+    <ul>
+      <li>yarn.nodemanager.vmem-pmem-ratio</li>
+    </ul>
+
+    <p>此参数是指当任务每使用1MB<strong>物理内存</strong>，最多可使用默认为2.1MB的<strong>虚拟内存</strong>量。在JVM中，使用的内存分为虚拟内存和物理内存。JVM中所有存在内存中的对象都是虚拟内存，但在实际运行中只有一部分是实际加载在物理内存中的</p>
+  </li>
+  <li>
+    <p>在RM中，可以优化的参数有：</p>
+
+    <ul>
+      <li>yarn.scheduler.minimum-allocation-mb</li>
+    </ul>
+
+    <p>当应用程序向RM申请容器时，RM按照此<strong>物理内存</strong>量为单位分配给容器，默认为1024。例如，我们设置分配的最小单位为2GB，则RM分配出来的容器内存一定是2G的倍数。假设现在有一个程序向RM申请3.1G的内存，则RM会分配给它一个4GB的容器去执行</p>
+
+    <ul>
+      <li>yarn.scheduler.maximum-allocation-mb</li>
+    </ul>
+
+    <p>此参数限定了RM可以分配给一个容器的最大<strong>物理内存</strong>量，默认为8192。假设应用程序向RM申请的资源超过了这个值，RM会直接拒绝这个请求</p>
+
+    <ul>
+      <li>yarn.scheduler.maximum-allocation-vcores</li>
+    </ul>
+
+    <p>同理，RM可以分配给一个容器的最多虚拟CPU个数，默认为32</p>
+  </li>
+  <li>
+    <p>在MapReduce中，可以优化的参数有：</p>
+
+    <ul>
+      <li>mapreduce.map.memory.mb</li>
+      <li>mapreduce.reduce.memory.mb</li>
+    </ul>
+
+    <p>用于AM向Yarn申请用于map或reduce task的容器时默认使用的<strong>物理内存</strong>值，其值应该在RM中的一个容器可分配的最大最小内存之间，默认为1024。这个值是全局的，因此需要根据某个job的map或reduce task需要使用的内存量，在程序中覆盖这些参数</p>
+
+    <ul>
+      <li>mapreduce.map.java.opts</li>
+      <li>mapreduce.reduce.java.opts</li>
+    </ul>
+
+    <p>因为Yarn容器可以理解为一个JVM，这两个值主要是为需要运行JVM程序（java、scala等）准备的，用于设置JVM进程的堆大小。这个值应该比上面的物理内存值小（因为JVM除了堆还有别的对象需要占用内存），一般设置为上面值的0.75倍，如果JVM进程在执行中，堆上的对象申请的内存超过这个值，就会抛出OutOfMemory异常</p>
+  </li>
+</ul>
+
+<p>举个栗子：</p>
+
+<ul>
+  <li>yarn.nodemanager.vmem-pmem-ratio = 2.1</li>
+  <li>yarn.scheduler.minimum-allocation-mb = 1024</li>
+  <li>mapreduce.map.memory.mb = 1536</li>
+  <li>mapreduce.map.java.opts = 1024</li>
+</ul>
+
+<p>此时，由于mapreduce.map.memory.mb=1536，因此AM将向RM申请一个2048M内存的容器，当map task使用的物理内存量大于2048M时或使用的虚拟内存量大于2048*2.1=3225.6M时将被杀死。容器中有1024M内存用作JVM堆内存，其余内存为非堆内存。当java、scala等进程在堆内存中申请的内存超过1024M，将抛出OutOfMemory异常</p>
+
+<hr />
+
+<h4 id="section">实用工具</h4>
+<hr />
+
+<p>配置内存参数可以使用<a href="https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.3.6/bk_installing_manually_book/content/determine-hdp-memory-config.html">yarn-util.py</a>进行参考</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	# 查看每个物理CPU中core的个数(即核数)
+	$ cat /proc/cpuinfo| grep "cpu cores"| uniq
+	4
+	$ python yarn-utils.py -c 4 -m 16 -d 1 -k True
+	 Using cores=4 memory=16GB disks=1 hbase=True
+	 Profile: cores=4 memory=12288MB reserved=4GB usableMem=12GB disks=1
+	 Num Container=3
+	 Container Ram=4096MB
+	 Used Ram=12GB
+	 Unused Ram=4GB
+	 yarn.scheduler.minimum-allocation-mb=4096
+	 yarn.scheduler.maximum-allocation-mb=12288
+	 yarn.nodemanager.resource.memory-mb=12288
+	 mapreduce.map.memory.mb=4096
+	 mapreduce.map.java.opts=-Xmx3276m
+	 mapreduce.reduce.memory.mb=4096
+	 mapreduce.reduce.java.opts=-Xmx3276m
+	 yarn.app.mapreduce.am.resource.mb=4096
+	 yarn.app.mapreduce.am.command-opts=-Xmx3276m
+	 mapreduce.task.io.sort.mb=1638
+</code></pre>
+</div>
+
+<hr />
+
 <h2 id="hadoop-ha273">安装Hadoop HA（版本2.7.3）</h2>
 <hr />
 
-<h3 id="section">准备工作</h3>
+<h3 id="section-1">准备工作</h3>
 <hr />
 
 <ol>
@@ -308,11 +421,6 @@
      &lt;value&gt;3&lt;/value&gt;
      &lt;description&gt;指定DataNode存储block的副本数量。默认值是3个，不大于DataNode个数即可&lt;/description&gt;
    &lt;/property&gt;  
-   &lt;property&gt;  
-     &lt;name&gt;dfs.permissions.enabled&lt;/name&gt;  
-     &lt;value&gt;false&lt;/value&gt;
-     &lt;description&gt;默认为true，但是还不知道具体功能，设为false&lt;/description&gt;
-   &lt;/property&gt;  
    &lt;property&gt;
      &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;
      &lt;value&gt;true&lt;/value&gt;
@@ -359,7 +467,7 @@
    &lt;!--指定JournalNode --&gt;  
    &lt;property&gt;  
      &lt;name&gt;dfs.namenode.shared.edits.dir&lt;/name&gt;       
-     &lt;value&gt;qjournal://10.2.2.143:8485;10.2.2.144:8485;10.2.2.145:8485;10.2.2.146:8485;10.2.2.147:8485;10.2.2.148:8485;10.2.2.149:8485;10.2.2.150:8485;10.2.2.151:8485/cats&lt;/value&gt; 
+     &lt;value&gt;qjournal://10.2.2.144:8485;10.2.2.145:8485;10.2.2.146:8485;10.2.2.147:8485;10.2.2.148:8485;10.2.2.149:8485;10.2.2.150:8485;10.2.2.151:8485;10.2.2.152:8485/cats&lt;/value&gt; 
      &lt;description&gt;两个NameNode为了数据同步，会通过一组称作JournalNodes的独立进程进行相互通信。当active状态的NameNode的命名空间有任何修改时，会告知大部分的JournalNodes进程。standby状态的NameNode有能力读取JNs中的变更信息，并且一直监控editl og的变化，把变化应用于自己的命名空间。standby可以确保在集群出错时，命名空间状态已经完全同步了。指定cats的两个NameNode共享edits文件目录时，使用的JournalNode集群信息，必须是奇数个，至少3个。&lt;/description&gt;  
    &lt;/property&gt;  
    &lt;property&gt;  
@@ -390,6 +498,18 @@
      &lt;value&gt;20&lt;/value&gt; 
      &lt;description&gt;设定namenode server threads的数量，这些threads會用RPC跟其他的datanodes沟通。当datanodes数量太多时会发現很容易出現RPC timeout，解決方法是提升网络速度或提高这个值，但要注意的是thread数量多也表示namenode消耗的内存也随着增加&lt;/description&gt; 
    &lt;/property&gt; 
+   &lt;!-- 用户权限管理 --&gt;
+   &lt;property&gt;  
+     &lt;name&gt;dfs.permissions.enabled&lt;/name&gt;  
+     &lt;value&gt;true&lt;/value&gt;
+     &lt;description&gt;权限管理&lt;/description&gt;
+   &lt;/property&gt;  
+   &lt;property&gt;
+     &lt;name&gt;dfs.namenode.acls.enabled&lt;/name&gt;
+     &lt;value&gt;true&lt;/value&gt;
+     &lt;description&gt;权限访问控制列表&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;!-- 用户权限管理 --&gt;
  &lt;/configuration&gt;
 </code></pre>
     </div>
@@ -413,22 +533,27 @@
    &lt;property&gt;  
      &lt;name&gt;mapreduce.map.memory.mb&lt;/name&gt;  
      &lt;value&gt;1536&lt;/value&gt;  
-     &lt;description&gt;每个Map Task需要的物理内存限制，例如需要1536MB内存时，yarn将分配一个2048MB内存(2*最小容器内存单位)的容器，这个值可以在程序中设定被覆盖&lt;/description&gt;
+     &lt;description&gt;每个Map Task需要的虚拟内存限制，例如需要1536MB内存时，yarn将分配一个2倍最小容器内存2048M单位的容器，这个值可以在程序中设定被覆盖&lt;/description&gt;
    &lt;/property&gt;
    &lt;property&gt;  
      &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;  
-     &lt;value&gt;3072&lt;/value&gt;  
-     &lt;description&gt;每个Reduce Task需要的物理内存限制，一般为Map的两倍，这个值可以在程序中设定被覆盖&lt;/description&gt;
+     &lt;value&gt;1536&lt;/value&gt;  
+     &lt;description&gt;每个Reduce Task需要的虚拟内存限制，一般为Map的两倍，这个值可以在程序中设定被覆盖&lt;/description&gt;
    &lt;/property&gt;
    &lt;property&gt;  
      &lt;name&gt;mapreduce.map.java.opts&lt;/name&gt;  
-     &lt;value&gt;-Xmx1024m&lt;/value&gt;  
-     &lt;description&gt;设置Map Task的JVM的堆空间大小，因为Map Task分配了1536MB内存，其中1024MB内存给了java、scala等程序，这个值可以在程序中设定被覆盖&lt;/description&gt;
+     &lt;value&gt;-Xmx1024m -XX:MaxPermSize=64m&lt;/value&gt;  
+     &lt;description&gt;设置Map Task的JVM的堆空间大小，因为Map Task分配了4096MB内存，其中3596MB内存给了java、scala等程序，这个值应该比上面的task的虚拟内存值小（因为jvm除了heap还有别的对象需要占用内存），如果jvm进程在执行中heap上的对象占用内存超过这个值， 则会抛出OutOfMemory Exception，这个值可以在程序中设定被覆盖&lt;/description&gt;
    &lt;/property&gt;
    &lt;property&gt;  
      &lt;name&gt;mapreduce.reduce.java.opts&lt;/name&gt;  
-     &lt;value&gt;-Xmx2560m&lt;/value&gt;  
+     &lt;value&gt;-Xmx1024m -XX:MaxPermSize=64m&lt;/value&gt;  
      &lt;description&gt;设置Reduce Task的JVM的堆空间大小，这个值可以在程序中设定被覆盖&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;  
+     &lt;name&gt;mapreduce.task.io.sort.mb&lt;/name&gt;  
+     &lt;value&gt;512&lt;/value&gt;  
+     &lt;description&gt;任务内部排序缓冲区大小&lt;/description&gt;
    &lt;/property&gt;
  &lt;/configuration&gt;
 </code></pre>
@@ -461,8 +586,13 @@
    &lt;/property&gt;
    &lt;property&gt;
      &lt;name&gt;yarn.scheduler.maximum-allocation-mb&lt;/name&gt;
-     &lt;value&gt;12000&lt;/value&gt;
+     &lt;value&gt;12288&lt;/value&gt;
      &lt;discription&gt;单个任务可申请容器的最大内存，默认8192MB。由于Yarn集群还需要跑Spark的任务，而Spark的Worker内存相对需要大些，所以需要调大单个任务的最大内存&lt;/discription&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.scheduler.maximum-allocation-vcores&lt;/name&gt;
+     &lt;value&gt;8&lt;/value&gt;
+     &lt;discription&gt;单个任务可申请容器的最大虚拟核数，默认8个核&lt;/discription&gt;
    &lt;/property&gt;
    &lt;property&gt;      
      &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;      
@@ -497,8 +627,13 @@
    &lt;!-- NodeManager相关配置参数 --&gt;
    &lt;property&gt;
    	&lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;
-   	&lt;value&gt;16384&lt;/value&gt;
-   	&lt;description&gt;NodeManager总的可用物理内存&lt;/description&gt;
+   	&lt;value&gt;12288&lt;/value&gt;
+   	&lt;description&gt;NodeManager总的可用物理内存，必须给物理机留一些内存和计算资源给到操作系统使用，不能用光，16G*85%&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+   	&lt;name&gt;yarn.nodemanager.resource.cpu-vcores&lt;/name&gt;
+   	&lt;value&gt;8&lt;/value&gt;
+   	&lt;description&gt;该节点上YARN可使用的虚拟CPU个数，默认是8，注意，目前推荐将该值设值为与物理CPU核数数目相同。如果你的节点CPU核数不够8个，则需要调减小这个值，而YARN不会智能的探测节点的物理CPU总数&lt;/description&gt;
    &lt;/property&gt;
    &lt;property&gt;
    	&lt;name&gt;yarn.nodemanager.vmem-pmem-ratio&lt;/name&gt;
@@ -509,14 +644,28 @@
      &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;  
      &lt;value&gt;mapreduce_shuffle&lt;/value&gt;  
    &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.nodemanager.aux-services.mapreduce_shuffle.class&lt;/name&gt;
+     &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;
+   &lt;/property&gt;
    &lt;property&gt;  
      &lt;name&gt;yarn.resourcemanager.scheduler.class&lt;/name&gt;
-     &lt;value&gt;org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler&lt;/value&gt;
+     &lt;value&gt;	org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler&lt;/value&gt;
      &lt;description&gt;启用的资源调度器主类。目前可用的有FIFO、Capacity Scheduler和Fair Scheduler&lt;/description&gt;
    &lt;/property&gt;
    &lt;property&gt;
      &lt;name&gt;yarn.nodemanager.remote-app-log-dir&lt;/name&gt;
      &lt;value&gt;/tmp/logs&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;!-- ApplicationMaster相关配置参数 --&gt;
+   &lt;property&gt;  
+     &lt;name&gt;yarn.app.mapreduce.am.resource.mb&lt;/name&gt;
+     &lt;value&gt;1536&lt;/value&gt;
+     &lt;description&gt;MR ApplicationMaster占用的内存量&lt;/description&gt;
+   &lt;/property&gt;
+   &lt;property&gt;  
+     &lt;name&gt;yarn.app.mapreduce.am.command-opts&lt;/name&gt;
+     &lt;value&gt;-Xmx1024m -XX:MaxPermSize=64m&lt;/value&gt;
    &lt;/property&gt;
    &lt;!-- historyserver configue start --&gt;
    &lt;property&gt;
@@ -529,14 +678,6 @@
 </code></pre>
     </div>
   </li>
-</ol>
-
-<hr />
-
-<h4 id="hadoop-2">分发Hadoop配置文件</h4>
-<hr />
-
-<ol>
   <li>
     <p>分发Hadoop配置文件</p>
 
@@ -548,10 +689,17 @@
 
 <hr />
 
-<h3 id="hadoop-3">启动Hadoop</h3>
+<h3 id="hadoop-2">启动Hadoop</h3>
 <hr />
 
 <ol>
+  <li>
+    <p>确保Zookeeper已经启动：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible zookeeper -a '/opt/zookeeper-3.4.9/bin/zkServer.sh start'
+</code></pre>
+    </div>
+  </li>
   <li>
     <p>(在主节点)格式化集群</p>
 
@@ -634,7 +782,7 @@
 
 <hr />
 
-<h3 id="hadoop-4">测试Hadoop</h3>
+<h3 id="hadoop-3">测试Hadoop</h3>
 <hr />
 
 <ol>
@@ -665,6 +813,36 @@
     </div>
   </li>
 </ol>
+
+<hr />
+
+<h3 id="hadoop-4">创建Hadoop用户</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>创建用户组</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ sudo groupadd admire
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>创建用户</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ sudo useradd -g admire -d /home/wyn -m wyn -s /bin/bash
+ $ sudo passwd wyn
+ $ hadoop fs -mkdir /user/wyn
+ $ hadoop fs -chown -R wyn:supergroup /user/wyn
+ $ hadoop fs -chmod 700 /user/wyn
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="spark-on-yarnhttpswuyinan0126githubio20176-spark">下一步：<a href="(https://wuyinan0126.github.io/2017/大数据学习笔记(6)-Spark/)">安装Spark on Yarn</a></h2>
 
 <hr />
 
