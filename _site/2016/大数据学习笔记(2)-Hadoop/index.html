@@ -309,26 +309,26 @@
 
 <p>配置内存参数可以使用<a href="https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.3.6/bk_installing_manually_book/content/determine-hdp-memory-config.html">yarn-util.py</a>进行参考</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>	# 查看每个物理CPU中core的个数(即核数)
-	$ cat /proc/cpuinfo| grep "cpu cores"| uniq
-	4
-	$ python yarn-utils.py -c 4 -m 16 -d 1 -k True
-	 Using cores=4 memory=16GB disks=1 hbase=True
-	 Profile: cores=4 memory=12288MB reserved=4GB usableMem=12GB disks=1
-	 Num Container=3
-	 Container Ram=4096MB
-	 Used Ram=12GB
-	 Unused Ram=4GB
-	 yarn.scheduler.minimum-allocation-mb=4096
-	 yarn.scheduler.maximum-allocation-mb=12288
-	 yarn.nodemanager.resource.memory-mb=12288
-	 mapreduce.map.memory.mb=4096
-	 mapreduce.map.java.opts=-Xmx3276m
-	 mapreduce.reduce.memory.mb=4096
-	 mapreduce.reduce.java.opts=-Xmx3276m
-	 yarn.app.mapreduce.am.resource.mb=4096
-	 yarn.app.mapreduce.am.command-opts=-Xmx3276m
-	 mapreduce.task.io.sort.mb=1638
+<div class="highlighter-rouge"><pre class="highlight"><code># 查看每个物理CPU中core的个数(即核数)
+$ cat /proc/cpuinfo| grep "cpu cores"| uniq
+4
+$ python yarn-utils.py -c 4 -m 16 -d 1 -k True
+ Using cores=4 memory=16GB disks=1 hbase=True
+ Profile: cores=4 memory=12288MB reserved=4GB usableMem=12GB disks=1
+ Num Container=3
+ Container Ram=4096MB
+ Used Ram=12GB
+ Unused Ram=4GB
+ yarn.scheduler.minimum-allocation-mb=4096
+ yarn.scheduler.maximum-allocation-mb=12288
+ yarn.nodemanager.resource.memory-mb=12288
+ mapreduce.map.memory.mb=4096
+ mapreduce.map.java.opts=-Xmx3276m
+ mapreduce.reduce.memory.mb=4096
+ mapreduce.reduce.java.opts=-Xmx3276m
+ yarn.app.mapreduce.am.resource.mb=4096
+ yarn.app.mapreduce.am.command-opts=-Xmx3276m
+ mapreduce.task.io.sort.mb=1638
 </code></pre>
 </div>
 

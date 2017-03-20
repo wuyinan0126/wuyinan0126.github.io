@@ -5,8 +5,8 @@
     <description>Welcome to geek&#39;s world!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 20 Mar 2017 20:18:59 +0800</pubDate>
-    <lastBuildDate>Mon, 20 Mar 2017 20:18:59 +0800</lastBuildDate>
+    <pubDate>Mon, 20 Mar 2017 20:27:03 +0800</pubDate>
+    <lastBuildDate>Mon, 20 Mar 2017 20:27:03 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -1514,26 +1514,26 @@
 
 &lt;p&gt;配置内存参数可以使用&lt;a href=&quot;https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.3.6/bk_installing_manually_book/content/determine-hdp-memory-config.html&quot;&gt;yarn-util.py&lt;/a&gt;进行参考&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	# 查看每个物理CPU中core的个数(即核数)
-	$ cat /proc/cpuinfo| grep &quot;cpu cores&quot;| uniq
-	4
-	$ python yarn-utils.py -c 4 -m 16 -d 1 -k True
-	 Using cores=4 memory=16GB disks=1 hbase=True
-	 Profile: cores=4 memory=12288MB reserved=4GB usableMem=12GB disks=1
-	 Num Container=3
-	 Container Ram=4096MB
-	 Used Ram=12GB
-	 Unused Ram=4GB
-	 yarn.scheduler.minimum-allocation-mb=4096
-	 yarn.scheduler.maximum-allocation-mb=12288
-	 yarn.nodemanager.resource.memory-mb=12288
-	 mapreduce.map.memory.mb=4096
-	 mapreduce.map.java.opts=-Xmx3276m
-	 mapreduce.reduce.memory.mb=4096
-	 mapreduce.reduce.java.opts=-Xmx3276m
-	 yarn.app.mapreduce.am.resource.mb=4096
-	 yarn.app.mapreduce.am.command-opts=-Xmx3276m
-	 mapreduce.task.io.sort.mb=1638
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 查看每个物理CPU中core的个数(即核数)
+$ cat /proc/cpuinfo| grep &quot;cpu cores&quot;| uniq
+4
+$ python yarn-utils.py -c 4 -m 16 -d 1 -k True
+ Using cores=4 memory=16GB disks=1 hbase=True
+ Profile: cores=4 memory=12288MB reserved=4GB usableMem=12GB disks=1
+ Num Container=3
+ Container Ram=4096MB
+ Used Ram=12GB
+ Unused Ram=4GB
+ yarn.scheduler.minimum-allocation-mb=4096
+ yarn.scheduler.maximum-allocation-mb=12288
+ yarn.nodemanager.resource.memory-mb=12288
+ mapreduce.map.memory.mb=4096
+ mapreduce.map.java.opts=-Xmx3276m
+ mapreduce.reduce.memory.mb=4096
+ mapreduce.reduce.java.opts=-Xmx3276m
+ yarn.app.mapreduce.am.resource.mb=4096
+ yarn.app.mapreduce.am.command-opts=-Xmx3276m
+ mapreduce.task.io.sort.mb=1638
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
