@@ -5,8 +5,8 @@
     <description>Welcome to geek&#39;s world!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 22 Mar 2017 22:12:02 +0800</pubDate>
-    <lastBuildDate>Wed, 22 Mar 2017 22:12:02 +0800</lastBuildDate>
+    <pubDate>Sun, 02 Apr 2017 22:37:07 +0800</pubDate>
+    <lastBuildDate>Sun, 02 Apr 2017 22:37:07 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -420,7 +420,7 @@
   &lt;li&gt;Producer：生产者生产指定主题（Topic）的消息并传入代理服务器集群&lt;/li&gt;
   &lt;li&gt;Broker：代理服务器集群在磁盘存储维护各种Topic的消息队列&lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Consumer：消费者根据自己订阅的Topic从代理服务器集群中&lt;strong&gt;拉取（Pull）&lt;/strong&gt;新消息并对其进行处理&lt;/p&gt;
+    &lt;p&gt;Consumer：消费者根据自己订阅的Topic从代理服务器集群中&lt;strong&gt;拉取（Pull）&lt;/strong&gt;新消息并对其进行处理，每个consumer属于一个consumer group，每个group中可以有多个consumer。发送到Topic的消息，只会被订阅此Topic的每个group中的一个consumer消费&lt;/p&gt;
 
     &lt;p&gt;采用pull方式的好处是消费者可以自主控制消费速率，避免消费者因处理速度跟不上生产者而导致消息大量积压&lt;/p&gt;
   &lt;/li&gt;
@@ -451,6 +451,9 @@
 &lt;hr /&gt;
 
 &lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;按照&lt;a href=&quot;https://wuyinan0126.github.io/2017/大数据学习笔记(5)-分布式协调系统/&quot;&gt;大数据学习笔记(5)-分布式协调系统&lt;/a&gt;安装好Zookeeper&lt;/p&gt;
+  &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;下载Kafka二进制包，解压至/opt/:&lt;/p&gt;
 
@@ -546,7 +549,7 @@
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&quot;zookeeper&quot;&gt;测试Zookeeper&lt;/h3&gt;
+&lt;h3 id=&quot;kafka-3&quot;&gt;测试Kafka&lt;/h3&gt;
 &lt;hr /&gt;
 
 &lt;ol&gt;
@@ -558,6 +561,37 @@
  [cluster, controller_epoch, controller, brokers, zookeeper, hadoop-ha, admin, isr_change_notification, consumers, config]
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;[可选]创建topic，一个副本，一个分区&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;[可选]查看topic&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ kafka-topics.sh --list --zookeeper localhost:2181
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;[可选]使用kafka-console-producer在控制台发送消息&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ kafka-console-producer.sh --broker-list localhost:9092 --topic test
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;[可选]使用kafka-console-consumer在控制台接受消息&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ kafka-console-consumer.sh --zookeeper localhost:2181 --topic test --from-beginning
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;[可选]如果在producer console输入一条消息，能从consumer console看到这条消息就代表安装是成功&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
@@ -589,6 +623,9 @@
 &lt;hr /&gt;
 
 &lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;按照&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(2)-Hadoop/&quot;&gt;大数据学习笔记(2)-Hadoop&lt;/a&gt;做好部署前提准备&lt;/p&gt;
+  &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;下载Hive二进制包，解压至/opt/:&lt;/p&gt;
 
@@ -660,7 +697,7 @@
   &lt;li&gt;
     &lt;p&gt;创建hive的log文件存储目录&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mkdir /opt/hive-2.1.0/logs
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ mkdir /opt/hive-2.1.0/logs
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
@@ -1016,7 +1053,159 @@
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(6)-Spark</title>
-        <description>&lt;p&gt;**&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;深入学习Spark相关知识，并在Yarn集群搭建Spark。包括通过日志分析Spark on Yarn-cluster运行机制&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;spark&quot;&gt;Spark&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;spark-on-yarn-cluster&quot;&gt;Spark on Yarn-cluster运行机制&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;在Spark on Yarn-cluster模式中，Spark应用的Driver即为Yarn中的ApplicationMaster(实际也是一个Container)，Spark的Executor即为Yarn中的Container，其中Driver负责资源的申请和job的调度，Executor负责Task的具体执行&lt;/p&gt;
+
+&lt;p&gt;运行参数：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark-submit --class logs.Main \
+ --master yarn-cluster \		// Spark on Yarn-cluster
+ --num-executors 19 \			// 19个Executors+1个AM(Driver)
+ --executor-memory 5g \			// 每个Executors堆内存
+ --executor-cores 2 \			// 每个Executors虚拟CPU核数
+ --driver-memory 5g \			//  Driver堆内存
+./Test-assembly-1.0.jar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Spark Yarn的client提交应用(Application)给Yarn的ResourceManager&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; // 连接到RM
+ 17/03/31 18:14:19 INFO RMProxy: Connecting to ResourceManager at /10.2.2.141:8032
+
+ // 向集群请求提交一个应用
+ 17/03/31 18:14:19 INFO Client: Requesting a new application from cluster with 10 NodeManagers
+	
+ // 检查请求的资源是否超过设定值
+ 17/03/31 18:14:19 INFO Client: Verifying our application has not requested more than the maximum memory capability of the cluster (12288 MB per container)
+	
+ // 分配一个ApplicationMaster，包括堆内存5120M和非堆内存512M，共5632M
+ 17/03/31 18:14:19 INFO Client: Will allocate AM container, with 5632 MB memory including 512 MB overhead
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;RM向NodeManager申请Container，用于运行ApplicationMaster(Spark的Driver)，并将应用的jar文件上传到HDFS&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; // 申请Container，用于运行ApplicationMaster
+ 17/03/31 18:14:19 INFO Client: Setting up container launch context for our AM
+ 17/03/31 18:14:19 INFO Client: Setting up the launch environment for our AM container
+ 17/03/31 18:14:19 INFO Client: Preparing resources for our AM container
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;// 将应用的jar文件上传到HDFS
+17/03/31 18:14:22 INFO Client: Uploading resource file:/tmp/spark-0222f8da-3cf4-4ff1-9109-c4877293fc5b/__spark_libs__3620896466196856366.zip -&amp;gt; hdfs://cats/user/wyn/.sparkStaging/application_1490945694024_0003/__spark_libs__3620896466196856366.zip&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;NM启动AM，在Container中初始化SparkContext，其中比较重要的是创建TaskScheduler和DAGScheduler。在Spark on Yarn-cluster模式中，TaskScheduler将选择YarnClusterScheduler和YarnClusterSchedulerBackend&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;YarnClusterScheduler用于根据每个Executor的资源剩余情况分配合适的Task，并维护一个任务队列，根据FIFO或Fair策略，调度任务&lt;/li&gt;
+      &lt;li&gt;YarnClusterSchedulerBackend用于维护Executor相关信息(包括Executor的地址、通信端口、主机、资源情况)&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;DAGScheduler用于根据Job构建基于Stage的DAG(有向无环图)，并提交Stage给TaskScheduler&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  17/03/31 18:14:29 INFO ApplicationMaster: Preparing Local resources
+		
+  // 初始化SparkContext
+  17/03/31 18:14:30 INFO ApplicationMaster: Waiting for spark context initialization...
+  17/03/31 18:14:30 INFO SparkContext: Running Spark version 2.1.0
+		
+  // 创建YarnClusterScheduler
+  17/03/31 18:14:31 INFO YarnClusterScheduler: Created YarnClusterScheduler
+		
+  // AM中注册一个SchedulerBackend，用于Executor与其通信
+  17/03/31 18:14:31 INFO YarnSchedulerBackend$YarnSchedulerEndpoint: ApplicationMaster registered as NettyRpcEndpointRef(spark://YarnAM@10.2.2.150:45262)
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;AM向RM申请资源，申请到相应资源后，AM中的YarnClusterScheduler通过RPC协议让NM启动相应的Executor&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; // 申请资源，包括堆内存5120M和非堆内存512M，共5632M
+ 17/03/31 18:14:31 INFO YarnAllocator: Will request 19 executor container(s), each with 2 core(s) and 5632 MB memory (including 512 MB of overhead)
+ 17/03/31 18:14:31 INFO YarnAllocator: Submitted 19 unlocalized container requests.
+	
+ // 启动executor
+ 17/03/31 18:14:31 INFO YarnAllocator: Launching container container_1490945694024_0003_01_000002 on host cat5
+ 17/03/31 18:14:31 INFO YarnAllocator: Received 1 containers from YARN, launching executors on 1 of them.
+ ...
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;NM启动Executor(container)，在container中创建ExecutorBackend，用于与AM的SchedulerBackend通信，并向AM注册并申请Task&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; // 每个executor中注册一个ExecutorBackend，用于与AM通信
+ 17/03/31 18:14:33 INFO YarnSchedulerBackend$YarnDriverEndpoint: Registered executor NettyRpcEndpointRef(null) (10.2.2.150:34052) with ID 2
+ 17/03/31 18:14:34 INFO YarnSchedulerBackend$YarnDriverEndpoint: Registered executor NettyRpcEndpointRef(null) (10.2.2.144:39920) with ID 4
+ ...
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;开始执行Job，DAGScheduler根据Job构建基于Stage的DAG，并提交Stage(也就是TaskSet)给TaskScheduler，TaskScheduler向Executor分配Task，由ExecutorBackend执行，并向AM汇报运行的状态和进度&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; // 开始执行Job
+ 17/03/31 18:14:50 INFO SparkContext: Starting job: sortBy at Main.scala:33
+	
+ // DAGScheduler根据Job构建基于Stage的DAG，并提交Stage(也就是TaskSet)给TaskScheduler
+ 17/03/31 18:14:51 INFO DAGScheduler: Submitting 23137 missing tasks from ShuffleMapStage 0 (MapPartitionsRDD[5] at groupBy at Main.scala:31)
+	
+ // TaskScheduler将Task分配给Executor
+ 17/03/31 18:14:51 INFO YarnClusterScheduler: Adding task set 0.0 with 23137 tasks
+	
+ // 分配给的Executor的具体信息
+ 17/03/31 18:14:51 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, cat12, executor 12, partition 0, NODE_LOCAL, 6051 bytes)
+ 17/03/31 18:14:51 INFO TaskSetManager: Starting task 18.0 in stage 0.0 (TID 1, cat8, executor 16, partition 18, NODE_LOCAL, 6051 bytes)
+ ...
+ 17/03/31 18:14:52 INFO TaskSetManager: Finished task 29.0 in stage 0.0 (TID 32) in 1413 ms on cat5 (executor 11) (1/23137)
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;应用程序运行完成后，AM下令关闭所有Executor，并向RM申请注销并关闭自己&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; // AM通知应用运行完成
+ 17/03/31 18:18:50 INFO ApplicationMaster: Final app status: SUCCEEDED, exitCode: 0
+ 17/03/31 18:18:50 INFO SparkContext: Invoking stop() from shutdown hook
+	
+ // AM下令关闭所有Executor
+ 17/03/31 18:18:53 INFO YarnAllocator: Driver requested a total number of 0 executor(s).
+ 17/03/31 18:18:53 INFO YarnClusterSchedulerBackend: Shutting down all executors
+ 17/03/31 18:18:53 INFO YarnSchedulerBackend$YarnDriverEndpoint: Asking each executor to shut down
+	
+ // AM关闭自己
+ 17/03/31 18:18:53 INFO SparkContext: Successfully stopped SparkContext
+ 17/03/31 18:18:53 INFO ApplicationMaster: Unregistering ApplicationMaster with SUCCEEDED
+	
+ // Executor收到来自Driver的关闭命令
+ 17/03/31 18:18:53 INFO CoarseGrainedExecutorBackend: Driver commanded a shutdown
+	
+ // Executor关闭
+ 17/03/31 18:18:53 INFO CoarseGrainedExecutorBackend: Driver from 10.2.2.150:45262 disconnected during shutdown
+ 17/03/31 18:18:53 INFO ShutdownHookManager: Shutdown hook called
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
 
 &lt;h2 id=&quot;spark210&quot;&gt;安装Spark（版本2.1.0）&lt;/h2&gt;
 &lt;hr /&gt;
@@ -1058,7 +1247,7 @@
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;spark&quot;&gt;配置Spark&lt;/h3&gt;
+&lt;h3 id=&quot;spark-1&quot;&gt;配置Spark&lt;/h3&gt;
 &lt;hr /&gt;
 
 &lt;ol&gt;
@@ -1111,7 +1300,7 @@
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;spark-1&quot;&gt;启动Spark&lt;/h3&gt;
+&lt;h3 id=&quot;spark-2&quot;&gt;启动Spark&lt;/h3&gt;
 &lt;hr /&gt;
 
 &lt;ol&gt;
@@ -1131,7 +1320,7 @@
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&quot;spark-2&quot;&gt;测试Spark&lt;/h3&gt;
+&lt;h3 id=&quot;spark-3&quot;&gt;测试Spark&lt;/h3&gt;
 &lt;hr /&gt;
 
 &lt;ol&gt;
@@ -1175,10 +1364,6 @@
 &lt;/ol&gt;
 
 &lt;hr /&gt;
-
-&lt;h2 id=&quot;hivehttpswuyinan0126githubio20177-&quot;&gt;下一步：&lt;a href=&quot;(https://wuyinan0126.github.io/2017/大数据学习笔记(7)-数据仓库/)&quot;&gt;安装Hive&lt;/a&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
 </description>
         <pubDate>Sun, 15 Jan 2017 08:00:00 +0800</pubDate>
         <link>https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(6)-Spark/</link>
@@ -1210,6 +1395,9 @@
 
 &lt;ol&gt;
   &lt;li&gt;
+    &lt;p&gt;按照&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(1)-Overview/&quot;&gt;大数据学习笔记(1)-Overview&lt;/a&gt;做好部署前提准备&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
     &lt;p&gt;下载Zookeeper二进制包，并分发到所有zookeeper节点，并解压至/opt/:&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible zookeeper -m copy -a &#39;src=/home/cat/cat/zookeeper-3.4.9.tar.gz dest=/home/cat/cat/&#39;
@@ -1240,7 +1428,7 @@
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # 这个时间(ms)是作为Zookeeper服务器之间或客户端与服务器之间维持心跳的时间间隔
  tickTime=2000
 
- # Zookeeper服务器集群中的Follower服务器初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过10个tickTime的时间长度后 Leader服务器还没有收到Follower的返回信息，表明这个Follower连接失败
+ # Zookeeper服务器集群中的Follower服务器初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过10个tickTime的时间长度后Leader服务器还没有收到Follower的返回信息，表明这个Follower连接失败
  initLimit=10
 
  # 标识Leader与Follower之间发送消息，请求和应答时间长度最长不能超过多少个tickTime的时间长度
@@ -1249,7 +1437,7 @@
  # 客户端连接Zookeeper服务器的端口，Zookeeper会监听这个端口，接受客户端的访问请求。
  clientPort=2181
 
- # Zookeeper存放数据
+ # Zookeeper存放数据，也把zookeeper服务器的ID文件保存到这个目录下
  dataDir=/opt/zookeeper-3.4.9/var/data
  # 数据的log日志
  dataLogDir=/opt/zookeeper-3.4.9/var/log
@@ -1337,7 +1525,7 @@
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;hadoop-hahttpswuyinan0126githubio20162-hadoop&quot;&gt;下一步：&lt;a href=&quot;(https://wuyinan0126.github.io/2016/大数据学习笔记(2)-Hadoop/)&quot;&gt;安装Hadoop HA&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&quot;hadoop-hahttpswuyinan0126githubio20162-hadoop&quot;&gt;下一步：&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(2)-Hadoop/&quot;&gt;安装Hadoop HA&lt;/a&gt;&lt;/h2&gt;
 &lt;hr /&gt;
 </description>
         <pubDate>Mon, 02 Jan 2017 08:00:00 +0800</pubDate>
@@ -1747,7 +1935,7 @@ $ python yarn-utils.py -c 4 -m 16 -d 1 -k True
 
 &lt;ol&gt;
   &lt;li&gt;
-    &lt;p&gt;按照&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(1)-Overview/&quot;&gt;大数据学习笔记(1)-Overview&lt;/a&gt;做好部署前提准备&lt;/p&gt;
+    &lt;p&gt;按照&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(1)-Overview/&quot;&gt;大数据学习笔记(1)-Overview&lt;/a&gt;和&lt;a href=&quot;https://wuyinan0126.github.io/2017/大数据学习笔记(5)-分布式协调系统/&quot;&gt;大数据学习笔记(5)-分布式协调系统&lt;/a&gt;做好部署前提准备&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;下载Hadoop二进制包，并分发到所有节点，并解压至/opt/:&lt;/p&gt;
@@ -1789,6 +1977,11 @@ $ python yarn-utils.py -c 4 -m 16 -d 1 -k True
      &amp;lt;value&amp;gt;file:///opt/hadoop-2.7.3/var/tmp&amp;lt;/value&amp;gt; 
      &amp;lt;description&amp;gt;NameNode、DataNode、JournalNode等存放数据的公共目录，也可以自己单独指定这三类节点的目录&amp;lt;/description&amp;gt;
    &amp;lt;/property&amp;gt;  
+   &amp;lt;property&amp;gt;
+     &amp;lt;name&amp;gt;hadoop.http.staticuser.user&amp;lt;/name&amp;gt;
+     &amp;lt;value&amp;gt;cat&amp;lt;/value&amp;gt;
+     &amp;lt;description&amp;gt;WEB UI登录用户，默认为Dr.Who，权限较小&amp;lt;/description&amp;gt;
+   &amp;lt;/property&amp;gt;
    &amp;lt;property&amp;gt;      
      &amp;lt;name&amp;gt;ha.zookeeper.quorum&amp;lt;/name&amp;gt;      
      &amp;lt;value&amp;gt;10.2.2.141:2181,10.2.2.142:2181,10.2.2.143:2181&amp;lt;/value&amp;gt;
@@ -2247,7 +2440,7 @@ $ python yarn-utils.py -c 4 -m 16 -d 1 -k True
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;spark-on-yarnhttpswuyinan0126githubio20176-spark&quot;&gt;下一步：&lt;a href=&quot;(https://wuyinan0126.github.io/2017/大数据学习笔记(6)-Spark/)&quot;&gt;安装Spark on Yarn&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id=&quot;spark-on-yarnhttpswuyinan0126githubio20176-spark&quot;&gt;下一步：&lt;a href=&quot;https://wuyinan0126.github.io/2017/大数据学习笔记(6)-Spark/&quot;&gt;安装Spark on Yarn&lt;/a&gt;&lt;/h2&gt;
 
 &lt;hr /&gt;
 </description>

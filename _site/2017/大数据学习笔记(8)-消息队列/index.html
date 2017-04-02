@@ -215,7 +215,7 @@
   <li>Producer：生产者生产指定主题（Topic）的消息并传入代理服务器集群</li>
   <li>Broker：代理服务器集群在磁盘存储维护各种Topic的消息队列</li>
   <li>
-    <p>Consumer：消费者根据自己订阅的Topic从代理服务器集群中<strong>拉取（Pull）</strong>新消息并对其进行处理</p>
+    <p>Consumer：消费者根据自己订阅的Topic从代理服务器集群中<strong>拉取（Pull）</strong>新消息并对其进行处理，每个consumer属于一个consumer group，每个group中可以有多个consumer。发送到Topic的消息，只会被订阅此Topic的每个group中的一个consumer消费</p>
 
     <p>采用pull方式的好处是消费者可以自主控制消费速率，避免消费者因处理速度跟不上生产者而导致消息大量积压</p>
   </li>
@@ -246,6 +246,9 @@
 <hr />
 
 <ol>
+  <li>
+    <p>按照<a href="https://wuyinan0126.github.io/2017/大数据学习笔记(5)-分布式协调系统/">大数据学习笔记(5)-分布式协调系统</a>安装好Zookeeper</p>
+  </li>
   <li>
     <p>下载Kafka二进制包，解压至/opt/:</p>
 
@@ -341,7 +344,7 @@
   </li>
 </ol>
 
-<h3 id="zookeeper">测试Zookeeper</h3>
+<h3 id="kafka-3">测试Kafka</h3>
 <hr />
 
 <ol>
@@ -353,6 +356,37 @@
  [cluster, controller_epoch, controller, brokers, zookeeper, hadoop-ha, admin, isr_change_notification, consumers, config]
 </code></pre>
     </div>
+  </li>
+  <li>
+    <p>[可选]创建topic，一个副本，一个分区</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>[可选]查看topic</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ kafka-topics.sh --list --zookeeper localhost:2181
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>[可选]使用kafka-console-producer在控制台发送消息</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ kafka-console-producer.sh --broker-list localhost:9092 --topic test
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>[可选]使用kafka-console-consumer在控制台接受消息</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ kafka-console-consumer.sh --zookeeper localhost:2181 --topic test --from-beginning
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>[可选]如果在producer console输入一条消息，能从consumer console看到这条消息就代表安装是成功</p>
   </li>
 </ol>
 
