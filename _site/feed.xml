@@ -5,8 +5,8 @@
     <description>Welcome to geek&#39;s world!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 02 Apr 2017 22:37:07 +0800</pubDate>
-    <lastBuildDate>Sun, 02 Apr 2017 22:37:07 +0800</lastBuildDate>
+    <pubDate>Sun, 02 Apr 2017 22:52:07 +0800</pubDate>
+    <lastBuildDate>Sun, 02 Apr 2017 22:52:07 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -1100,15 +1100,12 @@
  17/03/31 18:14:19 INFO Client: Setting up container launch context for our AM
  17/03/31 18:14:19 INFO Client: Setting up the launch environment for our AM container
  17/03/31 18:14:19 INFO Client: Preparing resources for our AM container
+
+ // 将应用的jar文件上传到HDFS
+ 17/03/31 18:14:22 INFO Client: Uploading resource file:/tmp/spark-0222f8da-3cf4-4ff1-9109-c4877293fc5b/__spark_libs__3620896466196856366.zip -&amp;gt; hdfs://cats/user/wyn/.sparkStaging/application_1490945694024_0003/__spark_libs__3620896466196856366.zip
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;// 将应用的jar文件上传到HDFS
-17/03/31 18:14:22 INFO Client: Uploading resource file:/tmp/spark-0222f8da-3cf4-4ff1-9109-c4877293fc5b/__spark_libs__3620896466196856366.zip -&amp;gt; hdfs://cats/user/wyn/.sparkStaging/application_1490945694024_0003/__spark_libs__3620896466196856366.zip&lt;/p&gt;
-
-&lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;NM启动AM，在Container中初始化SparkContext，其中比较重要的是创建TaskScheduler和DAGScheduler。在Spark on Yarn-cluster模式中，TaskScheduler将选择YarnClusterScheduler和YarnClusterSchedulerBackend&lt;/p&gt;
 
