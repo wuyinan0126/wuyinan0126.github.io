@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title><font color='red'>[原创]</font> 树莓派2+ngrok内网穿透</title>
+  <meta name="description" content="Welcome to geek's world!">
+  <meta name="author" content="Yinan Wu">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Yinan's Blog">
+  <meta name="twitter:description" content="Welcome to geek's world!">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Yinan's Blog">
+  <meta property="og:description" content="Welcome to geek's world!">
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2015/%E6%A0%91%E8%8E%93%E6%B4%BE2+ngrok%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
+  <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
+
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+  
+<header class="panel-cover" style="background-image: url(/images/cover.jpg)">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <a href="/" title="link to home of Yinan's Blog">
+          <img src="/images/profile.jpg" class="user-image" alt="My Profile Photo">
+          <h1 class="panel-cover__title panel-title">Yinan's Blog</h1>
+        </a>
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">Welcome to geek's world!</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/me/" title="link to Yinan's Blog about me" class="blog-button">Me</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="link to Yinan's Blog blog" class="blog-button">Blog</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/tags/" title="link to Yinan's Blog tags" class="blog-button">Tags</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation navigation--social">
+            <ul class="navigation">
+          
+            
+              <!-- Twitter -->
+              <li class="navigation__item">
+                <a href="http://twitter.com/wuyinan0126" title="@wuyinan0126 on Twitter" target="_blank">
+                  <i class="icon icon-social-twitter"></i>
+                  <span class="label">Twitter</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Facebook -->
+              <li class="navigation__item">
+                <a href="http://fb.me/wuyinan0126" title="wuyinan0126 on Facebook" target="_blank">
+                  <i class="icon icon-social-facebook"></i>
+                  <span class="label">Facebook</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- LinkedIn -->
+              <li class="navigation__item">
+                <a href="https://www.linkedin.com/in/wuyinan0126" title="wuyinan0126 on LinkedIn" target="_blank">
+                  <i class="icon icon-social-linkedin"></i>
+                  <span class="label">LinkedIn</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- GitHub -->
+              <li class="navigation__item">
+                <a href="https://www.github.com/wuyinan0126" title="wuyinan0126 on GitHub" target="_blank">
+                  <i class="icon icon-social-github"></i>
+                  <span class="label">GitHub</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Email -->
+              <li class="navigation__item">
+                <a href="mailto:wuyinan0126@gmail.com" title="Email wuyinan0126@gmail.com" target="_blank">
+                  <i class="icon icon-mail"></i>
+                  <span class="label">Email</span>
+                </a>
+              </li>
+            
+
+            <!-- RSS -->
+            <!-- <li class="navigation__item">
+              <a href="/feed.xml" title="Subscribe" target="_blank">
+                <i class="icon icon-rss"></i>
+                <span class="label">RSS</span>
+              </a>
+            </li> -->
+          
+            </ul>
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="20 Jul 2015" class="post-meta__date date">20 Jul 2015</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#技术宅">技术宅</a> <a href="/tags/#树莓派">树莓派</a> </span>
+    </div>
+    <h1 class="post-title"><font color='red'>[原创]</font> 树莓派2+ngrok内网穿透</h1>
+  </header>
+
+  <section class="post">
+    <p><em>使用树莓派2、虚拟专用服务器(VPS)和ngrok进行内网穿透，使树莓派在局域网外也能通过SSH和HTTP访问</em></p>
+
+<h2 id="section">安装和配置相关软件</h2>
+<hr />
+
+<h3 id="vps">服务器端（VPS）</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>建立VPS（提供公网IP），安装系统Ubuntu14.04 LTS，乞丐配置即可，开放端口</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> name 	protocol	public		privete		
+ # 登录VPS的SSH端口	
+ SSH		TCP 		22222		22
+ # 登录RPI的SSH端口
+ PI-SSH	TCP 		2222 		2222
+ HTTP 	TCP 		8080		8080
+ # ngrokd会开一个4443端口用来跟客户端通讯，设置防火墙开放4443端口
+ NGROK 	TCP 		4443		4443	
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>安装Go语言环境</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ sudo apt-get install golang
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>编译ngrok源码</p>
+
+    <ol>
+      <li>
+        <p>下载源码</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ git clone https://github.com/inconshreveable/ngrok.git
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>配置证书，ngrok会使用此证书加密通讯</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ export GOPATH=/home/cat/ngrok
+ $ export NGROK_DOMAIN="vps"
+ $ cd ngrok
+ $ openssl genrsa -out base.key 2048
+ $ openssl req -new -x509 -nodes -key base.key -days 10000 -subj "/CN=$NGROK_DOMAIN" -out base.pem
+ $ openssl genrsa -out server.key 2048
+ $ openssl req -new -key server.key -subj "/CN=$NGROK_DOMAIN" -out server.csr
+ $ openssl x509 -req -in server.csr -CA base.pem -CAkey base.key -CAcreateserial -days 10000 -out server.crt
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>将证书文件复制到指定位置</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> # 这是客户端需要持有的证书
+ $ cp base.pem assets/client/tls/ngrokroot.crt -i
+ # 一定记得输入y然后回车
+ cp: overwrite `assets/client/tls/ngrokroot.crt'? y
+ # 这是服务器端需要持有的证书
+ $ cp server.crt assets/server/tls/snakeoil.crt -i
+ $ cp server.key assets/server/tls/snakeoil.key -i
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>在客户端将将配置好证书的源码scp过去</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> pi@rpi ~ $ export NGROK_DOMAIN="vps"
+ # 把vps和对应ip地址写入/etc/hosts
+ pi@rpi ~ $ scp -r -P 22222 cat@$NGROK_DOMAIN:/home/cat/ngrok .
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>编译（VPS为linux-x86_64架构）</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ sudo make GOOS=linux GOARCH=386 release-server
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>编译成功后查看bin/linux_386/ngrokd，即为VPS运行文件</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>运行</p>
+
+    <ol>
+      <li>
+        <p>测试运行</p>
+
+        <p># 可以加上-log ./ngrokd.log
+ $ bin/linux_386/ngrokd -domain=”$NGROK_DOMAIN” -httpAddr=”:8080” -httpsAddr=”:8443”</p>
+      </li>
+      <li>
+        <p>后台运行</p>
+
+        <p>$ setsid ~/ngrok/bin/linux_386/ngrokd -domain=”$NGROK_DOMAIN” -httpAddr=”:8080” -httpsAddr=”:8443”</p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="section-1">客户端（树莓派）</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>安装Go语言环境，不要使用apt-get，此版本过旧</p>
+
+    <ol>
+      <li>
+        <p>去官网下载arm版本的二进制包，解压</p>
+
+        <p>$ wget https://storage.googleapis.com/golang/go1.8.linux-armv6l.tar.gz
+ $ sudo chown -R pi:pi /opt
+ $ tar -zxvf ./go1.8.linux-armv6l.tar.gz -C /opt</p>
+      </li>
+      <li>
+        <p>配置环境变量，修改/etc/profile</p>
+
+        <p>export GOROOT=/opt/go
+ export PATH=$PATH:$GOROOT/bin</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>编译ngrok源码</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> 1. 编译（树莓派为arm架构）
+
+     $ export NGROK_DOMAIN="vps"
+     $ cd ngrok
+     $ make GOOS=linux GOARCH=arm release-client
+
+ 2. 编译成功后查看bin/ngrok，即为树莓派运行文件，将其复制到$GOROOT/bin文件夹下
+
+     $ cp bin/ngrok /opt/go/bin/
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>运行</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> 1. 创建~/.ngrok配置文件
+
+         server_addr: "$NGROK_DOMAIN:4443" 
+         trust_host_root_certs: false
+         tunnels:
+           ssh:
+             remote_port: 2222
+             proto:
+               tcp: 22
+           web:
+             proto:
+               http: 80
+
+ 2. 测试运行
+
+         $ ngrok start ssh
+
+         Tunnel Status                 online 
+         Version                       1.7/1.7
+         Forwarding                    tcp://$NGROK_DOMAIN:2222 -&gt; 127.0.0.1:22      
+         Web Interface                 127.0.0.1:4040                                         
+         # Conn                        0       
+         Avg Conn Time                 0.00ms  
+
+         $ ngrok start web
+
+         Tunnel Status                 online                                            
+         Version                       1.7/1.7
+         Forwarding                    http://web.$NGROK_DOMAIN:8080 -&gt; 127.0.0.1:80
+         Web Interface                 127.0.0.1:4040
+         # Conn                        0                                                       Avg Conn Time                 0.00ms 
+
+
+ 3. 后台运行
+
+         $ setsid ngrok start ssh web
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="section-2">测试运行</h2>
+<hr />
+
+<ol>
+  <li>
+    <p>测试ssh</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> ssh pi@$NGROK_DOMAIN -p2222
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>测试http：访问http://web.$NGROK_DOMAIN:8080</p>
+  </li>
+</ol>
+
+<hr />
+
+
+
+    <div class="page_navigation">
+    
+      <a class="prev" href="/2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/">&laquo; <font color='red'>[原创]</font> 树莓派2创建钓鱼热点</a>
+    
+    
+      <a class="next" href="/2015/Django%E6%90%AD%E5%BB%BA%E9%92%93%E9%B1%BC%E7%BD%91%E7%AB%99/"><font color='red'>[原创]</font> Apache2+Django搭建钓鱼网站 &raquo;</a>
+    
+    </div>
+
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
+
+    <div id="disqus_thread"></div>
+    <script>
+
+    var disqus_shortname = 'wuyinan0126';
+
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+
+    var disqus_config = function () {
+        this.page.url = 'https://wuyinan0126.github.io/2015/%E6%A0%91%E8%8E%93%E6%B4%BE2+ngrok%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2015/树莓派2+ngrok内网穿透'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2015/树莓派2+ngrok内网穿透';
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//wuyinan0126.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2017 Yinan Wu. All rights reserved.</span>
+</footer> 
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84272870-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    </div>
+  </body>
+</html>
