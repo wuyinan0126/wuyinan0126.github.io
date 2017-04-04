@@ -187,14 +187,14 @@
   <li>
     <p>建立VPS（提供公网IP），安装系统Ubuntu14.04 LTS，乞丐配置即可，开放端口</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> name 	protocol	public		privete		
+    <div class="highlighter-rouge"><pre class="highlight"><code> name / protocol / public / privete		
  # 登录VPS的SSH端口	
- SSH		TCP 		22222		22
+ SSH / TCP / 22222 / 22
  # 登录RPI的SSH端口
- PI-SSH	TCP 		2222 		2222
- HTTP 	TCP 		8080		8080
+ PI-SSH / TCP / 2222 / 2222
+ HTTP / TCP / 8080 / 8080
  # ngrokd会开一个4443端口用来跟客户端通讯，设置防火墙开放4443端口
- NGROK 	TCP 		4443		4443	
+ NGROK / TCP / 4443 / 4443	
 </code></pre>
     </div>
   </li>
@@ -271,13 +271,17 @@
       <li>
         <p>测试运行</p>
 
-        <p># 可以加上-log ./ngrokd.log
- $ bin/linux_386/ngrokd -domain=”$NGROK_DOMAIN” -httpAddr=”:8080” -httpsAddr=”:8443”</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> # 可以加上-log ./ngrokd.log
+ $ bin/linux_386/ngrokd -domain="$NGROK_DOMAIN" -httpAddr=":8080" -httpsAddr=":8443"
+</code></pre>
+        </div>
       </li>
       <li>
         <p>后台运行</p>
 
-        <p>$ setsid ~/ngrok/bin/linux_386/ngrokd -domain=”$NGROK_DOMAIN” -httpAddr=”:8080” -httpsAddr=”:8443”</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ setsid ~/ngrok/bin/linux_386/ngrokd -domain="$NGROK_DOMAIN" -httpAddr=":8080" -httpsAddr=":8443"
+</code></pre>
+        </div>
       </li>
     </ol>
   </li>
@@ -296,15 +300,19 @@
       <li>
         <p>去官网下载arm版本的二进制包，解压</p>
 
-        <p>$ wget https://storage.googleapis.com/golang/go1.8.linux-armv6l.tar.gz
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ wget https://storage.googleapis.com/golang/go1.8.linux-armv6l.tar.gz
  $ sudo chown -R pi:pi /opt
- $ tar -zxvf ./go1.8.linux-armv6l.tar.gz -C /opt</p>
+ $ tar -zxvf ./go1.8.linux-armv6l.tar.gz -C /opt
+</code></pre>
+        </div>
       </li>
       <li>
         <p>配置环境变量，修改/etc/profile</p>
 
-        <p>export GOROOT=/opt/go
- export PATH=$PATH:$GOROOT/bin</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> export GOROOT=/opt/go
+ export PATH=$PATH:$GOROOT/bin
+</code></pre>
+        </div>
       </li>
     </ol>
   </li>
@@ -313,13 +321,13 @@
 
     <div class="highlighter-rouge"><pre class="highlight"><code> 1. 编译（树莓派为arm架构）
 
-     $ export NGROK_DOMAIN="vps"
-     $ cd ngrok
-     $ make GOOS=linux GOARCH=arm release-client
+         $ export NGROK_DOMAIN="vps"
+         $ cd ngrok
+         $ make GOOS=linux GOARCH=arm release-client
 
  2. 编译成功后查看bin/ngrok，即为树莓派运行文件，将其复制到$GOROOT/bin文件夹下
 
-     $ cp bin/ngrok /opt/go/bin/
+         $ cp bin/ngrok /opt/go/bin/
 </code></pre>
     </div>
   </li>
