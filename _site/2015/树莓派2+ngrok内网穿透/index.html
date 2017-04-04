@@ -319,59 +319,75 @@
   <li>
     <p>编译ngrok源码</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> 1. 编译（树莓派为arm架构）
+    <ol>
+      <li>
+        <p>编译（树莓派为arm架构）</p>
 
-         $ export NGROK_DOMAIN="vps"
-         $ cd ngrok
-         $ make GOOS=linux GOARCH=arm release-client
-
- 2. 编译成功后查看bin/ngrok，即为树莓派运行文件，将其复制到$GOROOT/bin文件夹下
-
-         $ cp bin/ngrok /opt/go/bin/
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ export NGROK_DOMAIN="vps"
+ $ cd ngrok
+ $ make GOOS=linux GOARCH=arm release-client
 </code></pre>
-    </div>
+        </div>
+      </li>
+      <li>
+        <p>编译成功后查看bin/ngrok，即为树莓派运行文件，将其复制到$GOROOT/bin文件夹下</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ cp bin/ngrok /opt/go/bin/
+</code></pre>
+        </div>
+      </li>
+    </ol>
   </li>
   <li>
     <p>运行</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> 1. 创建~/.ngrok配置文件
+    <ol>
+      <li>
+        <p>创建~/.ngrok配置文件</p>
 
-         server_addr: "$NGROK_DOMAIN:4443" 
-         trust_host_root_certs: false
-         tunnels:
-           ssh:
-             remote_port: 2222
-             proto:
-               tcp: 22
-           web:
-             proto:
-               http: 80
-
- 2. 测试运行
-
-         $ ngrok start ssh
-
-         Tunnel Status                 online 
-         Version                       1.7/1.7
-         Forwarding                    tcp://$NGROK_DOMAIN:2222 -&gt; 127.0.0.1:22      
-         Web Interface                 127.0.0.1:4040                                         
-         # Conn                        0       
-         Avg Conn Time                 0.00ms  
-
-         $ ngrok start web
-
-         Tunnel Status                 online                                            
-         Version                       1.7/1.7
-         Forwarding                    http://web.$NGROK_DOMAIN:8080 -&gt; 127.0.0.1:80
-         Web Interface                 127.0.0.1:4040
-         # Conn                        0                                                       Avg Conn Time                 0.00ms 
-
-
- 3. 后台运行
-
-         $ setsid ngrok start ssh web
+        <div class="highlighter-rouge"><pre class="highlight"><code> server_addr: "$NGROK_DOMAIN:4443" 
+ trust_host_root_certs: false
+ tunnels:
+   ssh:
+     remote_port: 2222
+     proto:
+       tcp: 22
+   web:
+     proto:
+       http: 80
 </code></pre>
-    </div>
+        </div>
+      </li>
+      <li>
+        <p>测试运行</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ ngrok start ssh
+
+ Tunnel Status                 online 
+ Version                       1.7/1.7
+ Forwarding                    tcp://$NGROK_DOMAIN:2222 -&gt; 127.0.0.1:22      
+ Web Interface                 127.0.0.1:4040                                         
+ # Conn                        0       
+ Avg Conn Time                 0.00ms  
+
+ $ ngrok start web
+
+ Tunnel Status                 online                                            
+ Version                       1.7/1.7
+ Forwarding                    http://web.$NGROK_DOMAIN:8080 -&gt; 127.0.0.1:80
+ Web Interface                 127.0.0.1:4040
+ # Conn                        0                                                       Avg Conn Time                 0.00ms 
+</code></pre>
+        </div>
+      </li>
+      <li>
+        <p>后台运行</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code> $ setsid ngrok start ssh web
+</code></pre>
+        </div>
+      </li>
+    </ol>
   </li>
 </ol>
 
