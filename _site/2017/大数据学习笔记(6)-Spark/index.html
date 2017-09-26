@@ -415,6 +415,44 @@
 </code></pre>
     </div>
   </li>
+  <li>
+    <p>使用spark_shuffle，修改$HADOOP_HOME/etc/hadoop/yarn-site.xml:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;property&gt;
+   &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+   &lt;value&gt;mapreduce_shuffle,spark_shuffle&lt;/value&gt;
+ &lt;/property&gt;
+ &lt;property&gt;
+   &lt;name&gt;yarn.nodemanager.aux-services.spark_shuffle.class&lt;/name&gt;
+   &lt;value&gt;org.apache.spark.network.yarn.YarnShuffleService&lt;/value&gt;
+ &lt;/property&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>配置了5之后需要将spark的yarn目录里的spark-2.1.0-yarn-shuffle.jar加入yarn classpath:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ yarn classpath
+ # 将spark-network-shuffle_2.11-2.1.0.jar放入上述输出的某一路径中，如/opt/hadoop-2.7.3/share/hadoop/yarn/lib/下
+ $ ansible all -a 'cp /opt/spark-2.1.0/yarn/spark-2.1.0-yarn-shuffle.jar /opt/hadoop-2.7.3/share/hadoop/yarn/'
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>配置了5之后需要修改$HADOOP_HOME/etc/hadoop/yarn-env.sh:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # 因为使用了spark_shuffle，因此需要提高YARN_HEAPSIZE，避免在shuffle过程中的garbage collection问题
+ YARN_HEAPSIZE=5000
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>分发Hadoop配置文件</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> $ ansible slave -m copy -a 'src=/opt/hadoop-2.7.3/etc/hadoop/ dest=/opt/hadoop-2.7.3/etc/hadoop/'
+</code></pre>
+    </div>
+  </li>
 </ol>
 
 <hr />

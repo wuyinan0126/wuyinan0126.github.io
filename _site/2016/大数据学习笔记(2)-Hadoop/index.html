@@ -576,6 +576,8 @@ $ python yarn-utils.py -c 4 -m 16 -d 1 -k True
     <p>etc/hadoop/yarn-env.sh</p>
 
     <div class="highlighter-rouge"><pre class="highlight"><code> export JAVA_HOME=/opt/jdk1.8.0_121
+ # 因为使用了spark_shuffle，因此需要提高YARN_HEAPSIZE，避免在shuffle过程中的garbage collection问题
+ YARN_HEAPSIZE=5000
 </code></pre>
     </div>
   </li>
@@ -647,11 +649,15 @@ $ python yarn-utils.py -c 4 -m 16 -d 1 -k True
    &lt;/property&gt;
    &lt;property&gt;  
      &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;  
-     &lt;value&gt;mapreduce_shuffle&lt;/value&gt;  
+     &lt;value&gt;mapreduce_shuffle,spark_shuffle&lt;/value&gt;  
    &lt;/property&gt;
    &lt;property&gt;
      &lt;name&gt;yarn.nodemanager.aux-services.mapreduce_shuffle.class&lt;/name&gt;
      &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+     &lt;name&gt;yarn.nodemanager.aux-services.spark_shuffle.class&lt;/name&gt;
+     &lt;value&gt;org.apache.spark.network.yarn.YarnShuffleService&lt;/value&gt;
    &lt;/property&gt;
    &lt;property&gt;  
      &lt;name&gt;yarn.resourcemanager.scheduler.class&lt;/name&gt;
